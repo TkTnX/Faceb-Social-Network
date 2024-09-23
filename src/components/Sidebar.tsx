@@ -1,3 +1,4 @@
+import { sidebarItems } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,54 +9,17 @@ const Sidebar = () => {
         <Image src="/logo.svg" width={40} height={40} alt="logo" />
       </Link>
       <div className="grid gap-7 w-full items-center justify-center pt-[70px]">
-        <Image
-          src="/sidebar/01.svg"
-          width={26}
-          height={26}
-          alt="sidebar item"
-        />
-        <Image
-          src="/sidebar/02.svg"
-          width={26}
-          height={26}
-          alt="sidebar item"
-        />
-        <Image
-          src="/sidebar/03.svg"
-          width={26}
-          height={26}
-          alt="sidebar item"
-        />
-        <Image
-          src="/sidebar/04.svg"
-          width={26}
-          height={26}
-          alt="sidebar item"
-        />
-        <Image
-          src="/sidebar/05.svg"
-          width={26}
-          height={26}
-          alt="sidebar item"
-        />
-        <Image
-          src="/sidebar/06.svg"
-          width={26}
-          height={26}
-          alt="sidebar item"
-        />
-        <Image
-          src="/sidebar/07.svg"
-          width={26}
-          height={26}
-          alt="sidebar item"
-        />
-        <Image
-          src="/sidebar/08.svg"
-          width={26}
-          height={26}
-          alt="sidebar item"
-        />
+        {sidebarItems.map((item, index) => (
+          <Link href={item.link} key={index}>
+            <Image
+              src={`/sidebar/${item.imageUrl}`}
+              width={26}
+              height={26}
+              alt="sidebar item"
+              className="hover:bg-main/20  rounded-sm duration-100 hover:scale-105"
+            />
+          </Link>
+        ))}
       </div>
     </div>
   );

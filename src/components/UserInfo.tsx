@@ -62,7 +62,9 @@ const UserInfo = () => {
             </button>
           </div>
 
-          <UserButton />
+          <div className="border border-main rounded-full p-1 h-[38px] bg-white shadow-lg">
+            <UserButton />
+          </div>
         </SignedIn>
       </ClerkLoaded>
       <MobileMenu />

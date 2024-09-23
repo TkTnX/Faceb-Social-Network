@@ -28,16 +28,7 @@ const Homepage = () => {
           <Post />
           <Post />
           <Post />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
+
         </div>
       </div>
       {/* RIGHT */}
