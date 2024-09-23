@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import {  Navbar, UserInfo } from ".";
+import { Navbar, UserInfo } from ".";
 
 const Header = () => {
   return (
-    <div className="flex items-center justify-between px-4 h-[70px]">
+    <header className="flex items-center justify-between px-4 h-[70px]">
       {/* LEFT */}
       <div className="">
         <Link href="/">
@@ -17,7 +17,7 @@ const Header = () => {
       </div>
       {/* RIGHT */}
       <UserInfo />
-    </div>
+    </header>
   );
 };
 
