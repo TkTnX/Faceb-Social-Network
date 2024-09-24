@@ -1,16 +1,16 @@
 import { CenterSide, LeftSide, RightSide } from "@/components";
 
-const Homepage = () => {
+const ProfilePage = () => {
   return (
     <div className="flex items-start gap-3 lg:gap-7 justify-between max-w-[1317px] px-4 mx-auto">
       {/* LEFT */}
-      <LeftSide userId="test" />
+      <LeftSide  />
       {/* CENTER */}
-      <CenterSide type="home" />
+      <CenterSide type="profile" />
       {/* RIGHT */}
-      <RightSide type="home" />
+      <RightSide type="profile" />
     </div>
   );
-};
+}
 
-export default Homepage;
+export default ProfilePage

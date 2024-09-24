@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const UserBadge = () => {
   return (
-    <div className="bg-white rounded-lg border border-[#F1F2F6] p-3">
+    <div className="bg-white rounded-lg border border-[#F1F2F6] p-3 mb-9">
       <div className="relative h-20 w-full">
         <Image
           src="https://i.pinimg.com/736x/2d/67/f9/2d67f9834649b584682ab58606f5a27e.jpg"

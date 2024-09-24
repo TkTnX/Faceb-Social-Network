@@ -21,8 +21,8 @@ const FriendRequestItem = () => {
         <button className="text-main text-xs bg-[#F0F7FF] rounded-md hover:text-white hover:bg-main duration-100">
           <Check />
         </button>
-        <button className=" text-xs bg-[#F0F7FF] rounded-md hover:text-white hover:bg-main duration-100">
-          <X />
+        <button className="group text-xs bg-[#F0F7FF] rounded-md hover:text-white hover:bg-main duration-100">
+          <X color="#788292" className="group-hover:stroke-white" />
         </button>
       </div>
     </div>

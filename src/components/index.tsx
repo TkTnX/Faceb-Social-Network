@@ -13,6 +13,12 @@ import UserBadge from "./UserBadge";
 import FriendRequestItem from "./FriendRequestItem";
 import FriendRequests from "./FriendRequests";
 import Sidebar from "./Sidebar";
+import LeftSide from "./LeftSide";
+import CenterSide from "./CenterSide";
+import RightSide from "./RightSide";
+import Feed from "./Feed";
+import UserCard from "./UserCard";
+import UserInformationBlock from "./UserInformationBlock";
 export {
   Header,
   MobileMenu,
@@ -29,4 +35,10 @@ export {
   FriendRequestItem,
   FriendRequests,
   Sidebar,
+  LeftSide,
+  CenterSide,
+  RightSide,
+  Feed,
+  UserCard,
+  UserInformationBlock,
 };
