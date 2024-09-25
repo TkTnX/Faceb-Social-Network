@@ -1,4 +1,4 @@
-import { FriendRequestItem } from ".";
+import { FriendRequestItem } from "..";
 
 const FriendRequests = () => {
   return (
@@ -8,7 +8,7 @@ const FriendRequests = () => {
         <button className="text-main">See all</button>
       </div>
       <div className="bg-white rounded-lg border border-[#F1F2F6] p-3 mt-4">
-        <FriendRequestItem />
+        <FriendRequestItem  />
         <FriendRequestItem />
         <FriendRequestItem />
         <FriendRequestItem />

@@ -1,17 +1,27 @@
+import { User } from "@prisma/client";
 import Image from "next/image";
 
-const UserCard = () => {
+export interface UserWithCount extends User {
+  _count: {
+    posts: number;
+    followers: number;
+    following: number;
+  };
+}
+
+const UserCard = ({ user }: { user?: UserWithCount }) => {
+  if (!user) return null;
   return (
     <div className="">
       <div className="relative h-52 w-full">
         <Image
-          src="https://i.pinimg.com/564x/3f/a1/b7/3fa1b77f4a0983961c42bf32f189b450.jpg"
+          src={user.profileBg || "/noProfileBg.jpg"}
           alt="bg"
           fill
           className="rounded-lg object-cover"
         />
         <Image
-          src="https://i.pinimg.com/564x/97/bb/06/97bb067e30ff6b89f4fbb7b9141025ca.jpg"
+          src={user.avatar || "/noAvatar.jpg"}
           width={128}
           height={128}
           className="rounded-full absolute left-0 right-0 m-auto -bottom-16 w-32 h-32 outline outline-4 outline-white"
@@ -20,18 +30,22 @@ const UserCard = () => {
       </div>
 
       <div className="text-center mt-20 pb-14">
-        <h1 className="font-bold text-2xl">Timur Galiakbarov</h1>
-        <div className="flex items-center justify-center gap-14 mt-3">
+        <h1 className="font-bold text-2xl">
+          {user.firstname || user.lastname
+            ? `${user.firstname} ${user.lastname}`
+            : user.nickname}
+        </h1>
+        <div className="grid grid-cols-3 max-w-96 mx-auto  items-center justify-center gap-14 mt-3">
           <div className="text-center text-xs">
-            <span className="text-gray text-sm">123</span>
+            <span className="text-gray text-sm">{user._count.posts}</span>
             <h6 className="text-black/80 font-bold">Posts</h6>
           </div>
           <div className="text-center text-xs">
-            <span className="text-gray text-sm">1.2K</span>
+            <span className="text-gray text-sm">{user._count.followers}</span>
             <h6 className="text-black/80 font-bold">Followers</h6>
           </div>
           <div className="text-center text-xs">
-            <span className="text-gray text-sm">1.3K</span>
+            <span className="text-gray text-sm">{user._count.following}</span>
             <h6 className="text-black/80 font-bold">Following</h6>
           </div>
         </div>

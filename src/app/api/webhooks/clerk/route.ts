@@ -1,7 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { prisma } from "@/lib/client";
+import {prisma} from "@/lib/client";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
           id: evt.data.id,
           nickname: JSON.parse(body).data.username,
           avatar: JSON.parse(body).data.image_url || "/noAvatar.png",
-          profileBg: "/noCover.png",
+          profileBg: "/noProfileBg.jpg",
           firstname:
             JSON.parse(body).data.given_name || JSON.parse(body).data.username,
           lastname: JSON.parse(body).data.family_name || "",

@@ -1,13 +1,23 @@
 import { PrismaClient } from "@prisma/client";
 
-const prismaClientSingleton = () => {
-  return new PrismaClient();
-};
+// Используем глобальную переменную, чтобы избежать пересоздания клиента в development mode
+let prisma: PrismaClient;
 
-declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
-} & typeof global;
+// @ts-ignore
+if (typeof globalThis.prisma === "undefined") {
+  prisma = new PrismaClient();
 
-export const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
+  if (process.env.NODE_ENV !== "production") {
+    // В режиме разработки присваиваем клиент к глобальной переменной
+    // @ts-ignore
 
-if (process.env.NODE_ENV !== "production") globalThis.prismaGlobal = prisma;
+    globalThis.prisma = prisma;
+  }
+} else {
+  // В режиме разработки повторно используем уже созданный клиент
+  // @ts-ignore
+
+  prisma = globalThis.prisma;
+}
+
+export { prisma };
