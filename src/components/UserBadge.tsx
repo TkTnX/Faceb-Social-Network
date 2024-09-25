@@ -25,7 +25,7 @@ const UserBadge = () => {
         <p className="text-xs text-gray">123 followers</p>
         <Link
           className="text-main bg-main/10 max-w-max px-2 py-1 rounded-md mx-auto mt-3 hover:text-white hover:bg-main duration-100"  
-          href="/user/1"
+          href="/profile/1"
         >
           My profile
         </Link>
