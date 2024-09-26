@@ -1,5 +1,6 @@
 import { MoreHorizontal } from "lucide-react";
 import Story from "./Story";
+import { Story as StoryType } from "@prisma/client";
 
 const Stories = () => {
   return (
@@ -10,7 +11,7 @@ const Stories = () => {
           <MoreHorizontal />
         </button>
       </div>
-      <div className="flex items-center gap-2 w-full overflow-x-auto scroll-hidden mt-4">
+      <div className="flex items-center gap-2 w-full overflow-x-auto  mt-4 scrollbar">
         <Story />
         <Story />
         <Story />

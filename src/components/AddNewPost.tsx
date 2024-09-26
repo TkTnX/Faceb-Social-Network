@@ -1,19 +1,20 @@
+import { User } from "@prisma/client";
 import { Calendar, ImageIcon, PenToolIcon, VideoIcon } from "lucide-react";
 import Image from "next/image";
 
-const AddNewPost = () => {
+const AddNewPost = ({user}: {user?: User}) => {
   return (
     <div className="w-full bg-white rounded-lg overflow-hidden p-4">
       <div className="flex items-start gap-3 pb-3">
         <Image
-          src="https://i.pinimg.com/564x/67/dd/33/67dd333696cf3b13702f83e97e16167d.jpg"
+          src={user?.avatar || "/noAvatar.jpg"}
           width={40}
           height={40}
-          alt="avatar"
+          alt={user?.nickname || "no avatar"}
           className="rounded-full h-10"
         />
         <textarea
-          placeholder="What's on you mind, -name-?"
+          placeholder={`What's on you mind, ${user?.nickname}?`}
           className="w-full bg-gray/5 rounded-lg p-2  outline-none min-h-[55px] max-h-48 overflow-hidden"
         />
       </div>

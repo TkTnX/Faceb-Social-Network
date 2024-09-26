@@ -1,6 +1,8 @@
+import { FollowRequest } from "@prisma/client";
 import { FriendRequestItem } from "..";
 
-const FriendRequests = () => {
+const FriendRequests = ({ followRequests }: { followRequests: FollowRequest[] }) => {
+  if (!followRequests || followRequests.length === 0) return null;
   return (
     <div className="">
       <div className="flex items-center justify-between">
@@ -8,7 +10,7 @@ const FriendRequests = () => {
         <button className="text-main">See all</button>
       </div>
       <div className="bg-white rounded-lg border border-[#F1F2F6] p-3 mt-4">
-        <FriendRequestItem  />
+        <FriendRequestItem />
         <FriendRequestItem />
         <FriendRequestItem />
         <FriendRequestItem />

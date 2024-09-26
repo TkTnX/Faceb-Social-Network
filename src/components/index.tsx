@@ -19,6 +19,7 @@ import RightSide from "./RightSide";
 import Feed from "./Feed";
 import UserCard from "./UserCard";
 import UserInformationBlock from "./UserInformationBlock";
+import Birthdays from "./LeftSide/Birthdays";
 export {
   Header,
   MobileMenu,
@@ -41,4 +42,5 @@ export {
   Feed,
   UserCard,
   UserInformationBlock,
+  Birthdays
 };

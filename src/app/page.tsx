@@ -25,9 +25,9 @@ const Homepage = async () => {
       {/* LEFT */}
       <LeftSide type="home" user={user} />
       {/* CENTER */}
-      <CenterSide type="home" />
+      <CenterSide type="home" user={user} />
       {/* RIGHT */}
-      <RightSide type="home" />
+      <RightSide />
     </div>
   );
 };

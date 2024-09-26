@@ -1,18 +1,19 @@
-import { Follower, User } from "@prisma/client";
-import { FriendRequests, UserBadge } from "..";
+import { FollowRequest, User } from "@prisma/client";
+import { Birthdays, FriendRequests, UserBadge } from "..";
 
 const LeftSide = ({
   user,
   type,
 }: {
-  user: User & { _count: { followers: number } };
+  user: User & { _count: { followers: number }; followRequestsReceived?: FollowRequest[] };
   type: "home" | "profile";
-}) => {
+  }) => {
   return (
     <div className="hidden lg:block lg:w-[25%]">
       {user && type !== "profile" && <UserBadge user={user} />}
 
-      <FriendRequests />
+      {user.followRequestsReceived && <FriendRequests followRequests={user.followRequestsReceived} />}
+      <Birthdays />
     </div>
   );
 };
