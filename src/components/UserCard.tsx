@@ -4,8 +4,8 @@ import Image from "next/image";
 export interface UserWithCount extends User {
   _count: {
     posts: number;
-    followers: number;
-    following: number;
+    followRequestsReceived: number;
+    followRequestsSent: number;
   };
 }
 
@@ -38,14 +38,22 @@ const UserCard = ({ user }: { user?: UserWithCount }) => {
         <div className="grid grid-cols-3 max-w-96 mx-auto  items-center justify-center gap-14 mt-3">
           <div className="text-center text-xs">
             <span className="text-gray text-sm">{user._count.posts}</span>
-            <h6 className="text-black/80 font-bold">Posts</h6>
+            <h6 className="text-black/80 font-bold">{user._count.posts === 1 ? "Post" : "Posts"}</h6>
           </div>
           <div className="text-center text-xs">
-            <span className="text-gray text-sm">{user._count.followers}</span>
-            <h6 className="text-black/80 font-bold">Followers</h6>
+            <span className="text-gray text-sm">
+              {user._count.followRequestsReceived}
+            </span>
+            <h6 className="text-black/80 font-bold">
+              {user._count.followRequestsReceived === 1
+                ? "Follower"
+                : "Followers"}
+            </h6>
           </div>
           <div className="text-center text-xs">
-            <span className="text-gray text-sm">{user._count.following}</span>
+            <span className="text-gray text-sm">
+              {user._count.followRequestsSent}
+            </span>
             <h6 className="text-black/80 font-bold">Following</h6>
           </div>
         </div>

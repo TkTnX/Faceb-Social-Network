@@ -1,8 +1,9 @@
 import { User } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import { UserWithCount } from "../UserCard";
 
-const UserBadge = ({ user }: { user: User & { _count: { followers: number } } }) => {
+const UserBadge = ({ user }: { user: UserWithCount }) => {
   return (
     <div className="bg-white rounded-lg border border-[#F1F2F6] p-3 mb-9">
       <div className="relative h-20 w-full">
@@ -23,7 +24,7 @@ const UserBadge = ({ user }: { user: User & { _count: { followers: number } } })
           className="rounded-full h-10 justify-self-center"
         />
         <h6 className="text-sm font-medium text-[#203758]">{user.firstname || user.lastname ? `${user.firstname} ${user.lastname}` : user.nickname}</h6>
-        <p className="text-xs text-gray">{user._count.followers} followers</p>
+        <p className="text-xs text-gray">{user._count.followRequestsReceived} {user._count.followRequestsReceived === 1 ? "follower" : "followers"}</p>
         <Link
           className="text-main bg-main/10 max-w-max px-2 py-1 rounded-md mx-auto mt-3 hover:text-white hover:bg-main duration-100"
           href={`/profile/${user.nickname}`}

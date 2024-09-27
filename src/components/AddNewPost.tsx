@@ -14,7 +14,7 @@ const AddNewPost = ({user}: {user?: User}) => {
           className="rounded-full h-10"
         />
         <textarea
-          placeholder={`What's on you mind, ${user?.nickname}?`}
+          placeholder={`What's on you mind, ${user?.firstname || user?.nickname}?`}
           className="w-full bg-gray/5 rounded-lg p-2  outline-none min-h-[55px] max-h-48 overflow-hidden"
         />
       </div>

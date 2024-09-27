@@ -12,9 +12,9 @@ const Homepage = async () => {
     include: {
       _count: {
         select: {
-          followers: true,
+          followRequestsReceived: true,
           posts: true,
-          following: true,
+          followRequestsSent: true,
         }
       },
     }

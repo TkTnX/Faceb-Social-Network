@@ -10,13 +10,16 @@ const Birthdays = () => {
       </div>
       <div className="bg-white rounded-lg border border-[#F1F2F6] p-3 mt-4">
         <div className="flex items-center gap-1 justify-between last:border-0 border-b border-[#F1F2F6] py-3 first:pt-0">
-          <Link className="flex items-center gap-1 group" href="/profile/1">
+          <Link
+            className="flex items-start flex-col gap-1 group"
+            href="/profile/1"
+          >
             <Image
               src="https://i.pinimg.com/564x/67/dd/33/67dd333696cf3b13702f83e97e16167d.jpg"
-              width={34}
-              height={34}
+              width={25}
+              height={25}
               alt="avatar"
-              className="rounded-full min-h-[34px] min-w[34px] h-[34px] w-[34px]"
+              className="rounded-full min-h-[25px] min-w[25px] h-[25px] w-[25px]"
             />
             <span className="text-gray text-xs group-hover:text-main">
               Thomas Ben

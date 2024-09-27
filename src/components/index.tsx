@@ -10,8 +10,6 @@ import Story from "./Story";
 import WhoFollow from "./WhoFollow";
 import WhoFollowItem from "./WhoFollowItem";
 import UserBadge from "./LeftSide/UserBadge";
-import FriendRequestItem from "./FriendRequestItem";
-import FriendRequests from "./LeftSide/FriendRequests";
 import Sidebar from "./Sidebar";
 import LeftSide from "./LeftSide/LeftSide";
 import CenterSide from "./CenterSide";
@@ -20,6 +18,8 @@ import Feed from "./Feed";
 import UserCard from "./UserCard";
 import UserInformationBlock from "./UserInformationBlock";
 import Birthdays from "./LeftSide/Birthdays";
+import UserInformationBlcokInteractive from "./UserInformationBlcokInteractive";
+import UserMedia from "./LeftSide/UserMedia";
 export {
   Header,
   MobileMenu,
@@ -33,8 +33,6 @@ export {
   WhoFollow,
   WhoFollowItem,
   UserBadge,
-  FriendRequestItem,
-  FriendRequests,
   Sidebar,
   LeftSide,
   CenterSide,
@@ -42,5 +40,7 @@ export {
   Feed,
   UserCard,
   UserInformationBlock,
-  Birthdays
+  Birthdays,
+  UserInformationBlcokInteractive,
+  UserMedia,
 };

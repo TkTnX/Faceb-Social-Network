@@ -12,6 +12,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import Link from "next/link";
+import { UserInformationBlcokInteractive } from ".";
 
 const UserInformation = async ({ userId }: { userId: string }) => {
   const user = await prisma.user.findFirst({
@@ -27,23 +28,35 @@ const UserInformation = async ({ userId }: { userId: string }) => {
   if (!user) return null;
   const formattedDate = await formatDate(user.createdAt);
   const { userId: currentUserId } = auth();
- 
 
-
-  let isFollowed = false;
-  let isBlocked = false;
-  let isFollowing = false;
+  let isFollowed;
+  let isBlocked;
+  let isFollowing;
 
   if (currentUserId) {
-    isFollowed = user.followers.some(
-      (follower) => String(follower.id) === currentUserId
-    );
-    isBlocked = user.blocked.some(
-      (blocked) => String(blocked.id) === currentUserId
-    );
-    isFollowing = user.following.some(
-      (following) => String(following.id) === currentUserId
-    );
+    // FIND IS FOLLOWED
+    isFollowed = await prisma.follower.findFirst({
+      where: {
+        followerId: currentUserId,
+        followingId: user.id,
+      },
+    });
+
+    // FIND IS FOLLOWING
+    isFollowing = await prisma.followRequest.findFirst({
+      where: {
+        receiverId: user.id,
+        senderId: currentUserId,
+      },
+    });
+
+    // FIND IS BLOCKED
+    isBlocked = await prisma.block.findFirst({
+      where: {
+        blockerId: currentUserId,
+        blockedId: user.id,
+      },
+    });
   }
 
   return (
@@ -116,12 +129,12 @@ const UserInformation = async ({ userId }: { userId: string }) => {
         </div>
         {currentUserId !== user.id && (
           <>
-            <button className="text-main bg-main/20 w-full mt-2 py-3 rounded-lg hover:bg-main hover:text-white duration-100">
-              {isFollowed ? "Unfollow" : isFollowing ? "Following..." : "Follow"}
-            </button>
-            <button className="text-red-400 text-right w-full mt-2 text-xs">
-              {isBlocked ? "Unblock user" : "Block user"}
-            </button>
+            <UserInformationBlcokInteractive
+              isFollowed={isFollowed ? true : false}
+              isFollowing={isFollowing ? true : false}
+              isBlocked={isBlocked ? true : false}
+              userId={user.id}
+            />
           </>
         )}
       </div>

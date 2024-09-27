@@ -1,6 +1,6 @@
 import { CenterSide, LeftSide, RightSide } from "@/components";
 import { prisma } from "@/lib/client";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 const ProfilePage = async ({ params }: { params: { nickname: string } }) => {
   const { nickname } = params;
@@ -12,16 +12,16 @@ const ProfilePage = async ({ params }: { params: { nickname: string } }) => {
     include: {
       _count: {
         select: {
-          followers: true,
+          followRequestsReceived: true,
           posts: true,
-          following: true,
+          followRequestsSent: true,
         },
       },
-      followRequestsReceived: true,
     },
   });
 
-  if (!user) return redirect("/");
+
+  if (!user) return notFound();
 
   return (
     <div className="flex items-start gap-3 lg:gap-7 justify-between max-w-[1317px] px-4 mx-auto">
