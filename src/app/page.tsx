@@ -34,7 +34,7 @@ const Homepage = async () => {
       {/* CENTER */}
       <CenterSide type="home" user={user} />
       {/* RIGHT */}
-      <RightSide />
+      <RightSide currentUser={currentUserId} />
     </div>
   );
 };

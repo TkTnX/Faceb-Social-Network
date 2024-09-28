@@ -56,7 +56,6 @@ const UserInformationBlcokInteractive: React.FC<Props> = ({
       value === "follow"
         ? {
             ...state,
-            isFollowing: state.isFollowing && false,
             isFollowed: !state.isFollowing && !state.isFollowed ? true : false,
           }
         : {
@@ -68,11 +67,7 @@ const UserInformationBlcokInteractive: React.FC<Props> = ({
     <>
       <form action={follow}>
         <button className="text-main bg-main/20 w-full mt-2 py-3 rounded-lg hover:bg-main hover:text-white duration-100">
-          {followStatus.isFollowing
-            ? "Following"
-            : followStatus.isFollowed
-            ? "Requested"
-            : "Follow"}
+          {followStatus.isFollowed ? "Following" : "Follow"}
         </button>
       </form>
       <form className="max-w-max ml-auto" action={block}>

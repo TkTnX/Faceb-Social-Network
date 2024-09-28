@@ -1,36 +1,32 @@
-import { acceptFollowRequest, declineFollowRequest } from "@/lib/actions";
-import { User } from "@prisma/client";
-import { Check, X } from "lucide-react";
+import { declineFollowRequest } from "@/lib/actions";
+import { Follower, User } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { WhoFollowType } from "./WhoFollowList";
 
+type FollowersType = Follower & {
+  follower: User;
+};
+
 const WhoFollowItem = ({
-  sender,
+  followers,
   setFollowRequests,
+  switchOptimisticFollowRequests,
 }: {
-  sender: User;
+  followers: FollowersType;
   setFollowRequests: (
     requests: (arr: WhoFollowType[]) => WhoFollowType[]
   ) => void;
+  switchOptimisticFollowRequests: (id: string) => void;
 }) => {
-  const accept = async () => {
-    try {
-      await acceptFollowRequest(sender.id);
-
-      setFollowRequests((prev) =>
-        prev.filter((request) => request.sender.id !== sender.id)
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const decline = async () => {
+    switchOptimisticFollowRequests(followers.followerId);
+
     try {
-      await declineFollowRequest(sender.id);
+      await declineFollowRequest(followers.followerId);
 
       setFollowRequests((prev) =>
-        prev.filter((request) => request.sender.id !== sender.id)
+        prev.filter((request) => request.followerId !== followers.followerId)
       );
     } catch (error) {
       console.log(error);
@@ -39,29 +35,24 @@ const WhoFollowItem = ({
 
   return (
     <div className="flex items-center justify-between last:border-0 border-b border-[#F1F2F6] py-3 first:pt-0">
-      <Link className="flex items-center gap-4 group" href="/user/1">
+      <Link className="flex items-center gap-4 group" href={`/profile/${followers.follower.nickname}`}>
         <Image
-          src={sender.avatar || "/noAvatar.jpg"}
+          src={followers.follower.avatar || "/noAvatar.jpg"}
           width={34}
           height={34}
-          alt={sender.nickname}
+          alt={followers.follower.nickname}
           className="rounded-full h-[34px] w-[34px]"
         />
         <span className="text-gray text-xs group-hover:text-main">
-          {sender.firstname || sender.lastname
-            ? `${sender.firstname} ${sender.lastname}`
-            : sender.nickname}
+          {followers.follower.firstname || followers.follower.lastname
+            ? `${followers.follower.firstname} ${followers.follower.lastname}`
+            : followers.follower.nickname}
         </span>
       </Link>
       <div className="flex items-center gap-2">
-        <form action={accept}>
-          <button className="text-main text-xs py-1 px-2 bg-[#F0F7FF] rounded-md hover:text-white hover:bg-main duration-100">
-            <Check />
-          </button>
-        </form>
         <form action={decline}>
           <button className="text-main text-xs py-1 px-2 bg-[#F0F7FF] rounded-md hover:text-white hover:bg-main duration-100">
-            <X />
+            Decline
           </button>
         </form>
       </div>

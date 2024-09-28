@@ -33,8 +33,6 @@ model User {
   followers Follower[] @relation("Follower")
   following Follower[] @relation("Following")
 
-  followRequestsSent     FollowRequest[] @relation("sender")
-  followRequestsReceived FollowRequest[] @relation("receiver")
 
   blocked Block[] @relation("blocked")
 
@@ -93,17 +91,7 @@ model Follower {
   createdAt DateTime @default(now())
 }
 
-model FollowRequest {
-  id Int @id @default(autoincrement())
 
-  sender   User   @relation("sender", fields: [senderId], references: [id], onDelete: Cascade)
-  senderId String
-
-  receiver   User   @relation("receiver", fields: [receiverId], references: [id], onDelete: Cascade)
-  receiverId String
-
-  @@unique([senderId, receiverId])
-}
 
 model Block {
   id Int @id @default(autoincrement())

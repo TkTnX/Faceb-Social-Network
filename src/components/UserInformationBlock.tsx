@@ -43,12 +43,7 @@ const UserInformation = async ({ userId }: { userId: string }) => {
     });
 
     // FIND IS FOLLOWING
-    isFollowing = await prisma.followRequest.findFirst({
-      where: {
-        receiverId: user.id,
-        senderId: currentUserId,
-      },
-    });
+
 
     // FIND IS BLOCKED
     isBlocked = await prisma.block.findFirst({
@@ -71,7 +66,7 @@ const UserInformation = async ({ userId }: { userId: string }) => {
       <div className=" rounded-lg bg-white border border-[#F1F2F6] py-4 px-6 mt-2">
         <div className="flex items-center text-sm gap-2">
           <h4 className="text-xl font-medium">
-            {user.firstname && user.lastname
+            {user.firstname || user.lastname
               ? `${user.firstname} ${user.lastname}`
               : user.nickname}
           </h4>

@@ -11,10 +11,8 @@ export interface UserWithCount extends User {
 
 const UserCard = ({
   user,
-  userFollowers,
 }: {
   user?: UserWithCount;
-  userFollowers?: Follower[];
 }) => {
   if (!user) return null;
   return (
@@ -49,15 +47,13 @@ const UserCard = ({
             </h6>
           </div>
           <div className="text-center text-xs">
-            <span className="text-gray text-sm">
-              {userFollowers?.length === 0 ? 0 : userFollowers?.length}
-            </span>
+            <span className="text-gray text-sm">{user._count.following}</span>
             <h6 className="text-black/80 font-bold">
-              {userFollowers?.length === 1 ? "Follower" : "Followers"}
+              {user._count.following === 1 ? "Follower" : "Followers"}
             </h6>
           </div>
           <div className="text-center text-xs">
-            <span className="text-gray text-sm">{user._count.following}</span>
+            <span className="text-gray text-sm">{user._count.followers}</span>
             <h6 className="text-black/80 font-bold">Following</h6>
           </div>
         </div>
