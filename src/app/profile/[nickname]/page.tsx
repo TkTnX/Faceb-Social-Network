@@ -12,23 +12,29 @@ const ProfilePage = async ({ params }: { params: { nickname: string } }) => {
     include: {
       _count: {
         select: {
-          followRequestsReceived: true,
           posts: true,
-          followRequestsSent: true,
+          followers: true,
+          following: true,
         },
       },
     },
   });
-
+  
 
   if (!user) return notFound();
+
+  const userFollowers = await prisma.follower.findMany({
+    where: {
+      followingId: user.id,
+    },
+  });
 
   return (
     <div className="flex items-start gap-3 lg:gap-7 justify-between max-w-[1317px] px-4 mx-auto">
       {/* LEFT */}
       <LeftSide type="profile" user={user} />
       {/* CENTER */}
-      <CenterSide type="profile" user={user} />
+      <CenterSide type="profile" user={user} userFollowers={userFollowers} />
       {/* RIGHT */}
       <RightSide user={user} />
     </div>

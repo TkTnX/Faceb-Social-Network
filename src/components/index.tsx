@@ -20,6 +20,7 @@ import UserInformationBlock from "./UserInformationBlock";
 import Birthdays from "./LeftSide/Birthdays";
 import UserInformationBlcokInteractive from "./UserInformationBlcokInteractive";
 import UserMedia from "./LeftSide/UserMedia";
+import WhoFollowList from "./WhoFollowList";
 export {
   Header,
   MobileMenu,
@@ -43,4 +44,5 @@ export {
   Birthdays,
   UserInformationBlcokInteractive,
   UserMedia,
+  WhoFollowList,
 };

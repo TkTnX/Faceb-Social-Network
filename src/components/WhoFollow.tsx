@@ -1,7 +1,23 @@
+"use server";
 import { MoreHorizontal } from "lucide-react";
-import { WhoFollowItem } from ".";
+import { WhoFollowList } from ".";
+import { prisma } from "@/lib/client";
+import { auth } from "@clerk/nextjs/server";
 
-const WhoFollow = () => {
+const WhoFollow = async () => {
+  const { userId } = auth();
+  if (!userId) return null;
+  const followRequests = await prisma.followRequest.findMany({
+    where: {
+      receiverId: userId,
+    },
+    include: {
+      sender: true,
+    },
+  });
+
+  if (!followRequests || followRequests.length === 0) return null;
+
   return (
     <div className="mt-8">
       <div className="flex items-center justify-between">
@@ -10,14 +26,7 @@ const WhoFollow = () => {
           <MoreHorizontal />
         </button>
       </div>
-      <div className="mt-4 rounded-lg bg-white border border-[#F1F2F6] py-4 px-6">
-        <WhoFollowItem />
-        <WhoFollowItem />
-        <WhoFollowItem />
-        <WhoFollowItem />
-        <WhoFollowItem />
-        <WhoFollowItem />
-      </div>
+      <WhoFollowList requests={followRequests} />
     </div>
   );
 };
