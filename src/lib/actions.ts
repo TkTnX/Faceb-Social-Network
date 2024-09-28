@@ -7,6 +7,7 @@ export async function switchFollow(userId: string) {
   const { userId: currentUser } = auth();
   if (!currentUser) return new Error("You are not authenticated");
   try {
+    // Проверка, подписан ли пользователь
     const isAlreadyFollower = await prisma.follower.findFirst({
       where: {
         followerId: currentUser,
@@ -14,8 +15,7 @@ export async function switchFollow(userId: string) {
       },
     });
 
-
-
+    // Если да - удаляем
     if (isAlreadyFollower) {
       await prisma.follower.delete({
         where: {

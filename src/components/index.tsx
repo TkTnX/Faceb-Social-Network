@@ -21,6 +21,8 @@ import Birthdays from "./LeftSide/Birthdays";
 import UserInformationBlcokInteractive from "./UserInformationBlcokInteractive";
 import UserMedia from "./LeftSide/UserMedia";
 import WhoFollowList from "./WhoFollowList";
+import EditProfile from "./modals/EditProfile";
+import EditProfileInput from "./EditProfileInput";
 export {
   Header,
   MobileMenu,
@@ -45,4 +47,6 @@ export {
   UserInformationBlcokInteractive,
   UserMedia,
   WhoFollowList,
+  EditProfile,
+  EditProfileInput
 };

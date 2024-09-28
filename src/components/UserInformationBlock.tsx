@@ -13,8 +13,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { UserInformationBlcokInteractive } from ".";
+import EditProfile from "./modals/EditProfile";
 
 const UserInformation = async ({ userId }: { userId: string }) => {
+  const { userId: currentUserId } = auth();
+
   const user = await prisma.user.findFirst({
     where: {
       id: String(userId),
@@ -27,7 +30,6 @@ const UserInformation = async ({ userId }: { userId: string }) => {
   });
   if (!user) return null;
   const formattedDate = await formatDate(user.createdAt);
-  const { userId: currentUserId } = auth();
 
   let isFollowed;
   let isBlocked;
@@ -59,9 +61,13 @@ const UserInformation = async ({ userId }: { userId: string }) => {
       {/* TOP */}
       <div className="flex items-center justify-between">
         <h4 className="text-[#203758] text-lg font-medium">User Information</h4>
-        <button>
-          <MoreHorizontal />
-        </button>
+        {currentUserId === user.id && (
+          <EditProfile>
+            <button>
+              <MoreHorizontal />
+            </button>
+          </EditProfile>
+        )}
       </div>
       <div className=" rounded-lg bg-white border border-[#F1F2F6] py-4 px-6 mt-2">
         <div className="flex items-center text-sm gap-2">
