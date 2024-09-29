@@ -1,3 +1,4 @@
+"use client";
 import { EditProfileInput } from "@/components";
 import {
   Dialog,
@@ -6,25 +7,45 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { Input } from "../ui/input";
 import Image from "next/image";
+import { updateProfileInformation } from "@/lib/actions";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface Props {
   children: React.ReactNode;
 }
 
 const EditProfile: React.FC<Props> = ({ children }) => {
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const update = async (formData: FormData) => {
+    try {
+      const newUser = await updateProfileInformation(formData);
+      setOpen(false);
+      router.refresh();
+      return newUser;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogTitle>Profile Edit Menu</DialogTitle>
         <DialogDescription>
           You can change avatar and nickname in the navbar profile
         </DialogDescription>
-        <form action="" className="grid grid-cols-2 justify-between gap-2">
+        <form
+          action={update}
+          className="grid grid-cols-2 justify-between gap-2"
+        >
           <button type="button">
-            <label className="text-xs text-gray block max-w-max">Cover Picture</label>
+            <label className="text-xs text-gray block max-w-max">
+              Cover Picture
+            </label>
             <div className="flex items-end gap-2">
               <Image
                 src="/noCover.png"
@@ -63,7 +84,7 @@ const EditProfile: React.FC<Props> = ({ children }) => {
             name="website"
             placeholder="https://example.com"
           />
-          <button className="bg-main text-white rounded-lg p-2 col-span-2 hover:opacity-80 duration-150 mt-2">
+          <button className="bg-main text-white rounded-lg p-2 col-span-2 hover:opacity-80 duration-150 mt-2 disabled:opactity-80 disabled:pointer-events-none disabled:bg-gray ">
             Update Profile
           </button>
         </form>

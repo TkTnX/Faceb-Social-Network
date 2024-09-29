@@ -4,19 +4,16 @@ import { useOptimistic, useState } from "react";
 
 interface Props {
   userId: string;
-  isFollowing: boolean;
   isFollowed: boolean;
   isBlocked: boolean;
 }
 
 const UserInformationBlcokInteractive: React.FC<Props> = ({
   userId,
-  isFollowing,
   isFollowed,
   isBlocked,
 }) => {
   const [userStatus, setUserStatus] = useState({
-    isFollowing,
     isFollowed,
     isBlocked,
   });
@@ -27,9 +24,8 @@ const UserInformationBlcokInteractive: React.FC<Props> = ({
 
       setUserStatus({
         ...userStatus,
-        isFollowing: userStatus.isFollowing && false,
         isFollowed:
-          !userStatus.isFollowing && !userStatus.isFollowed ? true : false,
+          !userStatus.isFollowed ? true : false,
       });
     } catch (error) {
       console.log(error);
@@ -56,7 +52,7 @@ const UserInformationBlcokInteractive: React.FC<Props> = ({
       value === "follow"
         ? {
             ...state,
-            isFollowed: !state.isFollowing && !state.isFollowed ? true : false,
+            isFollowed: !state.isFollowed ? true : false,
           }
         : {
             ...state,

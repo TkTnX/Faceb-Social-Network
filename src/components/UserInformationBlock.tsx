@@ -33,7 +33,6 @@ const UserInformation = async ({ userId }: { userId: string }) => {
 
   let isFollowed;
   let isBlocked;
-  let isFollowing;
 
   if (currentUserId) {
     // FIND IS FOLLOWED
@@ -43,9 +42,6 @@ const UserInformation = async ({ userId }: { userId: string }) => {
         followingId: user.id,
       },
     });
-
-    // FIND IS FOLLOWING
-
 
     // FIND IS BLOCKED
     isBlocked = await prisma.block.findFirst({
@@ -132,7 +128,6 @@ const UserInformation = async ({ userId }: { userId: string }) => {
           <>
             <UserInformationBlcokInteractive
               isFollowed={isFollowed ? true : false}
-              isFollowing={isFollowing ? true : false}
               isBlocked={isBlocked ? true : false}
               userId={user.id}
             />
