@@ -100,7 +100,10 @@ export async function declineFollowRequest(userId: string) {
   }
 }
 
-export async function updateProfileInformation(formData: FormData) {
+export async function updateProfileInformation(
+  formData: FormData,
+  profileBg?: string
+) {
   const { userId: currentUser } = auth();
   if (!currentUser) return new Error("You are not authenticated");
   const fields = Object.fromEntries(formData);
@@ -117,9 +120,10 @@ export async function updateProfileInformation(formData: FormData) {
     school: z.string().optional(),
     work: z.string().optional(),
     website: z.string().optional(),
+    profileBg: z.string().optional(),
   });
 
-  const validatedFields = Profile.safeParse(filteredFields);
+  const validatedFields = Profile.safeParse({ ...filteredFields, profileBg });
 
   if (!validatedFields.success) {
     console.log(validatedFields.error.flatten().fieldErrors);

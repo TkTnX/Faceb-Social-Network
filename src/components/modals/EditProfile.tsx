@@ -11,20 +11,24 @@ import Image from "next/image";
 import { updateProfileInformation } from "@/lib/actions";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { CldUploadWidget } from "next-cloudinary";
+import { User } from "@prisma/client";
+import UpdateButton from "../RightSide/UpdateButton";
 
 interface Props {
   children: React.ReactNode;
+  user: User
 }
 
-const EditProfile: React.FC<Props> = ({ children }) => {
+const EditProfile: React.FC<Props> = ({ children, user }) => {
   const [open, setOpen] = useState(false);
+  const [profileBg, setProfileBg] = useState<any>(user.profileBg);
   const router = useRouter();
   const update = async (formData: FormData) => {
     try {
-      const newUser = await updateProfileInformation(formData);
+      await updateProfileInformation(formData, profileBg);
       setOpen(false);
       router.refresh();
-      return newUser;
     } catch (error) {
       console.log(error);
     }
@@ -42,51 +46,61 @@ const EditProfile: React.FC<Props> = ({ children }) => {
           action={update}
           className="grid grid-cols-2 justify-between gap-2"
         >
-          <button type="button">
-            <label className="text-xs text-gray block max-w-max">
-              Cover Picture
-            </label>
-            <div className="flex items-end gap-2">
-              <Image
-                src="/noCover.png"
-                alt="cover"
-                width={48}
-                height={32}
-                className="object-cover"
-              />
-              <span className="text-sm text-gray underline">Change</span>
-            </div>
-          </button>
+          <CldUploadWidget
+            uploadPreset="social"
+            onSuccess={(res: any) =>
+              setProfileBg(res.info && res.info.secure_url)
+            }
+          >
+            {({ open }) => {
+              return (
+                <button onClick={() => open()} type="button">
+                  <label className="text-xs text-gray block max-w-max">
+                    Cover Picture
+                  </label>
+                  <div className="flex items-end gap-2">
+                    <Image
+                      src={user.profileBg || "/noProfileBg.jpg"}
+                      alt="cover"
+                      width={48}
+                      height={32}
+                      className="object-cover"
+                    />
+                    <span className="text-sm text-gray underline">Change</span>
+                  </div>
+                </button>
+              );
+            }}
+          </CldUploadWidget>
+
           <EditProfileInput
             label="First Name"
             name="firstname"
-            placeholder="John"
+            placeholder={user.firstname || "John"}
           />
           <EditProfileInput
             label="Last Name"
             name="lastname"
-            placeholder="Doe"
+            placeholder={user.lastname || "Doe"}
           />
           <EditProfileInput
             label="Description"
             name="description"
-            placeholder="Hello world!"
+            placeholder={user.description || "Hello world!"}
           />
           <EditProfileInput label="City" name="city" placeholder="New York" />
           <EditProfileInput
             label="School"
             name="school"
-            placeholder="Harvard"
+            placeholder={user.school || "Harvard"}
           />
           <EditProfileInput label="Work" name="work" placeholder="Apple Inc." />
           <EditProfileInput
             label="Website"
             name="website"
-            placeholder="https://example.com"
+            placeholder={user.website || "https://example.com"}
           />
-          <button className="bg-main text-white rounded-lg p-2 col-span-2 hover:opacity-80 duration-150 mt-2 disabled:opactity-80 disabled:pointer-events-none disabled:bg-gray ">
-            Update Profile
-          </button>
+         <UpdateButton />
         </form>
       </DialogContent>
     </Dialog>

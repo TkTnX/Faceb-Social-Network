@@ -56,7 +56,7 @@ const UserInformation = async ({ userId }: { userId: string }) => {
       <div className="flex items-center justify-between">
         <h4 className="text-[#203758] text-lg font-medium">User Information</h4>
         {currentUserId === user.id && (
-          <EditProfile>
+          <EditProfile user={user}>
             <button>
               <MoreHorizontal />
             </button>
@@ -119,7 +119,7 @@ const UserInformation = async ({ userId }: { userId: string }) => {
           )}
           <div className="text-xs text-gray flex items-center gap-1">
             <Calendar size={12} />
-            <div >Joined {formattedDate}</div>
+            <div>Joined {formattedDate}</div>
           </div>
         </div>
         {currentUserId !== user.id && (
