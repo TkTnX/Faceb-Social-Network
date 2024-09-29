@@ -12,9 +12,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import Link from "next/link";
-import { UserInformationBlcokInteractive } from ".";
-import EditProfile from "./modals/EditProfile";
-
+import { UserInformationBlcokInteractive, EditProfile } from "@/components";
 const UserInformation = async ({ userId }: { userId: string }) => {
   const { userId: currentUserId } = auth();
 
@@ -29,7 +27,7 @@ const UserInformation = async ({ userId }: { userId: string }) => {
     },
   });
   if (!user) return null;
-  const formattedDate = await formatDate(user.createdAt);
+  const formattedDate = formatDate(new Date(user.createdAt));
 
   let isFollowed;
   let isBlocked;
@@ -121,7 +119,7 @@ const UserInformation = async ({ userId }: { userId: string }) => {
           )}
           <div className="text-xs text-gray flex items-center gap-1">
             <Calendar size={12} />
-            <span>Joined {formattedDate}</span>
+            <div >Joined {formattedDate}</div>
           </div>
         </div>
         {currentUserId !== user.id && (

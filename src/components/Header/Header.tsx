@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Navbar, UserInfo } from ".";
+import { Navbar, UserInfo } from "..";
 
 const Header = () => {
   return (

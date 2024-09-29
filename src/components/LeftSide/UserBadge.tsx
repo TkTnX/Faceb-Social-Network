@@ -1,7 +1,7 @@
-import { Follower, User } from "@prisma/client";
+import { Follower } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import { UserWithCount } from "../UserCard";
+import { UserWithCount } from "../CenterSide/UserCard";
 
 const UserBadge = ({
   user,

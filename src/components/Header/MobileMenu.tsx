@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { NavbarItem } from ".";
+import { NavbarItem } from "@/components";
 import { navbarItems } from "@/constants";
 import clsx from "clsx";
 const MobileMenu = () => {

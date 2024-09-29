@@ -1,28 +1,28 @@
-import Header from "./Header";
-import MobileMenu from "./MobileMenu";
-import Navbar from "./Navbar";
-import UserInfo from "./UserInfo";
-import NavbarItem from "./NavbarItem";
-import AddNewPost from "./AddNewPost";
-import Post from "./Post";
-import Stories from "./Stories";
-import Story from "./Story";
-import WhoFollow from "./WhoFollow";
-import WhoFollowItem from "./WhoFollowItem";
+import Header from "./Header/Header";
+import MobileMenu from "./Header/MobileMenu";
+import Navbar from "./Header/Navbar";
+import UserInfo from "./Header/UserInfo";
+import NavbarItem from "./Header/NavbarItem";
+import AddNewPost from "./CenterSide/AddNewPost";
+import Post from "./CenterSide/Post";
+import Stories from "./RightSide/Stories";
+import Story from "./RightSide/Story";
+import WhoFollow from "./RightSide/WhoFollow";
+import WhoFollowItem from "./RightSide/WhoFollowItem";
 import UserBadge from "./LeftSide/UserBadge";
 import Sidebar from "./Sidebar";
 import LeftSide from "./LeftSide/LeftSide";
-import CenterSide from "./CenterSide";
-import RightSide from "./RightSide";
-import Feed from "./Feed";
-import UserCard from "./UserCard";
-import UserInformationBlock from "./UserInformationBlock";
+import CenterSide from "./CenterSide/CenterSide";
+import RightSide from "./RightSide/RightSide";
+import Feed from "./CenterSide/Feed";
+import UserCard from "./CenterSide/UserCard";
+import UserInformationBlock from "./RightSide/UserInformationBlock";
 import Birthdays from "./LeftSide/Birthdays";
-import UserInformationBlcokInteractive from "./UserInformationBlcokInteractive";
+import UserInformationBlcokInteractive from "./RightSide/UserInformationBlcokInteractive";
 import UserMedia from "./LeftSide/UserMedia";
-import WhoFollowList from "./WhoFollowList";
+import WhoFollowList from "./RightSide/WhoFollowList";
 import EditProfile from "./modals/EditProfile";
-import EditProfileInput from "./EditProfileInput";
+import EditProfileInput from "./ui/EditProfileInput";
 export {
   Header,
   MobileMenu,
@@ -48,5 +48,5 @@ export {
   UserMedia,
   WhoFollowList,
   EditProfile,
-  EditProfileInput
+  EditProfileInput,
 };

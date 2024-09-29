@@ -1,11 +1,7 @@
-
 import { navbarItems } from "@/constants";
 import NavbarItem from "./NavbarItem";
 
-
-
 const Navbar = () => {
-
   return (
     <div className="flex items-center gap-10">
       {navbarItems.map((item, index) => (

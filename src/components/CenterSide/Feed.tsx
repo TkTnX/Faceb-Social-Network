@@ -10,6 +10,6 @@ const Feed = () => {
       <Post />
     </div>
   );
-}
+};
 
-export default Feed
+export default Feed;

@@ -1,6 +1,6 @@
 import { Follower } from "@prisma/client";
 import { Birthdays, UserBadge, UserMedia } from "..";
-import { UserWithCount } from "../UserCard";
+import { UserWithCount } from "../CenterSide/UserCard";
 
 const LeftSide = ({
   user,
@@ -13,7 +13,9 @@ const LeftSide = ({
 }) => {
   return (
     <div className="hidden lg:block lg:w-[25%]">
-      {user && type !== "profile" && <UserBadge userFollowers={userFollowers} user={user} />}
+      {user && type !== "profile" && (
+        <UserBadge userFollowers={userFollowers} user={user} />
+      )}
       {user && type === "profile" && <UserMedia userId={user.id} />}
 
       <Birthdays />

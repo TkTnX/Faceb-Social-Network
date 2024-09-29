@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
+import Header from "@/components/Header/Header";
 import Providers from "@/components/Providers";
 import { Sidebar } from "@/components";
 
@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <Providers>
-      <html lang="en">
+      <html  lang="en">
         <body className={font.className}>
           <Header />
           <Sidebar />

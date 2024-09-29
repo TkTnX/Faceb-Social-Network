@@ -8,7 +8,7 @@ import {
 } from "@clerk/nextjs";
 import { Bell, LogIn, MessageCircleMore, Search, Users } from "lucide-react";
 import Link from "next/link";
-import MobileMenu from "./MobileMenu";
+import { MobileMenu } from "@/components";
 
 const UserInfo = () => {
   return (

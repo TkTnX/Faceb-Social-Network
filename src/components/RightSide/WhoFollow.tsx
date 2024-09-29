@@ -1,5 +1,5 @@
 import { MoreHorizontal } from "lucide-react";
-import { WhoFollowList } from ".";
+import { WhoFollowList } from "..";
 import { prisma } from "@/lib/client";
 
 const WhoFollow = async ({ currentUser: userId }: { currentUser: string }) => {

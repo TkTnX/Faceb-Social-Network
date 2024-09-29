@@ -1,6 +1,5 @@
 import { MoreHorizontal } from "lucide-react";
 import Story from "./Story";
-import { Story as StoryType } from "@prisma/client";
 
 const Stories = () => {
   return (
