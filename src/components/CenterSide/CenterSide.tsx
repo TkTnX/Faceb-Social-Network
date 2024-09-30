@@ -14,7 +14,7 @@ const CenterSide = ({
       {type === "home" && <AddNewPost user={user} />}
 
       {/* POSTS */}
-      <Feed />
+      <Feed type={type} userId={user?.id} />
     </div>
   );
 };
