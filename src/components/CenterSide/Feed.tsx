@@ -25,6 +25,9 @@ const Feed = async ({ userId, type }: { userId?: string; type: string }) => {
           },
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
   }
   if (userId && type === "home") {
@@ -36,19 +39,27 @@ const Feed = async ({ userId, type }: { userId?: string; type: string }) => {
       include: {
         following: {
           select: {
-            followerId: true,
+            followingId: true,
           },
         },
       },
     });
 
 
+
     if (!user) return null;
+
+    const userFollowings = await prisma.follower.findMany({
+      where: {
+        followerId: user.id,
+      },
+    
+    });
 
     posts = await prisma.post.findMany({
       where: {
         userId: {
-          in: user.following.map((user) => String(user.followerId)),
+          in: userFollowings.map((user) => String(user.followingId)),
         },
       },
       include: {
@@ -63,6 +74,9 @@ const Feed = async ({ userId, type }: { userId?: string; type: string }) => {
             comments: true,
           },
         },
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
   }

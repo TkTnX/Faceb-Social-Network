@@ -1,5 +1,7 @@
 import { Follower, User } from "@prisma/client";
 import Image from "next/image";
+import UserFollowers from "../modals/UserFollowers";
+import UserFollowings from "../modals/UserFollowings";
 
 export interface UserWithCount extends User {
   _count: {
@@ -9,11 +11,7 @@ export interface UserWithCount extends User {
   };
 }
 
-const UserCard = ({
-  user,
-}: {
-  user?: UserWithCount;
-}) => {
+const UserCard = ({ user }: { user?: UserWithCount }) => {
   if (!user) return null;
   return (
     <div className="">
@@ -46,16 +44,20 @@ const UserCard = ({
               {user._count.posts === 1 ? "Post" : "Posts"}
             </h6>
           </div>
-          <div className="text-center text-xs">
-            <span className="text-gray text-sm">{user._count.following}</span>
-            <h6 className="text-black/80 font-bold">
-              {user._count.following === 1 ? "Follower" : "Followers"}
-            </h6>
-          </div>
-          <div className="text-center text-xs">
-            <span className="text-gray text-sm">{user._count.followers}</span>
-            <h6 className="text-black/80 font-bold">Following</h6>
-          </div>
+          <UserFollowers userId={user.id} userNickname={user.nickname}>
+            <button className="text-center text-xs">
+              <span className="text-gray text-sm">{user._count.following}</span>
+              <h6 className="text-black/80 font-bold">
+                {user._count.following === 1 ? "Follower" : "Followers"}
+              </h6>
+            </button>
+          </UserFollowers>
+          <UserFollowings userId={user.id} userNickname={user.nickname}>
+            <button className="text-center text-xs">
+              <span className="text-gray text-sm">{user._count.followers}</span>
+              <h6 className="text-black/80 font-bold">Following</h6>
+            </button>
+          </UserFollowings>
         </div>
       </div>
     </div>
