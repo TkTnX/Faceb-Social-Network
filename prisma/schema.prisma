@@ -33,7 +33,6 @@ model User {
   followers Follower[] @relation("Follower")
   following Follower[] @relation("Following")
 
-
   blocked Block[] @relation("blocked")
 
   blocker Block[] @relation("blcoker")
@@ -52,6 +51,9 @@ model Post {
 
   likes    Like[]
   comments Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Like {
@@ -90,8 +92,6 @@ model Follower {
 
   createdAt DateTime @default(now())
 }
-
-
 
 model Block {
   id Int @id @default(autoincrement())

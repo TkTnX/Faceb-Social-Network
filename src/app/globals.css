@@ -7,6 +7,10 @@
   }
 }
 
+body {
+  background-color: #f7f7fa;
+}
+
 .scroll-hidden::-webkit-scrollbar {
   display: none;
 }
