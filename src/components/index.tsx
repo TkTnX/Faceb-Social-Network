@@ -23,6 +23,8 @@ import UserMedia from "./LeftSide/UserMedia";
 import WhoFollowList from "./RightSide/WhoFollowList";
 import EditProfile from "./modals/EditProfile";
 import EditProfileInput from "./ui/EditProfileInput";
+import Comments from "./CenterSide/Comments";
+import CommentsInteractions from "./CenterSide/CommentsInteractions";
 export {
   Header,
   MobileMenu,
@@ -49,4 +51,6 @@ export {
   WhoFollowList,
   EditProfile,
   EditProfileInput,
+  Comments,
+  CommentsInteractions,
 };

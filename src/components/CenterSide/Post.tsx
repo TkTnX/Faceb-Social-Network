@@ -1,13 +1,9 @@
 import { createdAt } from "@/lib/createdAt";
 import { Post as PostType, User } from "@prisma/client";
-import {
-  MessageSquareMore,
-  MoreHorizontal,
-  Share2Icon,
-  ThumbsUp,
-} from "lucide-react";
 import Image from "next/image";
 import PostMore from "./PostMore";
+import PostInteraction from "./PostInteraction";
+import Comments from "./Comments";
 
 export type FeedPostType = PostType & {
   user: User;
@@ -15,7 +11,13 @@ export type FeedPostType = PostType & {
   _count: { comments: number };
 };
 
-const Post = ({ post, currentUser }: { post: FeedPostType, currentUser: string }) => {
+const Post = ({
+  post,
+  currentUser,
+}: {
+  post: FeedPostType;
+  currentUser: string;
+}) => {
   const postCreatedAt = createdAt(post.createdAt);
   return (
     <div className="py-5 px-4 sm:px-8 bg-white rounded-lg border border-[#F1F2F6] ">
@@ -38,9 +40,7 @@ const Post = ({ post, currentUser }: { post: FeedPostType, currentUser: string }
             <p className="text-gray font-normal text-xs">{postCreatedAt}</p>
           </div>
         </div>
-        {currentUser === post.user.id && (
-          <PostMore />
-        )}
+        {currentUser === post.user.id && <PostMore />}
       </div>
       <p className="text-sm font-normal text-[#203758] mt-3">{post.desc}</p>
       <div className="w-full mt-4 min-h-72 relative ">
@@ -51,35 +51,12 @@ const Post = ({ post, currentUser }: { post: FeedPostType, currentUser: string }
           className="object-cover rounded-lg"
         />
       </div>
-      <div className="flex items-center justify-end mt-4 gap-2">
-        <button className="flex items-start gap-1 group">
-          <ThumbsUp
-            color="#788292"
-            width={24}
-            className="group-hover:stroke-main"
-          />
-          <span className="text-gray text-xs group-hover:text-main">
-            {post.likes.length}
-          </span>
-        </button>
-        <button className="flex items-start gap-1 group">
-          <MessageSquareMore
-            color="#788292"
-            width={24}
-            className="group-hover:stroke-main"
-          />
-          <span className="text-gray text-xs group-hover:text-main">
-            {post._count.comments}
-          </span>
-        </button>
-        <button className="flex items-start gap-1 group">
-          <Share2Icon
-            color="#788292"
-            width={24}
-            className="group-hover:stroke-main"
-          />
-        </button>
-      </div>
+      <PostInteraction
+        likes={post.likes.map((like) => like.userId)}
+        comments={post._count.comments}
+        postId={post.id}
+      />
+      
     </div>
   );
 };

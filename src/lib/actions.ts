@@ -149,3 +149,33 @@ export async function updateProfileInformation(
     throw new Error("Something went wrong");
   }
 }
+
+export async function changeLike(postId: number) {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+  try {
+    const isAlredyLiked = await prisma.like.findFirst({
+      where: {
+        userId: currentUser,
+      },
+    });
+
+    if (isAlredyLiked) {
+      await prisma.like.delete({
+        where: {
+          id: isAlredyLiked.id,
+        },
+      });
+    } else {
+      await prisma.like.create({
+        data: {
+          userId: currentUser,
+          postId,
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}
