@@ -1,14 +1,24 @@
 import { createdAt } from "@/lib/createdAt";
-import { Post as PostType, User } from "@prisma/client";
+import { Post as PostType, User, Comment } from "@prisma/client";
 import Image from "next/image";
 import PostMore from "./PostMore";
 import PostInteraction from "./PostInteraction";
-import Comments from "./Comments";
+
+type CommentsType = Comment & {
+  user: {
+    id: string;
+    nickname: string;
+    firstname: string;
+    lastname: string;
+    avatar: string | null;
+  };
+};
 
 export type FeedPostType = PostType & {
   user: User;
   likes: { userId: string }[];
   _count: { comments: number };
+  comments: CommentsType[];
 };
 
 const Post = ({
@@ -53,10 +63,9 @@ const Post = ({
       </div>
       <PostInteraction
         likes={post.likes.map((like) => like.userId)}
-        comments={post._count.comments}
+        comments={post.comments}
         postId={post.id}
       />
-      
     </div>
   );
 };

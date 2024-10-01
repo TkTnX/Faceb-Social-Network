@@ -5,13 +5,14 @@ import { useAuth } from "@clerk/nextjs";
 import { MessageSquareMore, Share2Icon, ThumbsUp } from "lucide-react";
 import { useOptimistic, useState } from "react";
 import { Comments } from "@/components";
+import { CommentType } from "./CommentItem";
 const PostInteraction = ({
   postId,
   comments,
   likes,
 }: {
   postId: number;
-  comments: number;
+  comments: CommentType[];
   likes: string[];
 }) => {
   const { userId } = useAuth();
@@ -70,7 +71,7 @@ const PostInteraction = ({
             className="group-hover:stroke-main"
           />
           <span className="text-gray text-xs group-hover:text-main">
-            {comments}
+            {comments.length}
           </span>
         </button>
         <button className="flex items-start gap-1 group">
@@ -81,7 +82,7 @@ const PostInteraction = ({
           />
         </button>
       </div>
-      {openComments && <Comments />}
+      {openComments && <Comments comments={comments} postId={postId} />}
     </>
   );
 };

@@ -179,3 +179,54 @@ export async function changeLike(postId: number) {
     throw new Error("Something went wrong");
   }
 }
+
+export async function addComment(postId: number, content: string) {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+  try {
+    const newComment = await prisma.comment.create({
+      data: {
+        userId: currentUser,
+        postId,
+        content,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            nickname: true,
+            firstname: true,
+            lastname: true,
+            avatar: true,
+          },
+        },
+      },
+    });
+
+    if (!newComment) {
+      throw new Error("Can't add comment");
+    }
+
+    return newComment;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function deleteComments(commentId: number, postId: number) {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+  try {
+    await prisma.comment.delete({
+      where: {
+        id: commentId,
+        userId: currentUser,
+        postId,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}

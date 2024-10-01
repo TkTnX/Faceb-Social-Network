@@ -24,6 +24,22 @@ const Feed = async ({ userId, type }: { userId?: string; type: string }) => {
             comments: true,
           },
         },
+        comments: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                nickname: true,
+                firstname: true,
+                lastname: true,
+                avatar: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",
@@ -45,15 +61,11 @@ const Feed = async ({ userId, type }: { userId?: string; type: string }) => {
       },
     });
 
-
-
     if (!user) return null;
-
     const userFollowings = await prisma.follower.findMany({
       where: {
         followerId: user.id,
       },
-    
     });
 
     posts = await prisma.post.findMany({
@@ -69,6 +81,22 @@ const Feed = async ({ userId, type }: { userId?: string; type: string }) => {
             userId: true,
           },
         },
+        comments: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                nickname: true,
+                firstname: true,
+                lastname: true,
+                avatar: true,
+              }
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          }
+        },
         _count: {
           select: {
             comments: true,
@@ -80,6 +108,7 @@ const Feed = async ({ userId, type }: { userId?: string; type: string }) => {
       },
     });
   }
+
 
   return (
     <div className="grid gap-3 mt-3">

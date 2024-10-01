@@ -33,7 +33,6 @@ const ProfilePage = async ({ params }: { params: { nickname: string } }) => {
 
   if (!user) return notFound();
 
-  console.log(`>>>`, user);
   return (
     <div className="flex items-start gap-3 lg:gap-7 justify-between max-w-[1317px] px-4 mx-auto">
       {/* LEFT */}
