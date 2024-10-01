@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/client";
 import {
   Dialog,
   DialogContent,
@@ -7,40 +6,25 @@ import {
 } from "../ui/dialog";
 import Image from "next/image";
 import Link from "next/link";
+import { Follower, User } from "@prisma/client";
 
 interface Props {
   children: React.ReactNode;
-  userId: string;
   userNickname: string;
+  userFollowers: {
+    id: number;
+    createdAt: Date;
+    followerId: string;
+    followingId: string;
+    follower: User; 
+  }[];
 }
 
-
-
-const UserFollowers: React.FC<Props> = async ({
+const UserFollowers: React.FC<Props> = ({
   children,
-  userId,
   userNickname,
+  userFollowers,
 }) => {
-  const list = await prisma.follower.findMany({
-    where: {
-      followingId: userId,
-    },
-    include: {
-      follower: {
-        select: {
-          id: true,
-          nickname: true,
-          firstname: true,
-          lastname: true,
-          avatar: true,
-        },
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -51,29 +35,29 @@ const UserFollowers: React.FC<Props> = async ({
           <span className="text-gray text-sm">@{userNickname}</span>
         </DialogTitle>
         <div className="grid gap-2">
-          {list.length > 0
-            ? list.map((user) => (
+          {userFollowers.length > 0
+            ? userFollowers.map(({follower}) => (
                 <Link
-                  href={`/profile/${user.follower.nickname}`}
-                  key={user.follower.id}
+                  href={`/profile/${follower.nickname}`}
+                  key={follower.id}
                   className="flex justify-between w-full gap-2 bg-gray/20 p-2 rounded-lg hover:bg-gray/30 duration-200"
                 >
                   <div className="flex items-center gap-2">
                     <Image
                       className="rounded-full h-10"
-                      src={user.follower.avatar || "/noAvatar.jpg"}
+                      src={follower.avatar || "/noAvatar.jpg"}
                       alt="avatar"
                       width={40}
                       height={40}
                     />
                     <div>
                       <h5 className="font-bold text-main">
-                        {user.follower.firstname ||
-                          (user.follower.lastname &&
-                            `${user.follower.firstname} ${user.follower.lastname}`)}
+                        {follower.firstname ||
+                          (follower.lastname &&
+                            `${follower.firstname} ${follower.lastname}`)}
                       </h5>
                       <p className="text-xs text-gray">
-                        @{user.follower.nickname}
+                        @{follower.nickname}
                       </p>
                     </div>
                   </div>

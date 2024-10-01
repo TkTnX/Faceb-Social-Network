@@ -3,15 +3,29 @@ import Image from "next/image";
 import UserFollowers from "../modals/UserFollowers";
 import UserFollowings from "../modals/UserFollowings";
 
-export interface UserWithCount extends User {
+export type UserWithFollowersAndFollowing = User & {
+  followers: {
+    id: number;
+    createdAt: Date;
+    followerId: string;
+    followingId: string;
+    following: User;
+  }[];
+  following: {
+    id: number;
+    createdAt: Date;
+    followerId: string;
+    followingId: string;
+    follower: User; 
+  }[];
   _count: {
     posts: number;
     followers: number;
     following: number;
   };
-}
+};
 
-const UserCard = ({ user }: { user?: UserWithCount }) => {
+const UserCard = ({ user }: { user?: UserWithFollowersAndFollowing }) => {
   if (!user) return null;
   return (
     <div className="">
@@ -44,7 +58,10 @@ const UserCard = ({ user }: { user?: UserWithCount }) => {
               {user._count.posts === 1 ? "Post" : "Posts"}
             </h6>
           </div>
-          <UserFollowers userId={user.id} userNickname={user.nickname}>
+          <UserFollowers
+            userFollowers={user.following}
+            userNickname={user.nickname}
+          >
             <button className="text-center text-xs">
               <span className="text-gray text-sm">{user._count.following}</span>
               <h6 className="text-black/80 font-bold">
@@ -52,7 +69,10 @@ const UserCard = ({ user }: { user?: UserWithCount }) => {
               </h6>
             </button>
           </UserFollowers>
-          <UserFollowings userId={user.id} userNickname={user.nickname}>
+          <UserFollowings
+            userFollowing={user.followers}
+            userNickname={user.nickname}
+          >
             <button className="text-center text-xs">
               <span className="text-gray text-sm">{user._count.followers}</span>
               <h6 className="text-black/80 font-bold">Following</h6>

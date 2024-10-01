@@ -1,12 +1,12 @@
 import { AddNewPost, Feed, UserCard } from "..";
-import { UserWithCount } from "./UserCard";
+import { UserWithFollowersAndFollowing } from "./UserCard";
 
 const CenterSide = ({
   type,
   user,
 }: {
   type: "home" | "profile";
-  user?: UserWithCount;
+  user?: UserWithFollowersAndFollowing;
 }) => {
   return (
     <div className="w-full sm:w-[65%] xl:w-[65%] lg:w-[50%] ">

@@ -1,13 +1,13 @@
 import { Follower } from "@prisma/client";
 import { Birthdays, UserBadge, UserMedia } from "..";
-import { UserWithCount } from "../CenterSide/UserCard";
+import { UserWithFollowersAndFollowing } from "../CenterSide/UserCard";
 
 const LeftSide = ({
   user,
   type,
   userFollowers,
 }: {
-  user: UserWithCount;
+  user: UserWithFollowersAndFollowing;
   type: "home" | "profile";
   userFollowers?: Follower[];
 }) => {
