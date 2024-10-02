@@ -4,14 +4,14 @@ import UserFollowers from "../modals/UserFollowers";
 import UserFollowings from "../modals/UserFollowings";
 
 export type UserWithFollowersAndFollowing = User & {
-  followers: {
+  followers?: {
     id: number;
     createdAt: Date;
     followerId: string;
     followingId: string;
     following: User;
   }[];
-  following: {
+  following?: {
     id: number;
     createdAt: Date;
     followerId: string;
@@ -27,6 +27,7 @@ export type UserWithFollowersAndFollowing = User & {
 
 const UserCard = ({ user }: { user?: UserWithFollowersAndFollowing }) => {
   if (!user) return null;
+
   return (
     <div className="">
       <div className="relative h-52 w-full">
@@ -59,7 +60,7 @@ const UserCard = ({ user }: { user?: UserWithFollowersAndFollowing }) => {
             </h6>
           </div>
           <UserFollowers
-            userFollowers={user.following}
+            userFollowers={user.following || []}
             userNickname={user.nickname}
           >
             <button className="text-center text-xs">
@@ -70,7 +71,7 @@ const UserCard = ({ user }: { user?: UserWithFollowersAndFollowing }) => {
             </button>
           </UserFollowers>
           <UserFollowings
-            userFollowing={user.followers}
+            userFollowing={user.followers || []}
             userNickname={user.nickname}
           >
             <button className="text-center text-xs">

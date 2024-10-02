@@ -1,7 +1,22 @@
+"use client";
 import { MoreHorizontal, Pen, X } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { deletePost } from "@/lib/actions";
+import PostMoreDelete from "./PostMoreDelete";
+import PostMoreEdit from "./PostMoreEdit";
 
-const PostMore = () => {
+const PostMore = ({ postId }: { postId: number }) => {
+  const deletePostFunc = async () => {
+    try {
+      await deletePost(postId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -9,16 +24,14 @@ const PostMore = () => {
           <MoreHorizontal size={18} />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="p-2">
-        <button className="flex items-center gap-2 text-yellow-500 hover:bg-main/20 p-2 rounded-lg hover:text-main duration-100 group">
-          <Pen /> <span className="text-gray group-hover:text-main">Edit</span>
-        </button>
-        <button className="flex items-center gap-2 text-red-500 hover:bg-main/20 p-2 rounded-lg hover:text-main duration-100 group">
-          <X /> <span className="text-gray group-hover:text-main">Delete</span>
-        </button>
+      <DropdownMenuContent className={"p-2"}>
+        <PostMoreEdit postId={postId} />
+        <form action={deletePostFunc}>
+          <PostMoreDelete />
+        </form>
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
 
-export default PostMore
+export default PostMore;

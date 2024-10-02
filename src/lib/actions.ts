@@ -3,6 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "./client";
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
 
 export async function switchFollow(userId: string) {
   const { userId: currentUser } = auth();
@@ -225,6 +226,85 @@ export async function deleteComments(commentId: number, postId: number) {
         postId,
       },
     });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function addPost(formData: FormData, img: string) {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+  const desc = formData.get("desc") as string;
+  const DescCheck = z.string().min(1).max(255);
+  const validatedDesc = DescCheck.safeParse(desc);
+  if (!validatedDesc.success) {
+    console.log(validatedDesc.error.flatten().fieldErrors);
+    throw new Error("Invalid description");
+  }
+  try {
+    await prisma.post.create({
+      data: {
+        userId: currentUser,
+        desc,
+        img,
+      },
+    });
+
+    revalidatePath("/");
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function deletePost(postId: number) {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+  try {
+    await prisma.post.delete({
+      where: {
+        id: postId,
+      },
+    });
+    revalidatePath("/");
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function editPost(
+  postId: number,
+  formData: FormData,
+  img: string | null
+) {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+  const desc = formData.get("desc") as string;
+  
+  try {
+    const post = await prisma.post.findFirst({
+      where: {
+        id: postId,
+      },
+    });
+
+    if (!post) {
+      throw new Error("Post not found");
+    }
+
+    await prisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        desc: desc || post.desc,
+        img: img || post.img,
+      },
+    });
+
+    revalidatePath("/");
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong");

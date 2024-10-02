@@ -3,6 +3,7 @@ import { Post as PostType, User, Comment } from "@prisma/client";
 import Image from "next/image";
 import PostMore from "./PostMore";
 import PostInteraction from "./PostInteraction";
+import Link from "next/link";
 
 type CommentsType = Comment & {
   user: {
@@ -33,7 +34,10 @@ const Post = ({
     <div className="py-5 px-4 sm:px-8 bg-white rounded-lg border border-[#F1F2F6] ">
       {/* TOP */}
       <div className="flex items-center justify-between w-full">
-        <div className="flex items-center gap-5">
+        <Link
+          href={`/profile/${post.user.nickname}`}
+          className="flex items-center gap-5 group duration-150"
+        >
           <Image
             src={post.user.avatar || "/noAvatar.jpg"}
             width={40}
@@ -42,25 +46,27 @@ const Post = ({
             className="rounded-full h-10"
           />
           <div>
-            <h5 className="text-[#203758]">
+            <h5 className="text-[#203758] group-hover:text-main">
               {post.user.firstname || post.user.lastname
                 ? `${post.user.firstname} ${post.user.lastname}`
                 : post.user.nickname}
             </h5>
             <p className="text-gray font-normal text-xs">{postCreatedAt}</p>
           </div>
-        </div>
-        {currentUser === post.user.id && <PostMore />}
+        </Link>
+        {currentUser === post.user.id && <PostMore postId={post.id} />}
       </div>
       <p className="text-sm font-normal text-[#203758] mt-3">{post.desc}</p>
-      <div className="w-full mt-4 min-h-72 relative ">
-        <Image
-          src={post.img}
-          fill
-          alt="post image"
-          className="object-cover rounded-lg"
-        />
-      </div>
+      {post.img && (
+        <div className="w-full mt-4 min-h-72 relative ">
+          <Image
+            src={post.img}
+            fill
+            alt="post image"
+            className="object-cover rounded-lg"
+          />
+        </div>
+      )}
       <PostInteraction
         likes={post.likes.map((like) => like.userId)}
         comments={post.comments}

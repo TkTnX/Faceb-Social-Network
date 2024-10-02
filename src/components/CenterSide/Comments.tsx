@@ -78,7 +78,13 @@ const Comments = ({
           alt="avatar"
           className="rounded-full"
         />
-        <form action={addNewComment} className="flex-1 flex items-center gap-1">
+        <form
+          action={() => {
+            addNewComment();
+            setContent("");
+          }}
+          className="flex-1 flex items-center gap-1"
+        >
           <Input
             value={content}
             onChange={(e) => setContent(e.target.value)}
