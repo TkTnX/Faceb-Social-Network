@@ -25,6 +25,7 @@ import EditProfile from "./modals/EditProfile";
 import EditProfileInput from "./ui/EditProfileInput";
 import Comments from "./CenterSide/Comments";
 import AddPostButton from "./CenterSide/AddPostButton";
+import StoryModal from "./modals/StoryModal";
 export {
   Header,
   MobileMenu,
@@ -52,5 +53,6 @@ export {
   EditProfile,
   EditProfileInput,
   Comments,
-  AddPostButton
+  AddPostButton,
+  StoryModal,
 };

@@ -1,7 +1,45 @@
+"use server";
 import { MoreHorizontal } from "lucide-react";
-import Story from "./Story";
+import { prisma } from "@/lib/client";
+import { auth } from "@clerk/nextjs/server";
+import StoriesList from "./StoriesList";
 
-const Stories = () => {
+const Stories = async () => {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return null;
+
+  await prisma.story.deleteMany({
+    where: {
+      expiresAt: {
+        lt: new Date(),
+      },
+    },
+  });
+
+  const stories = await prisma.story.findMany({
+    where: {
+      OR: [
+        {
+          user: {
+            following: {
+              some: {
+                followerId: currentUser,
+              },
+            },
+          },
+        },
+        { userId: currentUser },
+      ],
+    },
+
+    include: {
+      user: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
   return (
     <div className="">
       <div className="flex items-center justify-between">
@@ -10,16 +48,7 @@ const Stories = () => {
           <MoreHorizontal />
         </button>
       </div>
-      <div className="flex items-center gap-2 w-full overflow-x-auto  mt-4 scrollbar">
-        <Story />
-        <Story />
-        <Story />
-        <Story />
-        <Story />
-        <Story />
-        <Story />
-        <Story />
-      </div>
+      <StoriesList stories={stories} userId={currentUser} />
     </div>
   );
 };

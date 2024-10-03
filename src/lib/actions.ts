@@ -282,7 +282,7 @@ export async function editPost(
   const { userId: currentUser } = auth();
   if (!currentUser) return new Error("You are not authenticated");
   const desc = formData.get("desc") as string;
-  
+
   try {
     const post = await prisma.post.findFirst({
       where: {
@@ -305,6 +305,44 @@ export async function editPost(
     });
 
     revalidatePath("/");
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function addStory(img: string) {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+  try {
+    const existingStory = await prisma.story.findFirst({
+      where: {
+        userId: currentUser,
+      },
+    });
+
+    if (existingStory) {
+      await prisma.story.delete({
+        where: {
+          id: existingStory.id,
+        },
+      });
+    }
+
+    
+
+    const newStory = await prisma.story.create({
+      data: {
+        userId: currentUser,
+        img,
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    return newStory;
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong");
