@@ -13,10 +13,8 @@ export type StoriesWithUser = StoryType & {
 
 const StoriesList = ({
   stories,
-  userId,
 }: {
   stories: StoriesWithUser[];
-  userId: string;
 }) => {
   const { user } = useUser();
   const [storiesList, setStoriesList] = useState(stories);

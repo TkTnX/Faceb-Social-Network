@@ -9,9 +9,9 @@ const RightSide = ({
   currentUser: string;
 }) => {
   return (
-    <div className="hidden  sm:block sm:w-[35%] xl:w-[30%] ">
+    <div className="hidden  sm:block lg:w-[25%] xl:w-[35%] ">
       {user && <UserInformationBlock userId={user.id} />}
-      <Stories />
+        <Stories />
       <WhoFollow currentUser={currentUser} />
     </div>
   );
