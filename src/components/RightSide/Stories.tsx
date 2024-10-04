@@ -44,11 +44,7 @@ const Stories = async () => {
       <div className="flex items-center justify-between">
         <h4 className="text-[#203758] text-lg font-medium">Stories</h4>
       </div>
-      {stories.length > 0 ? (
-        <StoriesList stories={stories} />
-      ) : (
-        "Loading stories..."
-      )}
+      <StoriesList stories={stories} />
     </div>
   );
 };

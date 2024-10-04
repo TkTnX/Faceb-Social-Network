@@ -49,6 +49,9 @@ const ProfilePage = async ({ params }: { params: { nickname: string } }) => {
     },
   });
 
+  // TODO: ДОДЕЛАТЬ БЛОКИРОВКУ
+  // TODO: При блокировке на главной странице должны отображаться другие посты, сейчас тут их нет
+
   return (
     <div className="flex items-start gap-3 lg:gap-7 justify-between max-w-[1317px] px-4 mx-auto">
       {/* LEFT */}
@@ -61,7 +64,11 @@ const ProfilePage = async ({ params }: { params: { nickname: string } }) => {
         isUserBlocked={isUserBlocked}
       />
       {/* RIGHT */}
-      <RightSide currentUser={currentUser ? currentUser : ""} user={user} />
+      <RightSide
+        isBlocked={Boolean(isUserBlocked) || Boolean(isCurrentUserBlocked)}
+        currentUser={currentUser ? currentUser : ""}
+        user={user}
+      />
     </div>
   );
 };

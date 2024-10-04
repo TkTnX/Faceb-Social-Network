@@ -13,7 +13,13 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { UserInformationBlcokInteractive, EditProfile } from "@/components";
-const UserInformation = async ({ userId }: { userId: string }) => {
+const UserInformation = async ({
+  userId,
+  isBlocked,
+}: {
+  userId: string;
+  isBlocked?: boolean
+}) => {
   const { userId: currentUserId } = auth();
 
   const user = await prisma.user.findFirst({
@@ -30,7 +36,6 @@ const UserInformation = async ({ userId }: { userId: string }) => {
   const formattedDate = formatDate(new Date(user.createdAt));
 
   let isFollowed;
-  let isBlocked;
 
   if (currentUserId) {
     // FIND IS FOLLOWED
@@ -41,13 +46,7 @@ const UserInformation = async ({ userId }: { userId: string }) => {
       },
     });
 
-    // FIND IS BLOCKED
-    isBlocked = await prisma.block.findFirst({
-      where: {
-        blockerId: currentUserId,
-        blockedId: user.id,
-      },
-    });
+ 
   }
 
   return (

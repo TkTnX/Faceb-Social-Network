@@ -9,11 +9,10 @@ const CenterSide = ({
   isCurrentUserBlocked,
 }: {
   type: "home" | "profile";
-    user?: UserWithFollowersAndFollowing;
-    isUserBlocked?: Block | null;
-    isCurrentUserBlocked?: Block | null;
-  }) => {
-
+  user?: UserWithFollowersAndFollowing;
+  isUserBlocked?: Block | null;
+  isCurrentUserBlocked?: Block | null;
+}) => {
   return (
     <div className="w-full sm:w-[65%] xl:w-[65%] lg:w-[50%] ">
       {type === "profile" && (
@@ -26,9 +25,13 @@ const CenterSide = ({
       {type === "home" && <AddNewPost user={user} />}
 
       {/* POSTS */}
-      {isUserBlocked !== null || isCurrentUserBlocked !== null ? null : (
-        <Feed type={type} userId={user?.id} />
-      )}
+
+      <Feed
+        isUserBlocked={isUserBlocked}
+        isCurrentUserBlocked={isCurrentUserBlocked}
+        type={type}
+        userId={user?.id}
+      />
     </div>
   );
 };

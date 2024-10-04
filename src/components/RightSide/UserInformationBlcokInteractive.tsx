@@ -61,11 +61,13 @@ const UserInformationBlcokInteractive: React.FC<Props> = ({
   );
   return (
     <>
-      <form action={follow}>
-        <button className="text-main bg-main/20 w-full mt-2 py-3 rounded-lg hover:bg-main hover:text-white duration-100">
-          {followStatus.isFollowed ? "Following" : "Follow"}
-        </button>
-      </form>
+      {!followStatus.isBlocked && (
+        <form action={follow}>
+          <button className="text-main bg-main/20 w-full mt-2 py-3 rounded-lg hover:bg-main hover:text-white duration-100">
+            {followStatus.isFollowed ? "Following" : "Follow"}
+          </button>
+        </form>
+      )}
       <form className="max-w-max ml-auto" action={block}>
         <button className="text-red-400 text-right w-full mt-2 text-xs">
           {followStatus.isBlocked ? "Unblock user" : "Block user"}

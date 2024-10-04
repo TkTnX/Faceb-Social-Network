@@ -63,6 +63,25 @@ export async function switchBlock(userId: string) {
           blockedId: userId,
         },
       });
+      const follower = await prisma.follower.findFirst({
+        where: {
+          OR: [
+            { followerId: userId, followingId: currentUser },
+            {
+              followerId: currentUser,
+              followingId: userId,
+            },
+          ],
+        },
+      });
+
+      if (follower) {
+        await prisma.follower.delete({
+          where: {
+            id: follower.id,
+          },
+        });
+      }
     }
 
     return true;
@@ -328,8 +347,6 @@ export async function addStory(img: string) {
         },
       });
     }
-
-    
 
     const newStory = await prisma.story.create({
       data: {

@@ -2,12 +2,23 @@
 import Post, { FeedPostType } from "./Post";
 import { prisma } from "@/lib/client";
 import { auth } from "@clerk/nextjs/server";
+import { Block } from "@prisma/client";
 
-const Feed = async ({ userId, type }: { userId?: string; type: string }) => {
+const Feed = async ({
+  userId,
+  type,
+  isUserBlocked,
+  isCurrentUserBlocked,
+}: {
+  userId?: string;
+  type: string;
+  isUserBlocked?: Block | null;
+  isCurrentUserBlocked?: Block | null;
+}) => {
   let posts: FeedPostType[] = [];
   const { userId: currentUser } = auth();
 
-  if (userId) {
+  if (userId && !isUserBlocked && !isCurrentUserBlocked) {
     posts = await prisma.post.findMany({
       where: {
         userId,
@@ -68,7 +79,10 @@ const Feed = async ({ userId, type }: { userId?: string; type: string }) => {
       },
     });
 
-    const userFollowingsIds = [user.id, ...userFollowings.map((user) => user.followingId)];
+    const userFollowingsIds = [
+      user.id,
+      ...userFollowings.map((user) => user.followingId),
+    ];
     posts = await prisma.post.findMany({
       where: {
         userId: {
@@ -109,7 +123,6 @@ const Feed = async ({ userId, type }: { userId?: string; type: string }) => {
       },
     });
   }
-
 
   return (
     <div className="grid gap-3 mt-3">
