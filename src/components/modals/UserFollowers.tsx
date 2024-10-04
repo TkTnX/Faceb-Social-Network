@@ -1,3 +1,4 @@
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +17,7 @@ interface Props {
     createdAt: Date;
     followerId: string;
     followingId: string;
-    follower: User; 
+    follower: User;
   }[];
 }
 
@@ -36,7 +37,7 @@ const UserFollowers: React.FC<Props> = ({
         </DialogTitle>
         <div className="grid gap-2">
           {userFollowers.length > 0
-            ? userFollowers.map(({follower}) => (
+            ? userFollowers.map(({ follower }) => (
                 <Link
                   href={`/profile/${follower.nickname}`}
                   key={follower.id}
@@ -56,9 +57,7 @@ const UserFollowers: React.FC<Props> = ({
                           (follower.lastname &&
                             `${follower.firstname} ${follower.lastname}`)}
                       </h5>
-                      <p className="text-xs text-gray">
-                        @{follower.nickname}
-                      </p>
+                      <p className="text-xs text-gray">@{follower.nickname}</p>
                     </div>
                   </div>
                 </Link>

@@ -1,4 +1,4 @@
-import { Follower, User } from "@prisma/client";
+import { Block, User } from "@prisma/client";
 import Image from "next/image";
 import UserFollowers from "../modals/UserFollowers";
 import UserFollowings from "../modals/UserFollowings";
@@ -16,7 +16,7 @@ export type UserWithFollowersAndFollowing = User & {
     createdAt: Date;
     followerId: string;
     followingId: string;
-    follower: User; 
+    follower: User;
   }[];
   _count: {
     posts: number;
@@ -25,9 +25,33 @@ export type UserWithFollowersAndFollowing = User & {
   };
 };
 
-const UserCard = ({ user }: { user?: UserWithFollowersAndFollowing }) => {
+const UserCard = async ({
+  user,
+  isUserBlocked,
+  isCurrentUserBlocked,
+}: {
+  user?: UserWithFollowersAndFollowing;
+  isUserBlocked?: Block | null;
+  isCurrentUserBlocked?: Block | null;
+}) => {
   if (!user) return null;
 
+  if (isCurrentUserBlocked) {
+    return (
+      <div className="bg-white text-2xl text-center mb-10 p-10 font-bold">
+        This user is blocking you
+      </div>
+    );
+  }
+
+  if (isUserBlocked) {
+    return (
+      <div className="bg-white text-gray text-2xl text-center mb-10 p-10 font-bold">
+        You are blocking this user <br />{" "}
+        <p>Unblock him to add him to your followers</p>
+      </div>
+    );
+  }
   return (
     <div className="">
       <div className="relative h-52 w-full">

@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/client";
 import {
   Dialog,
   DialogContent,
@@ -26,7 +25,6 @@ const UserFollowings: React.FC<Props> = async ({
   userNickname,
   userFollowing,
 }) => {
-
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
