@@ -29,7 +29,7 @@ const Homepage = async () => {
    });
   
   return (
-    <div className="flex items-start gap-3 lg:gap-7 justify-between max-w-[1317px] px-4 mx-auto">
+    <div className="flex items-start gap-3 lg:gap-7 justify-center lg:justify-between max-w-[1317px] px-4 mx-auto">
       {/* LEFT */}
       <LeftSide type="home" userFollowers={userFollowers} user={user} />
       {/* CENTER */}

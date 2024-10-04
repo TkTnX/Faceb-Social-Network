@@ -38,8 +38,15 @@ const UserCard = async ({
 
   if (isCurrentUserBlocked) {
     return (
-      <div className="bg-white text-2xl text-center mb-10 p-10 font-bold">
-        This user is blocking you
+      <div className="bg-white text-gray text-2xl text-center mb-10 p-10 font-bold">
+        <Image
+          src={user.avatar || "/noAvatar.jpg"}
+          width={128}
+          height={128}
+          className="rounded-full m-auto  w-32 h-32 outline outline-4 outline-white"
+          alt="avatar"
+        />
+        <span className="block mt-3">This user is blocking you</span>
       </div>
     );
   }
@@ -47,6 +54,13 @@ const UserCard = async ({
   if (isUserBlocked) {
     return (
       <div className="bg-white text-gray text-2xl text-center mb-10 p-10 font-bold">
+              <Image
+          src={user.avatar || "/noAvatar.jpg"}
+          width={128}
+          height={128}
+          className="rounded-full m-auto  w-32 h-32 outline outline-4 outline-white"
+          alt="avatar"
+        />
         You are blocking this user <br />{" "}
         <p>Unblock him to add him to your followers</p>
       </div>

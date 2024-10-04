@@ -8,13 +8,16 @@ import {
 import { deletePost } from "@/lib/actions";
 import PostMoreDelete from "./PostMoreDelete";
 import PostMoreEdit from "./PostMoreEdit";
+import toast from "react-hot-toast";
 
 const PostMore = ({ postId }: { postId: number }) => {
   const deletePostFunc = async () => {
     try {
       await deletePost(postId);
+      toast.success("Post deleted successfully");
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   };
   return (

@@ -17,10 +17,12 @@ const PostInteraction = ({
 }) => {
   const { userId } = useAuth();
   const [openComments, setOpenComments] = useState(false);
+  const [commentsLength, setCommentsLength] = useState(comments.length);
   const [like, setLike] = useState({
     isLiked: likes.includes(String(userId)),
     likes: likes.length,
   });
+
 
   const likeFunc = async () => {
     switchOptimisticLike("");
@@ -31,6 +33,7 @@ const PostInteraction = ({
         isLiked: !like.isLiked,
         likes: like.isLiked ? like.likes - 1 : like.likes + 1,
       });
+      
     } catch (error) {
       console.log(error);
     }
@@ -71,7 +74,7 @@ const PostInteraction = ({
             className="group-hover:stroke-main"
           />
           <span className="text-gray text-xs group-hover:text-main">
-            {comments.length}
+            {commentsLength}
           </span>
         </button>
         <button className="flex items-start gap-1 group">
@@ -82,7 +85,14 @@ const PostInteraction = ({
           />
         </button>
       </div>
-      {openComments && <Comments comments={comments} postId={postId} />}
+      {openComments && (
+        <Comments
+          commentsLength={commentsLength}
+          setCommentsLength={setCommentsLength}
+          comments={comments}
+          postId={postId}
+        />
+      )}
     </>
   );
 };

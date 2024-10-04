@@ -6,6 +6,7 @@ import { AddPostButton } from "@/components";
 import { useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import { addPost } from "@/lib/actions";
+import toast from "react-hot-toast";
 const AddNewPost = ({ user }: { user?: User }) => {
   const [desc, setDesc] = useState("");
   const [image, setImage] = useState<any>("");
@@ -18,8 +19,10 @@ const AddNewPost = ({ user }: { user?: User }) => {
       setDesc("")
       setImage("")
       setIsSuccessAddedImage(false)
+      toast.success("Post added successfully");
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   };
 

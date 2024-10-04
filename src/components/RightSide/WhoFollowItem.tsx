@@ -3,6 +3,7 @@ import { Follower, User } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { WhoFollowType } from "./WhoFollowList";
+import toast from "react-hot-toast";
 
 type FollowersType = Follower & {
   follower: User;
@@ -28,8 +29,10 @@ const WhoFollowItem = ({
       setFollowRequests((prev) =>
         prev.filter((request) => request.followerId !== followers.followerId)
       );
+      toast.success("Request declined");
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   };
 

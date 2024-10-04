@@ -6,13 +6,18 @@ import { cn } from "@/lib/utils";
 import CommentItem, { CommentType } from "./CommentItem";
 import { useUser } from "@clerk/nextjs";
 import { addComment, deleteComments } from "@/lib/actions";
+import toast from "react-hot-toast";
 
 const Comments = ({
   postId,
   comments,
+  setCommentsLength,
+  commentsLength,
 }: {
   postId: number;
   comments: CommentType[];
+  setCommentsLength: (value: number) => void;
+  commentsLength: number;
 }) => {
   const { user } = useUser();
   const [content, setContent] = useState("");
@@ -45,26 +50,34 @@ const Comments = ({
 
   const addNewComment = async () => {
     changeOptimisticComments("add");
+    setCommentsLength(commentsLength + 1);
     try {
       const newComment = (await addComment(postId, content)) as CommentType;
       if (newComment) {
         setCommentsList([newComment, ...commentsList]);
       }
+      toast.success("Comment added successfully");
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   };
 
   const deleteCommentFunc = async (commentId: number) => {
     changeOptimisticComments(commentId);
+    setCommentsLength(commentsLength - 1);
+
     try {
       await deleteComments(commentId, postId);
 
       setCommentsList(
         commentsList.filter((comment) => comment.id !== commentId)
       );
+      toast.success("Comment deleted successfully");
+
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   };
 

@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header/Header";
 import Providers from "@/components/Providers";
 import { Sidebar } from "@/components";
+import { Toaster } from "react-hot-toast";
 
 const font = Montserrat({ subsets: ["latin"] });
 
@@ -19,8 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <Providers>
-      <html  lang="en">
+      <html lang="en">
         <body className={font.className}>
+          <Toaster />
           <Header />
           <Sidebar />
           <main className="bg-[#f7f7fa] pt-5 md:ml-[75px]">{children}</main>

@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { CldUploadWidget } from "next-cloudinary";
 import { User } from "@prisma/client";
 import UpdateButton from "../RightSide/UpdateButton";
+import toast from "react-hot-toast";
 
 interface Props {
   children: React.ReactNode;
@@ -28,9 +29,11 @@ const EditProfile: React.FC<Props> = ({ children, user }) => {
     try {
       await updateProfileInformation(formData, profileBg);
       setOpen(false);
+      toast.success("Profile updated successfully");
       router.refresh();
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   };
 

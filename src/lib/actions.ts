@@ -84,6 +84,7 @@ export async function switchBlock(userId: string) {
       }
     }
 
+    revalidatePath(`/`);
     return true;
   } catch (error) {
     console.log(error);

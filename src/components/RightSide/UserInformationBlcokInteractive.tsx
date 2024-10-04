@@ -1,6 +1,7 @@
 "use client";
 import { switchBlock, switchFollow } from "@/lib/actions";
 import { useOptimistic, useState } from "react";
+import toast from "react-hot-toast";
 
 interface Props {
   userId: string;
@@ -27,8 +28,10 @@ const UserInformationBlcokInteractive: React.FC<Props> = ({
         isFollowed:
           !userStatus.isFollowed ? true : false,
       });
+      toast.success(`${!userStatus.isFollowed ? "Followed" : "Unfollowed"} successfully`);
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -41,8 +44,10 @@ const UserInformationBlcokInteractive: React.FC<Props> = ({
         ...userStatus,
         isBlocked: !userStatus.isBlocked,
       });
+      toast.success("Blocked successfully");
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   };
 

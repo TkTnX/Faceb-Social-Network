@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import { ImageIcon } from "lucide-react";
+import toast from "react-hot-toast";
 
 const EditPost = ({
   children,
@@ -25,8 +26,10 @@ const EditPost = ({
     try {
       await editPost(postId, formData, img);
       setOpen(false);
+      toast.success("Post updated successfully");
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   };
 

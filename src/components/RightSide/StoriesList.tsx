@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import { CldUploadWidget } from "next-cloudinary";
 import { addStory } from "@/lib/actions";
+import toast from "react-hot-toast";
 
 export type StoriesWithUser = StoryType & {
   user: User;
@@ -58,8 +59,11 @@ const StoriesList = ({
       setImg(null);
 
       setStoriesList((prev) => [newPost, ...prev]);
+
+      toast.success("Story created successfully");
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   };
 
