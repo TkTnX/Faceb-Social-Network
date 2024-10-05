@@ -10,7 +10,7 @@ import PostMoreDelete from "./PostMoreDelete";
 import PostMoreEdit from "./PostMoreEdit";
 import toast from "react-hot-toast";
 
-const PostMore = ({ postId }: { postId: number }) => {
+const PostMore = ({ postId, isPostPage }: { postId: number, isPostPage?: boolean }) => {
   const deletePostFunc = async () => {
     try {
       await deletePost(postId);
@@ -20,6 +20,18 @@ const PostMore = ({ postId }: { postId: number }) => {
       toast.error("Something went wrong");
     }
   };
+
+  if (isPostPage) {
+    return (
+      <div className="flex items-center gap-5">
+        <PostMoreEdit postId={postId} />
+        <form action={deletePostFunc}>
+          <PostMoreDelete />
+        </form>
+      </div>
+    );
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

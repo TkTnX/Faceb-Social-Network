@@ -37,7 +37,8 @@ const Comments = ({
                 firstname: "Pending...",
                 lastname: "Pending...",
                 id: String(Math.random()),
-              },
+            },
+              likes: [],
               userId: user?.id || "",
               updatedAt: new Date(),
               postId,
@@ -74,7 +75,6 @@ const Comments = ({
         commentsList.filter((comment) => comment.id !== commentId)
       );
       toast.success("Comment deleted successfully");
-
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");

@@ -46,6 +46,12 @@ const Feed = async ({
                 avatar: true,
               },
             },
+            likes: {
+              select: {
+                userId: true,
+                id: true,
+              },
+            },
           },
           orderBy: {
             createdAt: "desc",
@@ -107,6 +113,12 @@ const Feed = async ({
                 avatar: true,
               },
             },
+            likes: {
+              select: {
+                userId: true,
+                id: true,
+              },
+            },
           },
           orderBy: {
             createdAt: "desc",
@@ -123,6 +135,7 @@ const Feed = async ({
       },
     });
   }
+
 
   return (
     <div className="grid gap-3 mt-3">

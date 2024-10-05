@@ -4,6 +4,7 @@ import Image from "next/image";
 import PostMore from "./PostMore";
 import PostInteraction from "./PostInteraction";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 type CommentsType = Comment & {
   user: {
@@ -13,6 +14,7 @@ type CommentsType = Comment & {
     lastname: string;
     avatar: string | null;
   };
+  likes: { id: number; userId: string }[];
 };
 
 export type FeedPostType = PostType & {
@@ -25,9 +27,11 @@ export type FeedPostType = PostType & {
 const Post = ({
   post,
   currentUser,
+  isPostPage = false,
 }: {
   post: FeedPostType;
   currentUser: string;
+  isPostPage?: boolean;
 }) => {
   const postCreatedAt = createdAt(post.createdAt);
   return (
@@ -54,20 +58,36 @@ const Post = ({
             <p className="text-gray font-normal text-xs">{postCreatedAt}</p>
           </div>
         </Link>
-        {currentUser === post.user.id && <PostMore postId={post.id} />}
+        {currentUser === post.user.id && (
+          <PostMore isPostPage={isPostPage} postId={post.id} />
+        )}
       </div>
       <p className="text-sm font-normal text-[#203758] mt-3">{post.desc}</p>
-      {post.img && (
-        <div className="w-full mt-4 min-h-72 relative ">
+      {post.img ? isPostPage ? (
+        <div className="w-full block mt-4 min-h-72 relative">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={post.img}
+            alt="post image"
+            className="object-cover rounded-lg max-h-[500px] w-full"
+          />
+        </div>
+      ) : (
+        <Link
+          href={`/post/${post.id}`}
+          className={cn("w-full block mt-4 min-h-72 relative ")}
+        >
           <Image
             src={post.img}
             fill
             alt="post image"
             className="object-cover rounded-lg"
           />
-        </div>
-      )}
+        </Link>
+      ) : ""}
+
       <PostInteraction
+        isPostPage={isPostPage}
         likes={post.likes.map((like) => like.userId)}
         comments={post.comments}
         postId={post.id}

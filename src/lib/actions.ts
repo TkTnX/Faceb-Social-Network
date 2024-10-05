@@ -178,6 +178,7 @@ export async function changeLike(postId: number) {
     const isAlredyLiked = await prisma.like.findFirst({
       where: {
         userId: currentUser,
+        postId,
       },
     });
 
@@ -361,6 +362,40 @@ export async function addStory(img: string) {
     });
 
     return newStory;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function addCommentLike(commentId: number) {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+  console.log(commentId)
+  try {
+    const isLikedComment = await prisma.like.findFirst({
+      where: {
+        AND: {
+          userId: currentUser,
+          commentId,
+        },
+      },
+    });
+
+    if (isLikedComment) {
+      await prisma.like.delete({
+        where: {
+          id: isLikedComment.id,
+        },
+      });
+    } else {
+      await prisma.like.create({
+        data: {
+          userId: currentUser,
+          commentId,
+        },
+      });
+    }
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong");

@@ -3,17 +3,20 @@ import { changeLike } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@clerk/nextjs";
 import { MessageSquareMore, Share2Icon, ThumbsUp } from "lucide-react";
-import { useOptimistic, useState } from "react";
+import { useEffect, useOptimistic, useState } from "react";
 import { Comments } from "@/components";
 import { CommentType } from "./CommentItem";
+import toast from "react-hot-toast";
 const PostInteraction = ({
   postId,
   comments,
   likes,
+  isPostPage,
 }: {
   postId: number;
   comments: CommentType[];
   likes: string[];
+  isPostPage?: boolean;
 }) => {
   const { userId } = useAuth();
   const [openComments, setOpenComments] = useState(false);
@@ -23,6 +26,11 @@ const PostInteraction = ({
     likes: likes.length,
   });
 
+  useEffect(() => {
+    if (isPostPage) {
+      setOpenComments(true);
+    }
+  }, [isPostPage]);
 
   const likeFunc = async () => {
     switchOptimisticLike("");
@@ -33,7 +41,6 @@ const PostInteraction = ({
         isLiked: !like.isLiked,
         likes: like.isLiked ? like.likes - 1 : like.likes + 1,
       });
-      
     } catch (error) {
       console.log(error);
     }
@@ -46,6 +53,11 @@ const PostInteraction = ({
       likes: state.isLiked ? state.likes - 1 : state.likes + 1,
     })
   );
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(`http://localhost:3000/post/${postId}`);
+    toast.success("Link copied to clipboard");
+}
 
   return (
     <>
@@ -64,20 +76,22 @@ const PostInteraction = ({
             </span>
           </button>
         </form>
-        <button
-          onClick={() => setOpenComments((prev) => !prev)}
-          className="flex items-start gap-1 group"
-        >
-          <MessageSquareMore
-            color="#788292"
-            width={24}
-            className="group-hover:stroke-main"
-          />
-          <span className="text-gray text-xs group-hover:text-main">
-            {commentsLength}
-          </span>
-        </button>
-        <button className="flex items-start gap-1 group">
+        {!isPostPage && (
+          <button
+            onClick={() => setOpenComments((prev) => !prev)}
+            className="flex items-start gap-1 group"
+          >
+            <MessageSquareMore
+              color="#788292"
+              width={24}
+              className="group-hover:stroke-main"
+            />
+            <span className="text-gray text-xs group-hover:text-main">
+              {commentsLength}
+            </span>
+          </button>
+        )}
+        <button onClick={handleCopy} className="flex items-start gap-1 group">
           <Share2Icon
             color="#788292"
             width={24}
