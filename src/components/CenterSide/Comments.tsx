@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Input } from "../ui/input";
-import { useOptimistic, useState } from "react";
+import { useOptimistic, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import CommentItem, { CommentType } from "./CommentItem";
 import { useUser } from "@clerk/nextjs";
@@ -81,6 +81,7 @@ const Comments = ({
     }
   };
 
+
   return (
     <div className="mt-2 border-t border-t-gray/20 pt-3">
       <div className="flex items-center gap-2 w-full">
@@ -123,6 +124,7 @@ const Comments = ({
         {optimisticComments.length > 0 ? (
           optimisticComments.map((comment) => (
             <CommentItem
+              setContent={setContent}
               deleteCommentFunc={deleteCommentFunc}
               userId={user.id}
               comment={comment}

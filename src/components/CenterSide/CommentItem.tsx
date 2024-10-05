@@ -2,7 +2,7 @@
 import { addCommentLike } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import { Comment } from "@prisma/client";
-import { ThumbsUp, Trash } from "lucide-react";
+import { ReplyIcon, ThumbsUp, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useOptimistic, useState } from "react";
@@ -23,15 +23,18 @@ const CommentItem = ({
   comment,
   userId,
   deleteCommentFunc,
+  setContent,
 }: {
   comment: CommentType;
   userId: string;
   deleteCommentFunc: (commentId: number) => void;
+  setContent: (v: string) => void;
 }) => {
   const [likesInfo, setLikesInfo] = useState({
-    isLiked: comment && comment.likes
-      ? comment.likes.some((like) => like.userId === userId)
-      : false,
+    isLiked:
+      comment && comment.likes
+        ? comment.likes.some((like) => like.userId === userId)
+        : false,
     likesLength: comment && comment.likes ? comment.likes.length : 0,
   });
   const like = async () => {
@@ -66,7 +69,7 @@ const CommentItem = ({
   );
 
   return (
-    <div className="flex items-start gap-1 border-b-gray/10 border-b pb-2 mt-2">
+    <div className="flex items-start gap-1 border-b-gray/10 border-b pb-2 mt-2 flex-wrap">
       <Link href={`/profile/${comment.user.nickname}`}>
         <Image
           src={comment.user.avatar || "/noAvatar.jpg"}
@@ -76,8 +79,8 @@ const CommentItem = ({
           className="rounded-full"
         />
       </Link>
-      <p className="text-gray text-sm">{comment.content}</p>
-      <div className="flex items-baseline gap-2 ml-auto">
+      <p className="text-gray text-sm break-all">{comment.content}</p>
+      <div className="flex items-baseline gap-2 ml-auto ">
         {userId === comment.userId && (
           <form action={() => deleteCommentFunc(comment.id)}>
             <button className="text-gray hover:text-main duration-200">
@@ -103,6 +106,13 @@ const CommentItem = ({
             </span>
           </button>
         </form>
+        <button onClick={() => setContent(`@${comment.user.nickname}, `)}>
+          <ReplyIcon
+            size={18}
+            color="#788292"
+            className="hover:stroke-main duration-150"
+          />
+        </button>
       </div>
     </div>
   );
