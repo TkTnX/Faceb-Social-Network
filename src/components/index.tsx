@@ -26,6 +26,7 @@ import EditProfileInput from "./ui/EditProfileInput";
 import Comments from "./CenterSide/Comments";
 import AddPostButton from "./CenterSide/AddPostButton";
 import StoryModal from "./modals/StoryModal";
+import FriendsPageItem from "./CenterSide/FriendsPageItem";
 export {
   Header,
   MobileMenu,
@@ -55,4 +56,5 @@ export {
   Comments,
   AddPostButton,
   StoryModal,
+  FriendsPageItem,
 };
