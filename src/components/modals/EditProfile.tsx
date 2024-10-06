@@ -1,5 +1,7 @@
 "use client";
 import { EditProfileInput } from "@/components";
+
+import { format } from "date-fns";
 import {
   Dialog,
   DialogContent,
@@ -15,19 +17,24 @@ import { CldUploadWidget } from "next-cloudinary";
 import { User } from "@prisma/client";
 import UpdateButton from "../RightSide/UpdateButton";
 import toast from "react-hot-toast";
+import { CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Calendar } from "../ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 interface Props {
   children: React.ReactNode;
-  user: User
+  user: User;
 }
 
 const EditProfile: React.FC<Props> = ({ children, user }) => {
   const [open, setOpen] = useState(false);
   const [profileBg, setProfileBg] = useState<any>(user.profileBg);
+  const [birthday, setBirthday] = useState<Date>();
   const router = useRouter();
   const update = async (formData: FormData) => {
     try {
-      await updateProfileInformation(formData, profileBg);
+      await updateProfileInformation(formData, profileBg, birthday);
       setOpen(false);
       toast.success("Profile updated successfully");
       router.refresh();
@@ -36,6 +43,7 @@ const EditProfile: React.FC<Props> = ({ children, user }) => {
       toast.error("Something went wrong");
     }
   };
+
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -57,7 +65,7 @@ const EditProfile: React.FC<Props> = ({ children, user }) => {
           >
             {({ open }) => {
               return (
-                <button onClick={() => open()} type="button">
+                <button onClick={() => open()} type="button" className="col-span-2">
                   <label className="text-xs text-gray block max-w-max">
                     Cover Picture
                   </label>
@@ -103,7 +111,34 @@ const EditProfile: React.FC<Props> = ({ children, user }) => {
             name="website"
             placeholder={user.website || "https://example.com"}
           />
-         <UpdateButton />
+        
+          <Popover>
+            <PopoverTrigger asChild>
+              <button
+                className={cn(
+                  "text-left font-normal flex items-center  border rounded-md border-[#e5e5e5] px-3 gap-3 self-end py-2",
+                  !birthday && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon color="#788292" size={16} />
+                {birthday ? (
+                  format(birthday, "PPP")
+                ) : (
+                  <span className="text-gray">Pick a Birthday</span>
+                )}
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                className="text-gray"
+                mode="single"
+                selected={birthday}
+                onSelect={setBirthday}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+          <UpdateButton />
         </form>
       </DialogContent>
     </Dialog>

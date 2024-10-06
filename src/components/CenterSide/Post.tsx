@@ -59,7 +59,7 @@ const Post = ({
           </div>
         </Link>
         {currentUser === post.user.id && (
-          <PostMore isPostPage={isPostPage} postId={post.id} />
+          <PostMore desc={post.desc} isPostPage={isPostPage} postId={post.id} />
         )}
       </div>
       <p className="text-sm font-normal text-[#203758] mt-3">{post.desc}</p>

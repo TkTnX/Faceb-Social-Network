@@ -10,7 +10,15 @@ import PostMoreDelete from "./PostMoreDelete";
 import PostMoreEdit from "./PostMoreEdit";
 import toast from "react-hot-toast";
 
-const PostMore = ({ postId, isPostPage }: { postId: number, isPostPage?: boolean }) => {
+const PostMore = ({
+  postId,
+  isPostPage,
+  desc,
+}: {
+  postId: number;
+  isPostPage?: boolean;
+  desc: string;
+}) => {
   const deletePostFunc = async () => {
     try {
       await deletePost(postId);
@@ -24,7 +32,7 @@ const PostMore = ({ postId, isPostPage }: { postId: number, isPostPage?: boolean
   if (isPostPage) {
     return (
       <div className="flex items-center gap-5">
-        <PostMoreEdit postId={postId} />
+        <PostMoreEdit desc={desc} postId={postId} />
         <form action={deletePostFunc}>
           <PostMoreDelete />
         </form>
@@ -40,7 +48,7 @@ const PostMore = ({ postId, isPostPage }: { postId: number, isPostPage?: boolean
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className={"p-2"}>
-        <PostMoreEdit postId={postId} />
+        <PostMoreEdit desc={desc} postId={postId} />
         <form action={deletePostFunc}>
           <PostMoreDelete />
         </form>

@@ -21,6 +21,8 @@ model User {
   school  String?
   work    String?
   website String?
+  birthday DateTime?
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

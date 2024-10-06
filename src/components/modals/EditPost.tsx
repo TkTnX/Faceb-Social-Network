@@ -10,16 +10,20 @@ import { useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import { ImageIcon } from "lucide-react";
 import toast from "react-hot-toast";
+import EditPostButton from "../CenterSide/EditPostButton";
 
 const EditPost = ({
   children,
   postId,
+  desc,
 }: {
   children: React.ReactNode;
   postId: number;
+  desc: string;
 }) => {
   const [open, setOpen] = useState(false);
   const [img, setImg] = useState(null);
+  const [value, setValue] = useState(desc)
   const [isSuccessImgChange, setIsSuccessImgChange] = useState(false);
 
   const editPostFunc = async (formData: FormData) => {
@@ -41,7 +45,9 @@ const EditPost = ({
         <form action={(formData) => editPostFunc(formData)}>
           <textarea
             name="desc"
-            placeholder="New Description..."
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder={desc}
             className="outline-none w-full p-2 rounded-md min-h-10 max-h-24 border border-neutral-200"
           />
           <CldUploadWidget
@@ -70,9 +76,7 @@ const EditPost = ({
               );
             }}
           </CldUploadWidget>
-          <button className="bg-main w-full text-white text-center py-2 mt-2 rounded-md hover:opacity-80 duration-150">
-            Update
-          </button>
+          <EditPostButton />
         </form>
       </DialogContent>
     </Dialog>

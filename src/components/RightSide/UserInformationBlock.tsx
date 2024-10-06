@@ -6,6 +6,7 @@ import { auth } from "@clerk/nextjs/server";
 import {
   BriefcaseBusiness,
   Calendar,
+  Gift,
   GraduationCap,
   Link as LinkIcon,
   MapPin,
@@ -18,7 +19,7 @@ const UserInformation = async ({
   isBlocked,
 }: {
   userId: string;
-  isBlocked?: boolean
+  isBlocked?: boolean;
 }) => {
   const { userId: currentUserId } = auth();
 
@@ -45,9 +46,15 @@ const UserInformation = async ({
         followingId: user.id,
       },
     });
-
- 
   }
+
+  const birthdayDate =
+    user.birthday &&
+    new Date(user.birthday).toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
 
   return (
     <div className="mb-9">
@@ -103,6 +110,14 @@ const UserInformation = async ({
               </span>
             </div>
           )}
+          {user.birthday && (
+            <div className="flex items-center gap-1">
+              <Gift size={18} color="#788292" />
+              <span>
+                Birthday: <b className="text-gray">{birthdayDate}</b>
+              </span>
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-between flex-wrap gap-1 mt-4">
           {user.website && (
@@ -116,6 +131,7 @@ const UserInformation = async ({
               </Link>
             </div>
           )}
+
           <div className="text-xs text-gray flex items-center gap-1">
             <Calendar size={12} />
             <div>Joined {formattedDate}</div>

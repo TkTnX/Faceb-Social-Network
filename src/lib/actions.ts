@@ -123,7 +123,8 @@ export async function declineFollowRequest(userId: string) {
 
 export async function updateProfileInformation(
   formData: FormData,
-  profileBg?: string
+  profileBg?: string,
+  birthday?: Date
 ) {
   const { userId: currentUser } = auth();
   if (!currentUser) return new Error("You are not authenticated");
@@ -142,12 +143,19 @@ export async function updateProfileInformation(
     work: z.string().optional(),
     website: z.string().optional(),
     profileBg: z.string().optional(),
+    birthday: z.date().optional(),
   });
 
-  const validatedFields = Profile.safeParse({ ...filteredFields, profileBg });
+  const validatedFields = Profile.safeParse({
+    ...filteredFields,
+    profileBg,
+    birthday,
+  });
 
   if (!validatedFields.success) {
     console.log(validatedFields.error.flatten().fieldErrors);
+
+    throw new Error("Invalid fields");
   }
 
   try {
@@ -155,7 +163,7 @@ export async function updateProfileInformation(
       where: {
         id: currentUser,
       },
-      data: validatedFields.data ?? {},
+      data: validatedFields.data,
     });
 
     const user = await prisma.user.findFirst({
@@ -371,7 +379,7 @@ export async function addStory(img: string) {
 export async function addCommentLike(commentId: number) {
   const { userId: currentUser } = auth();
   if (!currentUser) return new Error("You are not authenticated");
-  console.log(commentId)
+  console.log(commentId);
   try {
     const isLikedComment = await prisma.like.findFirst({
       where: {
