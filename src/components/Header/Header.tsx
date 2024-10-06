@@ -5,7 +5,7 @@ import { Navbar, UserInfo } from "..";
 
 const Header = () => {
   return (
-    <header className="flex items-center justify-between px-4 h-[70px]">
+    <header className="flex items-center justify-between px-4 h-[70px] bg-white">
       {/* LEFT */}
       <div className="">
         <Link href="/">

@@ -409,3 +409,19 @@ export async function addCommentLike(commentId: number) {
     throw new Error("Something went wrong");
   }
 }
+
+export async function deleteStory(storyId: number) { 
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+  try {
+    await prisma.story.delete({
+      where: {
+        id: storyId,
+        userId: currentUser,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}

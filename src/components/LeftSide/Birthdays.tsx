@@ -38,7 +38,7 @@ const Birthdays = async ({
             <BirthdaysItem key={user.following.id} user={user.following} />
           ))
         ) : (
-          <span>No birthdays today</span>
+          <span className="text-xs text-gray">No birthdays today</span>
         )}
 
         {/* MORE BIRTHDAYS */}

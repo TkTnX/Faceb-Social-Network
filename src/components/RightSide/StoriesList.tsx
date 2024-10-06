@@ -7,6 +7,7 @@ import { useUser } from "@clerk/nextjs";
 import { CldUploadWidget } from "next-cloudinary";
 import { addStory } from "@/lib/actions";
 import toast from "react-hot-toast";
+import { cn } from "@/lib/utils";
 
 export type StoriesWithUser = StoryType & {
   user: User;
@@ -14,8 +15,10 @@ export type StoriesWithUser = StoryType & {
 
 const StoriesList = ({
   stories,
+  isStoriesPage,
 }: {
   stories: StoriesWithUser[];
+  isStoriesPage?: boolean;
 }) => {
   const { user } = useUser();
   const [storiesList, setStoriesList] = useState(stories);
@@ -25,6 +28,7 @@ const StoriesList = ({
     storiesList,
     (state, value: StoriesWithUser) => [value, ...state]
   );
+
   if (!user) return null;
 
   const addStoryFunc = async () => {
@@ -48,6 +52,7 @@ const StoriesList = ({
         school: null,
         work: null,
         website: null,
+        birthday: null,
       },
     });
     try {
@@ -81,7 +86,10 @@ const StoriesList = ({
                   open();
                   widget?.open();
                 }}
-                className=" h-[210px] min-w-[115px] text-center cursor-pointer relative"
+                className={cn(
+                  " h-[210px] min-w-[115px] text-center cursor-pointer relative",
+                  { "h-[410] min-w-[230px]": isStoriesPage }
+                )}
               >
                 {img ? (
                   <Image
@@ -124,9 +132,17 @@ const StoriesList = ({
         }}
       </CldUploadWidget>
 
-      {optimisticStories.map((story) => (
-        <Story key={story.id} story={story} />
-      ))}
+      {optimisticStories.length > 0
+        ? optimisticStories.map((story) => (
+            <Story
+              storiesList={storiesList}
+              setStoriesList={setStoriesList}
+              isStoriesPage={isStoriesPage}
+              key={story.id}
+              story={story}
+            />
+          ))
+        : "Loading..."}
     </div>
   );
 };
