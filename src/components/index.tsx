@@ -27,6 +27,7 @@ import Comments from "./CenterSide/Comments";
 import AddPostButton from "./CenterSide/AddPostButton";
 import StoryModal from "./modals/StoryModal";
 import FriendsPageItem from "./CenterSide/FriendsPageItem";
+import Search from "./Header/Search";
 export {
   Header,
   MobileMenu,
@@ -57,4 +58,5 @@ export {
   AddPostButton,
   StoryModal,
   FriendsPageItem,
+  Search,
 };

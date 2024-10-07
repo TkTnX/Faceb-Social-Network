@@ -134,15 +134,15 @@ const StoriesList = ({
 
       {optimisticStories.length > 0
         ? optimisticStories.map((story) => (
-            <Story
-              storiesList={storiesList}
-              setStoriesList={setStoriesList}
-              isStoriesPage={isStoriesPage}
-              key={story.id}
-              story={story}
-            />
-          ))
-        : "Loading..."}
+          <Story
+            storiesList={storiesList}
+            setStoriesList={setStoriesList}
+            isStoriesPage={isStoriesPage}
+            key={story.id}
+            story={story}
+          />
+        ))
+        : ""}
     </div>
   );
 };

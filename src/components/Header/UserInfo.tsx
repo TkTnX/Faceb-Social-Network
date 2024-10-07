@@ -6,25 +6,14 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
-import { Bell, LogIn, MessageCircleMore, Search, Users } from "lucide-react";
+import { Bell, LogIn, MessageCircleMore, Users } from "lucide-react";
 import Link from "next/link";
-import { MobileMenu } from "@/components";
+import { MobileMenu, Search } from "@/components";
 
-const UserInfo = () => {
+const UserInfo = ({ users }: { users: {id: string, nickname: string, avatar: string | null, firstname: string, lastname: string}[]}) => {
   return (
     <div className="flex items-center gap-4">
-      <div className="hidden vsm:flex items-center bg-slate-100 rounded-xl px-3 py-1">
-        <input
-          className="bg-transparent  outline-none"
-          placeholder="search..."
-        />
-        <button>
-          <Search
-            color="#788292"
-            className="hover:stroke-main transition duration-200"
-          />
-        </button>
-      </div>
+      <Search users={users} />
       <ClerkLoading>
         <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-500 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white" />
       </ClerkLoading>

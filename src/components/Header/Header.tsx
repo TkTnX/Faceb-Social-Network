@@ -1,9 +1,18 @@
-"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { Navbar, UserInfo } from "..";
+import { prisma } from "@/lib/client";
 
-const Header = () => {
+const Header = async () => {
+  const users = await prisma.user.findMany({
+    select: {
+      nickname: true,
+      id: true,
+      avatar: true,
+      firstname: true,
+      lastname: true,
+    },
+  });
   return (
     <header className="flex items-center justify-between px-4 h-[70px] bg-white">
       {/* LEFT */}
@@ -17,7 +26,7 @@ const Header = () => {
         <Navbar />
       </div>
       {/* RIGHT */}
-      <UserInfo />
+      <UserInfo users={users} />
     </header>
   );
 };
