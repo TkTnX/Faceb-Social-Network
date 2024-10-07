@@ -63,32 +63,28 @@ const Post = ({
         )}
       </div>
       <p className="text-sm font-normal text-[#203758] mt-3">{post.desc}</p>
-      {post.img.includes("image") ? (
-        post.img ? (
-          isPostPage ? (
-            <div className="w-full block mt-4 min-h-72 relative">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={post.img}
-                alt="post image"
-                className="object-cover rounded-lg max-h-[500px] w-full"
-              />
-            </div>
-          ) : (
-            <Link
-              href={`/post/${post.id}`}
-              className={cn("w-full block mt-4 min-h-72 relative ")}
-            >
-              <Image
-                src={post.img}
-                fill
-                alt="post image"
-                className="object-cover rounded-lg"
-              />
-            </Link>
-          )
+      {post.img.includes("image") && post.img ? (
+        isPostPage ? (
+          <div className="w-full block mt-4 min-h-72 relative">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={post.img}
+              alt="post image"
+              className="object-cover rounded-lg max-h-[500px] w-full"
+            />
+          </div>
         ) : (
-          ""
+          <Link
+            href={`/post/${post.id}`}
+            className={cn("w-full block mt-4 min-h-72 relative ")}
+          >
+            <Image
+              src={post.img}
+              fill
+              alt="post image"
+              className="object-cover rounded-lg"
+            />
+          </Link>
         )
       ) : post.img.includes("video") ? (
         <video
