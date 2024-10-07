@@ -9,6 +9,7 @@ export async function switchFollow(userId: string) {
   const { userId: currentUser } = auth();
   if (!currentUser) return new Error("You are not authenticated");
   try {
+    
     // Проверка, подписан ли пользователь
     const isAlreadyFollower = await prisma.follower.findFirst({
       where: {
@@ -32,6 +33,7 @@ export async function switchFollow(userId: string) {
         },
       });
     }
+    revalidatePath(`/`)
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong");
@@ -410,7 +412,7 @@ export async function addCommentLike(commentId: number) {
   }
 }
 
-export async function deleteStory(storyId: number) { 
+export async function deleteStory(storyId: number) {
   const { userId: currentUser } = auth();
   if (!currentUser) return new Error("You are not authenticated");
   try {
@@ -418,6 +420,43 @@ export async function deleteStory(storyId: number) {
       where: {
         id: storyId,
         userId: currentUser,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function editComment(updatedComment: string, commentId: number) {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+
+  const contentCheck = z.string().min(1).max(255);
+
+  const validatedContent = contentCheck.safeParse(updatedComment);
+  if (!validatedContent.success) {
+    console.log(validatedContent.error.flatten().fieldErrors);
+    throw new Error("Invalid content");
+  }
+  try {
+    const comment = await prisma.comment.findFirst({
+      where: {
+        id: commentId,
+        userId: currentUser,
+      },
+    });
+
+    if (!comment) {
+      throw new Error("Comment not found");
+    }
+
+    await prisma.comment.update({
+      where: {
+        id: commentId,
+      },
+      data: {
+        content: updatedComment,
       },
     });
   } catch (error) {

@@ -14,7 +14,6 @@ const UserMedia = async ({ userId }: { userId: string }) => {
     },
   });
 
-
   return (
     <div className="mb-3">
       <div className="flex items-center justify-between">
@@ -27,6 +26,7 @@ const UserMedia = async ({ userId }: { userId: string }) => {
         {userPosts.length > 0 ? (
           <div className="grid grid-cols-3 gap-3 items-center">
             {userPosts
+              .filter((post) => !post.img.includes("video"))
               .map((post) => (
                 <Image
                   key={post.id}

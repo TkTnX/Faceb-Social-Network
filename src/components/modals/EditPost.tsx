@@ -68,7 +68,7 @@ const EditPost = ({
                   className="flex items-center gap-1 text-gray text-sm hover:text-main duration-200"
                 >
                   <ImageIcon size={20} color="#1d9bf0" />
-                  <span>Photo</span>
+                  <span>New Media</span>
                   {isSuccessImgChange && (
                     <span className="text-xs text-main mt-2">Updated!</span>
                   )}

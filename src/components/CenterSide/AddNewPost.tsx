@@ -27,6 +27,7 @@ const AddNewPost = ({ user }: { user?: User }) => {
   };
 
   const changeImage = (res: any) => {
+    console.log(res.info.url.includes("video"));
     try {
       setImage(res.info && res.info.secure_url);
       setIsSuccessAddedImage(true)
@@ -77,17 +78,14 @@ const AddNewPost = ({ user }: { user?: User }) => {
                 className="flex items-center gap-1 text-gray text-sm hover:text-main duration-200"
               >
                 <ImageIcon size={20} color="#1d9bf0" />
-                <span>Photo</span>
+                <span>Media</span>
                 {isSuccessAddedImage && <span className="text-main">✓</span>}
               </button>
             );
           }}
         </CldUploadWidget>
 
-        <button className="flex items-center gap-1 text-gray text-sm hover:text-main duration-200">
-          <VideoIcon size={22} color="#1d9bf0" />
-          <span>Video</span>
-        </button>
+      
         <button className="flex items-center gap-1 text-gray text-sm hover:text-main duration-200">
           <Calendar size={22} color="#1d9bf0" />
           <span>Event</span>

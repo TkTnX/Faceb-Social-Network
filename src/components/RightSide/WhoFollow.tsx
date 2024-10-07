@@ -23,9 +23,7 @@ const WhoFollow = async ({ currentUser: userId }: { currentUser: string }) => {
     <div className="mt-8">
       <div className="flex items-center justify-between">
         <h4 className="text-[#203758] text-lg font-medium">New Followers</h4>
-        <button>
-          <MoreHorizontal />
-        </button>
+     
       </div>
       <WhoFollowList requests={followers} />
     </div>

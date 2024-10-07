@@ -1,12 +1,13 @@
 "use client";
-import { addCommentLike } from "@/lib/actions";
+import { addCommentLike, editComment } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import { Comment } from "@prisma/client";
-import { ReplyIcon, ThumbsUp, Trash } from "lucide-react";
+import { Pen, ReplyIcon, ThumbsUp, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useOptimistic, useState } from "react";
 import toast from "react-hot-toast";
+import { Input } from "../ui/input";
 
 export type CommentType = Comment & {
   user: {
@@ -30,6 +31,8 @@ const CommentItem = ({
   deleteCommentFunc: (commentId: number) => void;
   setContent: (v: string) => void;
 }) => {
+  const [openEdit, setOpenEdit] = useState(false);
+  const [newContent, setNewContent] = useState(comment.content);
   const [likesInfo, setLikesInfo] = useState({
     isLiked:
       comment && comment.likes
@@ -68,6 +71,19 @@ const CommentItem = ({
     })
   );
 
+  const edit = async () => {
+    try {
+      await editComment(newContent, comment.id);
+      toast.success("Comment edited successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    } finally {
+      setOpenEdit(false);
+
+    }
+  };
+
   return (
     <div className="flex items-start gap-1 border-b-gray/10 border-b pb-2 mt-2 flex-wrap">
       <Link href={`/profile/${comment.user.nickname}`}>
@@ -79,14 +95,38 @@ const CommentItem = ({
           className="rounded-full"
         />
       </Link>
-      <p className="text-gray text-sm break-all">{comment.content}</p>
+      {openEdit ? (
+        <form action={edit} className="flex items-center gap-2 w-1/2">
+          <Input
+            value={newContent}
+            onChange={(e) => setNewContent(e.target.value)}
+            name="content"
+            placeholder={comment.content}
+          />
+          <button className="text-white hover:text-main duration-200 bg-main px-2 py-1 rounded-md hover:bg-main/50">
+            Edit
+          </button>
+        </form>
+      ) : (
+        <p className="text-gray text-sm break-all">
+          {newContent !== comment.content ? newContent : comment.content}
+        </p>
+      )}
       <div className="flex items-baseline gap-2 ml-auto ">
         {userId === comment.userId && (
-          <form action={() => deleteCommentFunc(comment.id)}>
-            <button className="text-gray hover:text-main duration-200">
-              <Trash size={18} />
+          <>
+            <form action={() => deleteCommentFunc(comment.id)}>
+              <button className="text-gray hover:text-main duration-200">
+                <Trash size={18} />
+              </button>
+            </form>
+            <button
+              onClick={() => setOpenEdit(!openEdit)}
+              className="text-gray hover:text-main duration-200"
+            >
+              <Pen size={18} />
             </button>
-          </form>
+          </>
         )}
         <form action={like}>
           <button className="flex items-end group">
