@@ -1,10 +1,9 @@
-"use server";
-import Post, { FeedPostType } from "./Post";
-import { prisma } from "@/lib/client";
-import { auth } from "@clerk/nextjs/server";
+"use client";
+import Post from "./Post";
 import { Block } from "@prisma/client";
-
-const Feed = async ({
+import usePosts from "@/hooks/usePosts";
+import { Skeleton } from "../ui/skeleton";
+const Feed = ({
   userId,
   type,
   isUserBlocked,
@@ -15,136 +14,42 @@ const Feed = async ({
   isUserBlocked?: Block | null;
   isCurrentUserBlocked?: Block | null;
 }) => {
-  let posts: FeedPostType[] = [];
-  const { userId: currentUser } = auth();
+  const { posts, loading, hasMore, handleLoadMore } = usePosts(
+    type,
+    userId ?? "",
+    isUserBlocked,
+    isCurrentUserBlocked
+  );
 
-  if (userId && !isUserBlocked && !isCurrentUserBlocked) {
-    posts = await prisma.post.findMany({
-      where: {
-        userId,
-      },
-      include: {
-        user: true,
-        likes: {
-          select: {
-            userId: true,
-          },
-        },
-        _count: {
-          select: {
-            comments: true,
-          },
-        },
-        comments: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                nickname: true,
-                firstname: true,
-                lastname: true,
-                avatar: true,
-              },
-            },
-            likes: {
-              select: {
-                userId: true,
-                id: true,
-              },
-            },
-          },
-          orderBy: {
-            createdAt: "desc",
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-  }
-  if (userId && type === "home") {
-    if (!currentUser) return null;
-    const user = await prisma.user.findFirst({
-      where: {
-        id: currentUser,
-      },
-      include: {
-        following: {
-          select: {
-            followingId: true,
-          },
-        },
-      },
-    });
+  if (posts.length === 0 && !loading)
+    return (
+      <span className="text-center text-gray block mt-5">No posts yet</span>
+    );
 
-    if (!user) return null;
-    const userFollowings = await prisma.follower.findMany({
-      where: {
-        followerId: user.id,
-      },
-    });
-
-    const userFollowingsIds = [
-      user.id,
-      ...userFollowings.map((user) => user.followingId),
-    ];
-    posts = await prisma.post.findMany({
-      where: {
-        userId: {
-          in: userFollowingsIds.map((id) => String(id)),
-        },
-      },
-      include: {
-        user: true,
-        likes: {
-          select: {
-            userId: true,
-          },
-        },
-        comments: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                nickname: true,
-                firstname: true,
-                lastname: true,
-                avatar: true,
-              },
-            },
-            likes: {
-              select: {
-                userId: true,
-                id: true,
-              },
-            },
-          },
-          orderBy: {
-            createdAt: "desc",
-          },
-        },
-        _count: {
-          select: {
-            comments: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-  }
-
+  if (posts.length === 0)
+    return (
+      <div className="grid gap-3 mt-3 ">
+        {[...new Array(5)].map((_, index) => (
+          <Skeleton key={index} className="w-[639px] h-[512px] bg-gray/30" />
+        ))}
+      </div>
+    );
 
   return (
     <div className="grid gap-3 mt-3">
-      {posts.length > 0 ? (
-        posts.map((post) => (
-          <Post key={post.id} post={post} currentUser={currentUser || ""} />
-        ))
-      ) : (
-        <span className="text-center text-gray block mt-5">No posts yet</span>
+      {posts.map((post) => (
+        <Post key={post.id} post={post} />
+      ))}
+      {hasMore && type !== "profile" && (
+        <button
+          className="text-main font-bold hover:bg-main/20 p-2 rounded-lg text-center w-full duration-150 mb-10"
+          onClick={handleLoadMore}
+        >
+          {loading ? "Loading..." : "Load more"}
+        </button>
+      )}
+      {!hasMore && (
+        <span className="text-center text-gray block mt-5">No more posts</span>
       )}
     </div>
   );

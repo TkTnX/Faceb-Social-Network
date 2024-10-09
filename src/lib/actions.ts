@@ -381,7 +381,6 @@ export async function addStory(img: string) {
 export async function addCommentLike(commentId: number) {
   const { userId: currentUser } = auth();
   if (!currentUser) return new Error("You are not authenticated");
-  console.log(commentId);
   try {
     const isLikedComment = await prisma.like.findFirst({
       where: {

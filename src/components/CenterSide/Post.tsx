@@ -1,3 +1,4 @@
+"use client";
 import { createdAt } from "@/lib/createdAt";
 import { Post as PostType, User, Comment } from "@prisma/client";
 import Image from "next/image";
@@ -5,6 +6,7 @@ import PostMore from "./PostMore";
 import PostInteraction from "./PostInteraction";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
 
 type CommentsType = Comment & {
   user: {
@@ -26,14 +28,13 @@ export type FeedPostType = PostType & {
 
 const Post = ({
   post,
-  currentUser,
   isPostPage = false,
 }: {
   post: FeedPostType;
-  currentUser: string;
   isPostPage?: boolean;
 }) => {
   const postCreatedAt = createdAt(post.createdAt);
+  const { user } = useUser();
   return (
     <div className="py-5 px-4 sm:px-8 bg-white rounded-lg border border-[#F1F2F6] ">
       {/* TOP */}
@@ -58,7 +59,7 @@ const Post = ({
             <p className="text-gray font-normal text-xs">{postCreatedAt}</p>
           </div>
         </Link>
-        {currentUser === post.user.id && (
+        {user?.id === post.user.id && (
           <PostMore desc={post.desc} isPostPage={isPostPage} postId={post.id} />
         )}
       </div>
