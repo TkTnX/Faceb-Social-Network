@@ -29,9 +29,11 @@ export type FeedPostType = PostType & {
 const Post = ({
   post,
   isPostPage = false,
+  reloadPosts,
 }: {
   post: FeedPostType;
   isPostPage?: boolean;
+  reloadPosts?: () => void;
 }) => {
   const postCreatedAt = createdAt(post.createdAt);
   const { user } = useUser();
@@ -60,7 +62,12 @@ const Post = ({
           </div>
         </Link>
         {user?.id === post.user.id && (
-          <PostMore desc={post.desc} isPostPage={isPostPage} postId={post.id} />
+          <PostMore
+            reloadPosts={reloadPosts}
+            desc={post.desc}
+            isPostPage={isPostPage}
+            postId={post.id}
+          />
         )}
       </div>
       <p className="text-sm font-normal text-[#203758] mt-3">{post.desc}</p>

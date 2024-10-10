@@ -282,7 +282,6 @@ export async function addPost(formData: FormData, img: string) {
       },
     });
 
-    revalidatePath("/");
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong");

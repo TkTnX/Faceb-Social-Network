@@ -15,9 +15,10 @@ export default function usePosts(
   const [skip, setSkip] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`;
   const fetchPosts = async (newSkip: number) => {
     setLoading(true);
-    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`;
+
     const urlWithParams = `${url}?userId=${userId}&type=${type}&skip=${newSkip}&isUserBlocked=${
       isUserBlocked ? "true" : "false"
     }&isCurrentUserBlocked=${isCurrentUserBlocked ? "true" : "false"}`;
@@ -54,5 +55,45 @@ export default function usePosts(
     fetchPosts(newSkip);
   };
 
-  return { posts, loading, hasMore, handleLoadMore, setPosts };
+  const reloadPosts = async () => {
+    setPosts([]);
+    setSkip(0);
+    setHasMore(true);
+    fetchPosts(0);
+    setLoading(true);
+
+    const urlWithParams = `${url}?userId=${userId}&type=${type}&skip=0&isUserBlocked=${
+      isUserBlocked ? "true" : "false"
+    }&isCurrentUserBlocked=${isCurrentUserBlocked ? "true" : "false"}`;
+
+    try {
+      const newPosts = await (await axios.get(urlWithParams)).data;
+
+      if (newPosts.length < 1) {
+        setHasMore(false);
+      }
+
+      setPosts((prevPosts) => [
+        ...prevPosts,
+        ...newPosts.filter(
+          (post: FeedPostType) =>
+            !prevPosts.some((prevPost) => prevPost.id === post.id)
+        ),
+      ]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    posts,
+    loading,
+    hasMore,
+    handleLoadMore,
+    setPosts,
+    fetchPosts,
+    reloadPosts,
+  };
 }

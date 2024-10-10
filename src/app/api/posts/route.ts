@@ -9,10 +9,7 @@ export async function GET(req: NextRequest) {
     Object.fromEntries(req.nextUrl.searchParams);
   try {
     let posts: FeedPostType[] = [];
-    if (
-      
-      type === "profile"
-    ) {
+    if (type === "profile" && isUserBlocked === "false" && isCurrentUserBlocked === "false") {
       posts = await prisma.post.findMany({
         where: {
           userId,
@@ -55,7 +52,6 @@ export async function GET(req: NextRequest) {
         orderBy: {
           createdAt: "desc",
         },
-      
       });
     }
     if (userId && type === "home") {

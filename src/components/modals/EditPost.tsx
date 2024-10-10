@@ -16,14 +16,16 @@ const EditPost = ({
   children,
   postId,
   desc,
+  reloadPosts,
 }: {
   children: React.ReactNode;
   postId: number;
   desc: string;
+  reloadPosts?: () => void;
 }) => {
   const [open, setOpen] = useState(false);
   const [img, setImg] = useState(null);
-  const [value, setValue] = useState(desc)
+  const [value, setValue] = useState(desc);
   const [isSuccessImgChange, setIsSuccessImgChange] = useState(false);
 
   const editPostFunc = async (formData: FormData) => {
@@ -31,6 +33,7 @@ const EditPost = ({
       await editPost(postId, formData, img);
       setOpen(false);
       toast.success("Post updated successfully");
+      reloadPosts && reloadPosts()
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");

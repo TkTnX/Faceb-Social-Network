@@ -1,13 +1,19 @@
 "use client";
 import { User } from "@prisma/client";
-import { Calendar, ImageIcon, PenToolIcon, VideoIcon } from "lucide-react";
+import { Calendar, ImageIcon, PenToolIcon } from "lucide-react";
 import Image from "next/image";
 import { AddPostButton } from "@/components";
 import { useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import { addPost } from "@/lib/actions";
 import toast from "react-hot-toast";
-const AddNewPost = ({ user }: { user?: User }) => {
+const AddNewPost = ({
+  user,
+  reloadPosts,
+}: {
+  user?: User;
+  reloadPosts?: () => void;
+}) => {
   const [desc, setDesc] = useState("");
   const [image, setImage] = useState<any>("");
   const [isSuccessAddedImage, setIsSuccessAddedImage] = useState(false);
@@ -15,10 +21,10 @@ const AddNewPost = ({ user }: { user?: User }) => {
   const addNewPostFunc = async (formData: FormData) => {
     try {
       await addPost(formData, image);
-
-      setDesc("")
-      setImage("")
-      setIsSuccessAddedImage(false)
+      reloadPosts && reloadPosts();
+      setDesc("");
+      setImage("");
+      setIsSuccessAddedImage(false);
       toast.success("Post added successfully");
     } catch (error) {
       console.log(error);
@@ -30,12 +36,12 @@ const AddNewPost = ({ user }: { user?: User }) => {
     console.log(res.info.url.includes("video"));
     try {
       setImage(res.info && res.info.secure_url);
-      setIsSuccessAddedImage(true)
+      setIsSuccessAddedImage(true);
     } catch (error) {
-      console.log(error)
-      setIsSuccessAddedImage(false)
+      console.log(error);
+      setIsSuccessAddedImage(false);
     }
-  }
+  };
 
   return (
     <div className="w-full bg-white rounded-lg overflow-hidden p-4">
@@ -85,7 +91,6 @@ const AddNewPost = ({ user }: { user?: User }) => {
           }}
         </CldUploadWidget>
 
-      
         <button className="flex items-center gap-1 text-gray text-sm hover:text-main duration-200">
           <Calendar size={22} color="#1d9bf0" />
           <span>Event</span>

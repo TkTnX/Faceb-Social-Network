@@ -14,14 +14,17 @@ const PostMore = ({
   postId,
   isPostPage,
   desc,
+  reloadPosts,
 }: {
   postId: number;
   isPostPage?: boolean;
   desc: string;
+  reloadPosts?: () => void;
 }) => {
   const deletePostFunc = async () => {
     try {
       await deletePost(postId);
+      reloadPosts && reloadPosts()
       toast.success("Post deleted successfully");
     } catch (error) {
       console.log(error);
@@ -32,7 +35,7 @@ const PostMore = ({
   if (isPostPage) {
     return (
       <div className="flex items-center gap-5">
-        <PostMoreEdit desc={desc} postId={postId} />
+        <PostMoreEdit reloadPosts={reloadPosts} desc={desc} postId={postId} />
         <form action={deletePostFunc}>
           <PostMoreDelete />
         </form>
@@ -48,7 +51,7 @@ const PostMore = ({
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className={"p-2"}>
-        <PostMoreEdit desc={desc} postId={postId} />
+        <PostMoreEdit reloadPosts={reloadPosts} desc={desc} postId={postId} />
         <form action={deletePostFunc}>
           <PostMoreDelete />
         </form>

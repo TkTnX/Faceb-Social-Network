@@ -22,7 +22,6 @@ const CenterSide = ({
           user={user}
         />
       )}
-      {type === "home" && <AddNewPost user={user} />}
 
       {/* POSTS */}
 
@@ -30,7 +29,7 @@ const CenterSide = ({
         isUserBlocked={isUserBlocked}
         isCurrentUserBlocked={isCurrentUserBlocked}
         type={type}
-        userId={user?.id}
+        user={user}
       />
     </div>
   );
