@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
       });
     }
     if (userId && type === "home") {
-      if (!currentUser) return null;
+      if (!currentUser) return NextResponse.json({ error: "You are not authenticated" });
       const user = await prisma.user.findFirst({
         where: {
           id: currentUser,
@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
         },
       });
 
-      if (!user) return null;
+      if (!user) return NextResponse.json({ error: "User not found" });
       const userFollowings = await prisma.follower.findMany({
         where: {
           followerId: user.id,
@@ -128,6 +128,7 @@ export async function GET(req: NextRequest) {
         skip: Number(skip),
       });
     }
+
 
     return NextResponse.json(posts);
   } catch (error) {

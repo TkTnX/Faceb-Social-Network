@@ -7,6 +7,8 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
   const id = params.id;
   const { userId: currentUser } = auth();
 
+  if(!currentUser) return notFound();
+
   const post = await prisma.post.findFirst({
     where: {
       id: Number(id),
@@ -52,7 +54,7 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <div className=" max-w-[1317px] px-4 mx-auto">
-      <Post isPostPage={true} post={post} currentUser={currentUser || ""} />
+      <Post isPostPage={true} post={post}  />
     </div>
   );
 };

@@ -26,16 +26,20 @@ const Feed = ({
     await reloadPosts();
   };
 
+
+
   return (
     <>
       {type === "home" && (
         <AddNewPost reloadPosts={reloadPostsFunc} user={user} />
       )}
       <div className="grid gap-3 mt-3">
-        {posts.length === 0 && !loading && (
-          <span className="text-center text-gray block mt-5">No posts yet</span>
-        )}
-        {posts.length === 0 ? (
+        {
+          posts.length === 0 && !loading && (
+            <span className="text-center text-gray block mt-5">No posts yet</span>
+          )
+        }
+        {posts.length === 0  ? (
           <div className="grid gap-3 mt-3 ">
             {[...new Array(5)].map((_, index) => (
               <Skeleton
