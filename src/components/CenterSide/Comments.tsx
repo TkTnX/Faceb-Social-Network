@@ -54,6 +54,7 @@ const Comments = ({
     setCommentsLength(commentsLength + 1);
     try {
       const newComment = (await addComment(postId, content)) as CommentType;
+      setContent("")
       if (newComment) {
         setCommentsList([newComment, ...commentsList]);
       }

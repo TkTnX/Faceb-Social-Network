@@ -39,7 +39,7 @@ const Feed = ({
             <span className="text-center text-gray block mt-5">No posts yet</span>
           )
         }
-        {posts.length === 0  ? (
+        {posts.length === 0 && loading  ? (
           <div className="grid gap-3 mt-3 ">
             {[...new Array(5)].map((_, index) => (
               <Skeleton
