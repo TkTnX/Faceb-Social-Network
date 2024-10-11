@@ -1,5 +1,5 @@
 import { Block } from "@prisma/client";
-import { AddNewPost, Feed, UserCard } from "..";
+import {  Feed, UserCard } from "..";
 import { UserWithFollowersAndFollowing } from "./UserCard";
 
 const CenterSide = ({
@@ -22,6 +22,7 @@ const CenterSide = ({
           user={user}
         />
       )}
+      
 
       {/* POSTS */}
 

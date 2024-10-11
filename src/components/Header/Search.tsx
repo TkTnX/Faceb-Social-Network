@@ -21,11 +21,11 @@ const Search = ({
     }, [value, users]);
   return (
     <>
-      <div className="hidden vsm:flex items-center bg-slate-100 rounded-xl px-3 py-1">
+      <div className="w-full flex items-center bg-slate-100 rounded-xl px-1 vsm:px-3 py-1">
         <input
           value={value}
           onChange={(e) => setValue(e.target.value.toLowerCase())}
-          className="bg-transparent  outline-none"
+          className="bg-transparent  outline-none w-full"
           placeholder="search..."
         />
         <button>

@@ -2,8 +2,9 @@
 import { prisma } from "@/lib/client";
 import { auth } from "@clerk/nextjs/server";
 import StoriesList from "./StoriesList";
+import { cn } from "@/lib/utils";
 
-const Stories = async ({isStoriesPage}: {isStoriesPage?: boolean}) => {
+const Stories = async ({isStoriesPage = false, size}: {isStoriesPage: boolean, size: "sm" | "lg"}) => {
   const { userId: currentUser } = auth();
   if (!currentUser) return null;
 
@@ -41,13 +42,13 @@ const Stories = async ({isStoriesPage}: {isStoriesPage?: boolean}) => {
 
 
   return (
-    <div className="">
+    <div className={cn("", {"block sm:hidden": size==="sm"})}>
       <div className="flex items-center justify-between">
-        {!isStoriesPage && (
+        {!isStoriesPage && size === "lg" && (
           <h4 className="text-[#203758] text-lg font-medium">Stories</h4>
         )}
       </div>
-      <StoriesList isStoriesPage={isStoriesPage} stories={stories} />
+      <StoriesList size={size} isStoriesPage={isStoriesPage} stories={stories} />
     </div>
   );
 };

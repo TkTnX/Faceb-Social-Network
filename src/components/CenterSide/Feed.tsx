@@ -3,7 +3,7 @@ import Post from "./Post";
 import { Block, User } from "@prisma/client";
 import usePosts from "@/hooks/usePosts";
 import { Skeleton } from "../ui/skeleton";
-import AddNewPost from "./AddNewPost";
+import { Stories, AddNewPost } from "@/components";
 const Feed = ({
   user,
   type,
@@ -33,18 +33,17 @@ const Feed = ({
       {type === "home" && (
         <AddNewPost reloadPosts={reloadPostsFunc} user={user} />
       )}
+      {/* {type === "home" && <Stories isStoriesPage={false} size="sm" />} */}
       <div className="grid gap-3 mt-3">
-        {
-          posts.length === 0 && !loading && (
-            <span className="text-center text-gray block mt-5">No posts yet</span>
-          )
-        }
-        {posts.length === 0 && loading  ? (
+        {posts.length === 0 && !loading && (
+          <span className="text-center text-gray block mt-5">No posts yet</span>
+        )}
+        {posts.length === 0 && loading ? (
           <div className="grid gap-3 mt-3 ">
             {[...new Array(5)].map((_, index) => (
               <Skeleton
                 key={index}
-                className="w-[639px] h-[512px] bg-gray/30"
+                className="w-full h-[512px] bg-gray/30 max-w-full"
               />
             ))}
           </div>

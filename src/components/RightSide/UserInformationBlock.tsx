@@ -17,9 +17,11 @@ import { UserInformationBlcokInteractive, EditProfile } from "@/components";
 const UserInformation = async ({
   userId,
   isBlocked,
+  size
 }: {
   userId: string;
-  isBlocked?: boolean;
+    isBlocked?: boolean;
+  size: "sm" | "lg"
 }) => {
   const { userId: currentUserId } = auth();
 
@@ -57,10 +59,14 @@ const UserInformation = async ({
     });
 
   return (
-    <div className="mb-9">
+    <div className={cn("mb-9", {"mb-0 mt-3  block sm:hidden": size === "sm"})}>
       {/* TOP */}
       <div className="flex items-center justify-between">
-        <h4 className="text-[#203758] text-lg font-medium">User Information</h4>
+        {size === "lg" && (
+          <h4 className="text-[#203758] text-lg font-medium">
+            User Information
+          </h4>
+        )}
         {currentUserId === user.id && (
           <EditProfile user={user}>
             <button>
@@ -143,6 +149,7 @@ const UserInformation = async ({
               isFollowed={isFollowed ? true : false}
               isBlocked={isBlocked ? true : false}
               userId={user.id}
+              size="lg"
             />
           </>
         )}

@@ -16,9 +16,11 @@ export type StoriesWithUser = StoryType & {
 const StoriesList = ({
   stories,
   isStoriesPage,
+  size,
 }: {
   stories: StoriesWithUser[];
-  isStoriesPage?: boolean;
+  isStoriesPage: boolean;
+  size: "sm" | "lg";
 }) => {
   const { user } = useUser();
   const [storiesList, setStoriesList] = useState(stories);
@@ -73,7 +75,12 @@ const StoriesList = ({
   };
 
   return (
-    <div className="flex items-center gap-2 w-full overflow-x-auto overflow-y-hidden   mt-4 scrollbar">
+    <div
+      className={cn(
+        "flex items-center gap-2 w-full overflow-x-auto overflow-y-hidden   mt-4 scrollbar",
+        { " sm:justify-center": size === "sm" }
+      )}
+    >
       <CldUploadWidget
         uploadPreset="social"
         onSuccess={(res: any) => setImg(res.info && res.info.secure_url)}
@@ -134,14 +141,14 @@ const StoriesList = ({
 
       {optimisticStories.length > 0
         ? optimisticStories.map((story) => (
-          <Story
-            storiesList={storiesList}
-            setStoriesList={setStoriesList}
-            isStoriesPage={isStoriesPage}
-            key={story.id}
-            story={story}
-          />
-        ))
+            <Story
+              storiesList={storiesList}
+              setStoriesList={setStoriesList}
+              isStoriesPage={isStoriesPage}
+              key={story.id}
+              story={story}
+            />
+          ))
         : ""}
     </div>
   );

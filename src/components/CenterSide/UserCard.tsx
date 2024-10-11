@@ -1,7 +1,12 @@
+"use server";
 import { Block, User } from "@prisma/client";
 import Image from "next/image";
 import UserFollowers from "../modals/UserFollowers";
 import UserFollowings from "../modals/UserFollowings";
+import UserInformationBlcokInteractive from "../RightSide/UserInformationBlcokInteractive";
+import { auth } from "@clerk/nextjs/server";
+import { prisma } from "@/lib/client";
+import { Stories, UserInformationBlock } from "..";
 
 export type UserWithFollowersAndFollowing = User & {
   followers?: {
@@ -34,7 +39,17 @@ const UserCard = async ({
   isUserBlocked?: Block | null;
   isCurrentUserBlocked?: Block | null;
 }) => {
+  const { userId: currentUserId } = auth();
   if (!user) return null;
+  let isFollowed;
+  if (currentUserId) {
+    isFollowed = await prisma.follower.findFirst({
+      where: {
+        followerId: currentUserId,
+        followingId: user.id,
+      },
+    });
+  }
 
   if (isCurrentUserBlocked) {
     return (
@@ -54,7 +69,7 @@ const UserCard = async ({
   if (isUserBlocked) {
     return (
       <div className="bg-white text-gray text-2xl text-center mb-10 p-10 font-bold">
-              <Image
+        <Image
           src={user.avatar || "/noAvatar.jpg"}
           width={128}
           height={128}
@@ -118,6 +133,8 @@ const UserCard = async ({
             </button>
           </UserFollowings>
         </div>
+        <UserInformationBlock size="sm" userId={user.id} />
+        <Stories isStoriesPage={false} size="sm" />
       </div>
     </div>
   );

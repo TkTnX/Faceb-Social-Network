@@ -16,7 +16,7 @@ const Header = async () => {
   return (
     <header className="flex items-center justify-between px-4 h-[70px] bg-white">
       {/* LEFT */}
-      <div className="">
+      <div className="hidden vsm:block">
         <Link href="/">
           <Image src="/logo.svg" width={40} height={40} alt="logo" />
         </Link>

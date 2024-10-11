@@ -13,9 +13,15 @@ const RightSide = ({
   isCurrentUserBlocked?: Block | null;
 }) => {
   return (
-    <div className="hidden  sm:block sm:w-[25%] lg:w-[25%] xl:w-[35%] ">
-      {user && !isCurrentUserBlocked && <UserInformationBlock isBlocked={isBlocked} userId={user.id} />}
-      <Stories />
+    <div className="hidden  sm:block sm:w-[35%] lg:w-[35%] xl:w-[35%] ">
+      {user && !isCurrentUserBlocked && (
+        <UserInformationBlock
+          size="lg"
+          isBlocked={isBlocked}
+          userId={user.id}
+        />
+      )}
+      <Stories isStoriesPage={false} size="lg" />
       <WhoFollow currentUser={currentUser} />
     </div>
   );

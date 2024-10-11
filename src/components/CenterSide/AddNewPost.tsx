@@ -62,7 +62,7 @@ const AddNewPost = ({
               user?.firstname || user?.nickname
             }?`}
             name="desc"
-            className="w-full bg-gray/5 rounded-lg p-2  outline-none min-h-[55px] max-h-48 overflow-hidden"
+            className="w-full bg-gray/5 rounded-lg p-2 placeholder:text-xs  outline-none min-h-[55px] max-h-48 overflow-hidden"
             onChange={(e) => setDesc(e.target.value)}
             value={desc}
           />

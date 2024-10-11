@@ -1,5 +1,6 @@
 "use client";
 import { switchBlock, switchFollow } from "@/lib/actions";
+import { cn } from "@/lib/utils";
 import { useOptimistic, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -7,12 +8,14 @@ interface Props {
   userId: string;
   isFollowed: boolean;
   isBlocked: boolean;
+  size: "sm" | "lg"
 }
 
 const UserInformationBlcokInteractive: React.FC<Props> = ({
   userId,
   isFollowed,
   isBlocked,
+  size
 }) => {
   const [userStatus, setUserStatus] = useState({
     isFollowed,
@@ -65,7 +68,7 @@ const UserInformationBlcokInteractive: React.FC<Props> = ({
           }
   );
   return (
-    <>
+    <div className={cn("", { "sm:hidden block": size === "sm" })}>
       {!followStatus.isBlocked && (
         <form action={follow}>
           <button className="text-main bg-main/20 w-full mt-2 py-3 rounded-lg hover:bg-main hover:text-white duration-100">
@@ -78,7 +81,7 @@ const UserInformationBlcokInteractive: React.FC<Props> = ({
           {followStatus.isBlocked ? "Unblock user" : "Block user"}
         </button>
       </form>
-    </>
+    </div>
   );
 };
 

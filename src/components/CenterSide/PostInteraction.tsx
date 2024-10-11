@@ -55,7 +55,9 @@ const PostInteraction = ({
   );
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(`http://localhost:3000/post/${postId}`);
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/post/${postId}`
+    );
     toast.success("Link copied to clipboard");
 }
 
