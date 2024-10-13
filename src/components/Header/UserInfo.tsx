@@ -31,12 +31,12 @@ const UserInfo = ({ users }: { users: {id: string, nickname: string, avatar: str
         </SignedOut>
         <SignedIn>
           <div className="hidden md:flex itmes-cneter gap-4">
-            <button>
+            <Link href="/c">
               <MessageCircleMore
                 color="#788292 "
                 className="hover:stroke-main transition duration-200"
               />
-            </button>
+            </Link>
             <button>
               <Users
                 color="#788292 "

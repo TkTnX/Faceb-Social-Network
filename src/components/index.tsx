@@ -28,6 +28,7 @@ import AddPostButton from "./CenterSide/AddPostButton";
 import StoryModal from "./modals/StoryModal";
 import FriendsPageItem from "./CenterSide/FriendsPageItem";
 import Search from "./Header/Search";
+import ChatsSidebar from "./Chats/ChatsSidebar";
 export {
   Header,
   MobileMenu,
@@ -59,4 +60,5 @@ export {
   StoryModal,
   FriendsPageItem,
   Search,
+  ChatsSidebar,
 };
