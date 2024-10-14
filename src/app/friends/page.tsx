@@ -1,5 +1,6 @@
 import { FriendsPageItem } from "@/components";
 import FriendsYouCanFollowList from "@/components/CenterSide/FriendsYouCanFollowList";
+import { Card } from "@/components/ui/card";
 import { prisma } from "@/lib/client";
 import { auth } from "@clerk/nextjs/server";
 
@@ -39,7 +40,7 @@ const FriendsPage = async () => {
       <div>
         <h2 className="text-2xl font-bold">Your friends</h2>
 
-        <div className="mt-3 flex gap-3 flex-wrap bg-white p-3 rounded-lg border border-[#F1F2F6]">
+        <Card className="mt-3 flex gap-3 flex-wrap  p-3 rounded-lg border border-[#F1F2F6]">
           {friends.length > 0 ? (
             friends.map((user) => (
               <FriendsPageItem
@@ -51,7 +52,7 @@ const FriendsPage = async () => {
           ) : (
             <span>You don&lsquo;t have any friends yet</span>
           )}
-        </div>
+        </Card>
       </div>
       <div className="mt-10 ">
         <h2 className="text-2xl font-bold">You can also follow</h2>

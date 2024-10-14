@@ -10,13 +10,27 @@ import { Bell, LogIn, MessageCircleMore, Users } from "lucide-react";
 import Link from "next/link";
 import { MobileMenu, Search } from "@/components";
 
-const UserInfo = ({ users }: { users: {id: string, nickname: string, avatar: string | null, firstname: string, lastname: string}[]}) => {
+const UserInfo = ({
+  users,
+}: {
+  users: {
+    id: string;
+    nickname: string;
+    avatar: string | null;
+    firstname: string;
+    lastname: string;
+  }[];
+}) => {
   return (
-    <div className="flex items-center gap-1 justify-between w-full vsm:w-auto vsm:gap-4">
+    <div className="flex items-center gap-2 justify-between w-full vsm:w-auto sm:gap-4">
       <Search users={users} />
       <ClerkLoading>
-        <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-500 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white" />
+        <div
+          className="block h-[27px] w-[35px] animate-spin rounded-full border-2 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+          role="status"
+        />
       </ClerkLoading>
+
       <ClerkLoaded>
         <SignedOut>
           <Link href="/sign-in" className={"items-center gap-2 group vsm:flex"}>

@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { UserInformationBlcokInteractive, EditProfile } from "@/components";
+import { Card } from "../ui/card";
 const UserInformation = async ({
   userId,
   isBlocked,
@@ -75,7 +76,7 @@ const UserInformation = async ({
           </EditProfile>
         )}
       </div>
-      <div className=" rounded-lg bg-white border border-[#F1F2F6] py-4 px-6 mt-2">
+      <Card className=" rounded-lg border  py-4 px-6 mt-2">
         <div className="flex items-center text-sm gap-2">
           <h4 className="text-xl font-medium">
             {user.firstname || user.lastname
@@ -153,7 +154,7 @@ const UserInformation = async ({
             />
           </>
         )}
-      </div>
+      </Card>
     </div>
   );
 };

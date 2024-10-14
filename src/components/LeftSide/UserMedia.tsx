@@ -2,6 +2,7 @@ import { prisma } from "@/lib/client";
 import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Card } from "../ui/card";
 
 const UserMedia = async ({ userId }: { userId: string }) => {
   const userPosts = await prisma.post.findMany({
@@ -22,7 +23,7 @@ const UserMedia = async ({ userId }: { userId: string }) => {
       <div className="flex items-center justify-between">
         <h4 className="text-[#203758] text-lg font-medium">User Media</h4>
       </div>
-      <div className="bg-white rounded-lg border border-[#F1F2F6] p-3">
+      <Card className=" rounded-lg border  p-3 shadow-none">
         {filteredUserPosts.length > 0 ? (
           <div className="grid grid-cols-3 gap-3 items-center">
             {filteredUserPosts
@@ -42,7 +43,7 @@ const UserMedia = async ({ userId }: { userId: string }) => {
         ) : (
           <span className="text-gray text-sm">No user media yet</span>
         )}
-      </div>
+      </Card>
     </div>
   );
 };

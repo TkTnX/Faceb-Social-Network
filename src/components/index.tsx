@@ -10,7 +10,7 @@ import Story from "./RightSide/Story";
 import WhoFollow from "./RightSide/WhoFollow";
 import WhoFollowItem from "./RightSide/WhoFollowItem";
 import UserBadge from "./LeftSide/UserBadge";
-import Sidebar from "./Sidebar";
+import Sidebar from "./Sidebar/Sidebar";
 import LeftSide from "./LeftSide/LeftSide";
 import CenterSide from "./CenterSide/CenterSide";
 import RightSide from "./RightSide/RightSide";
@@ -29,6 +29,7 @@ import StoryModal from "./modals/StoryModal";
 import FriendsPageItem from "./CenterSide/FriendsPageItem";
 import Search from "./Header/Search";
 import ChatsSidebar from "./Chats/ChatsSidebar";
+import ChatsSidebarMobile from "./Chats/ChatsSidebarMobile";
 export {
   Header,
   MobileMenu,
@@ -61,4 +62,5 @@ export {
   FriendsPageItem,
   Search,
   ChatsSidebar,
+  ChatsSidebarMobile,
 };

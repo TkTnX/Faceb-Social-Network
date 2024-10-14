@@ -3,8 +3,9 @@ import { prisma } from "@/lib/client";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import ChatsUserItem from "./ChatsUserItem";
+import { cn } from "@/lib/utils";
 
-const ChatsUsersList = async () => {
+const ChatsUsersList = async ({size}: {size: "sm" | "lg"}) => {
   const { userId: currentUserId } = auth();
   if (!currentUserId) redirect("/");
   const userFollowings = await prisma.follower.findMany({
@@ -25,21 +26,29 @@ const ChatsUsersList = async () => {
   });
   return (
     <div className="flex flex-col gap-3 pt-2">
-      <h3 className="text-center sm:text-left font-bold text-xl">Chats</h3>
-
-      {userFollowings.length > 0 ? (
-        userFollowings.map((user) => (
-          <ChatsUserItem
-            isInSidebar={true}
-            key={user.following.id}
-            user={user.following}
-          />
-        ))
-      ) : (
-        <span className="text-gray text-xs font-medium">
-          You do not have any chats yet
-        </span>
+      {size === "lg" && (
+        <h3 className="text-center sm:text-left font-bold text-xl">Chats</h3>
       )}
+
+      <div
+        className={cn("", {
+          "flex w-full gap-3 overflow-x-auto scrollbar": size === "sm",
+        })}
+      >
+        {userFollowings.length > 0 ? (
+          userFollowings.map((user) => (
+            <ChatsUserItem
+              isInSidebar={true}
+              key={user.following.id}
+              user={user.following}
+            />
+          ))
+        ) : (
+          <span className="text-gray text-xs font-medium">
+            You do not have any chats yet
+          </span>
+        )}
+      </div>
     </div>
   );
 };

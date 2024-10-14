@@ -3,6 +3,7 @@ import { User } from "@prisma/client";
 import { FriendsPageItem } from "..";
 import { useState } from "react";
 import { Search, X } from "lucide-react";
+import { Card } from "../ui/card";
 
 const FriendsYouCanFollowList = ({ users }: { users: User[] }) => {
   const [value, setValue] = useState("");
@@ -20,14 +21,15 @@ const FriendsYouCanFollowList = ({ users }: { users: User[] }) => {
     <>
       <form
         onSubmit={handleSubmit}
-        className="bg-white flex items-center px-2 py-3 border border-[#F1F2F6] rounded-lg mt-2"
+        className=" flex items-center px-2 py-3 border  rounded-lg mt-2 changeBg"
       >
         <input
           name="search"
           placeholder="Find people..."
-          className="outline-none w-full "
+          className="outline-none w-full bg-inherit "
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          
         />
         {value && (
           <button onClick={() => setValue("")} type="button">
@@ -38,7 +40,7 @@ const FriendsYouCanFollowList = ({ users }: { users: User[] }) => {
           <Search size={18} />
         </button>
       </form>
-      <div className="mt-3 flex gap-3 flex-wrap bg-white p-3 rounded-lg border border-[#F1F2F6]">
+      <Card className="mt-3 flex gap-3 flex-wrap  p-3 rounded-lg border ">
         {users.length > 0 ? (
           users
             .filter((user) => fullUserName(user).includes(finalValue))
@@ -48,7 +50,7 @@ const FriendsYouCanFollowList = ({ users }: { users: User[] }) => {
         ) : (
           <span>There are no users that you can follow</span>
         )}
-      </div>
+      </Card>
     </>
   );
 };

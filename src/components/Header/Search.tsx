@@ -21,7 +21,7 @@ const Search = ({
     }, [value, users]);
   return (
     <>
-      <div className="w-full flex items-center bg-slate-100 rounded-xl px-1 vsm:px-3 py-1">
+      <div className="ml-2 sm:ml-0 w-full flex items-center bg-slate-100 rounded-xl px-1 vsm:px-3 py-1">
         <input
           value={value}
           onChange={(e) => setValue(e.target.value.toLowerCase())}

@@ -23,7 +23,7 @@ const Nickname = async ({ params }: { params: { nickname: string } }) => {
   }
 
   return (
-    <div className="w-full flex flex-col justify-between ">
+    <div className="w-full flex flex-col justify-between h-full">
           <ChatHeader user={userByNickname} />
           <ChatMessages />
           <ChatForm />

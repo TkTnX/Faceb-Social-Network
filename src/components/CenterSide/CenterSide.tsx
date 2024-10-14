@@ -1,5 +1,5 @@
 import { Block } from "@prisma/client";
-import {  Feed, UserCard } from "..";
+import {  Feed, Stories, UserCard } from "..";
 import { UserWithFollowersAndFollowing } from "./UserCard";
 
 const CenterSide = ({
@@ -15,6 +15,11 @@ const CenterSide = ({
 }) => {
   return (
     <div className="w-full sm:w-[65%] xl:w-[65%] lg:w-[50%] ">
+      {type === "home" && (
+        <div className="mb-3 block sm:hidden">
+          <Stories isStoriesPage={false} size="sm" />
+        </div>
+      )}
       {type === "profile" && (
         <UserCard
           isUserBlocked={isUserBlocked}
@@ -22,7 +27,6 @@ const CenterSide = ({
           user={user}
         />
       )}
-      
 
       {/* POSTS */}
 

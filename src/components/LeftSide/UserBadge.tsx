@@ -2,6 +2,7 @@ import { Follower } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { UserWithFollowersAndFollowing } from "../CenterSide/UserCard";
+import { Card } from "../ui/card";
 
 const UserBadge = ({
   user,
@@ -11,7 +12,7 @@ const UserBadge = ({
   userFollowers?: Follower[];
 }) => {
   return (
-    <div className="bg-white rounded-lg border border-[#F1F2F6] p-3 mb-9">
+    <Card className=" rounded-lg border  p-3 mb-9 shadow-none" >
       <div className="relative h-20 w-full">
         <Image
           src={user.profileBg || "/noProfileBg.jpg"}
@@ -47,7 +48,7 @@ const UserBadge = ({
           My profile
         </Link>
       </div>
-    </div>
+    </Card>
   );
 };
 

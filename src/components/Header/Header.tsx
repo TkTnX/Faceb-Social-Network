@@ -14,7 +14,7 @@ const Header = async () => {
     },
   });
   return (
-    <header className="flex items-center justify-between px-4 h-[70px] bg-white">
+    <header className="flex items-center justify-between px-4 h-[70px]  changeBg">
       {/* LEFT */}
       <div className="hidden vsm:block">
         <Link href="/">

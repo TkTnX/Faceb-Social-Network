@@ -7,6 +7,7 @@ import { useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import { addPost } from "@/lib/actions";
 import toast from "react-hot-toast";
+import { Card } from "../ui/card";
 const AddNewPost = ({
   user,
   reloadPosts,
@@ -44,7 +45,7 @@ const AddNewPost = ({
   };
 
   return (
-    <div className="w-full bg-white rounded-lg overflow-hidden p-4">
+    <Card className="w-full rounded-lg overflow-hidden p-4 border-none shadow-none">
       <div className="flex items-start gap-3 pb-3">
         <Image
           src={user?.avatar || "/noAvatar.jpg"}
@@ -100,7 +101,7 @@ const AddNewPost = ({
           <span>Poll</span>
         </button>
       </div>
-    </div>
+    </Card>
   );
 };
 

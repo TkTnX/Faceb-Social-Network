@@ -7,6 +7,7 @@ import PostInteraction from "./PostInteraction";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
+import { Card } from "../ui/card";
 
 type CommentsType = Comment & {
   user: {
@@ -38,7 +39,7 @@ const Post = ({
   const postCreatedAt = createdAt(post.createdAt);
   const { user } = useUser();
   return (
-    <div className="py-5 px-4 sm:px-8 bg-white rounded-lg border border-[#F1F2F6] ">
+    <Card className="py-5 px-4 sm:px-8  rounded-lg border border-[#F1F2F6] shadow-none">
       {/* TOP */}
       <div className="flex items-center justify-between w-full">
         <Link
@@ -111,7 +112,7 @@ const Post = ({
         comments={post.comments}
         postId={post.id}
       />
-    </div>
+    </Card>
   );
 };
 
