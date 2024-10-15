@@ -30,6 +30,7 @@ import FriendsPageItem from "./CenterSide/FriendsPageItem";
 import Search from "./Header/Search";
 import ChatsSidebar from "./Chats/ChatsSidebar";
 import ChatsSidebarMobile from "./Chats/ChatsSidebarMobile";
+import { SidebarChangeTheme } from "./Sidebar/SidebarChangeTheme";
 export {
   Header,
   MobileMenu,
@@ -63,4 +64,5 @@ export {
   Search,
   ChatsSidebar,
   ChatsSidebarMobile,
+  SidebarChangeTheme,
 };

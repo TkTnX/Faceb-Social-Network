@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { NavbarItem } from "@/components";
+import { NavbarItem, SidebarChangeTheme } from "@/components";
 import { navbarItems } from "@/constants";
 import clsx from "clsx";
 const MobileMenu = () => {
@@ -53,6 +53,7 @@ const MobileMenu = () => {
           <button onClick={() => setOpen(false)}>
             <NavbarItem isInMenu={true} name="Chats" href="/c" />
           </button>
+          <SidebarChangeTheme />
         </div>
       )}
     </div>

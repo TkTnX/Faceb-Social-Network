@@ -25,7 +25,7 @@ const Search = ({
         <input
           value={value}
           onChange={(e) => setValue(e.target.value.toLowerCase())}
-          className="bg-transparent  outline-none w-full"
+          className="bg-transparent  outline-none w-full text-black"
           placeholder="search..."
         />
         <button>

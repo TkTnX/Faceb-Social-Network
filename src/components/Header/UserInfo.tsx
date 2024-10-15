@@ -12,8 +12,8 @@ import { MobileMenu, Search } from "@/components";
 
 const UserInfo = ({
   users,
-}: {
-  users: {
+}: {            
+  users: {                        
     id: string;
     nickname: string;
     avatar: string | null;
