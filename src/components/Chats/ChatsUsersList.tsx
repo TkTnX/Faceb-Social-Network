@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import ChatsUserItem from "./ChatsUserItem";
 import { cn } from "@/lib/utils";
+import { Input } from "../ui/input";
 
 const ChatsUsersList = async ({size}: {size: "sm" | "lg"}) => {
   const { userId: currentUserId } = auth();
@@ -29,6 +30,8 @@ const ChatsUsersList = async ({size}: {size: "sm" | "lg"}) => {
       {size === "lg" && (
         <h3 className="text-center sm:text-left font-bold text-xl">Chats</h3>
       )}
+
+      <Input placeholder="Find chats" />
 
       <div
         className={cn("", {
