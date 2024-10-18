@@ -1,6 +1,7 @@
 "use client";
 import { switchBlock, switchFollow } from "@/lib/actions";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { useOptimistic, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -8,14 +9,14 @@ interface Props {
   userId: string;
   isFollowed: boolean;
   isBlocked: boolean;
-  size: "sm" | "lg"
+  size: "sm" | "lg";
 }
 
 const UserInformationBlcokInteractive: React.FC<Props> = ({
   userId,
   isFollowed,
   isBlocked,
-  size
+  size,
 }) => {
   const [userStatus, setUserStatus] = useState({
     isFollowed,
@@ -76,6 +77,7 @@ const UserInformationBlcokInteractive: React.FC<Props> = ({
           </button>
         </form>
       )}
+
       <form className="max-w-max ml-auto" action={block}>
         <button className="text-red-400 text-right w-full mt-2 text-xs">
           {followStatus.isBlocked ? "Unblock user" : "Block user"}

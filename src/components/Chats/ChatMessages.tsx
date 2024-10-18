@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-import ChatMessage from "./ChatMessage";
+import { ChatMessage } from "@/components/Chats";
 
 const ChatMessages = () => {
   const endMessages = useRef(null);
@@ -48,7 +48,7 @@ const ChatMessages = () => {
       // @ts-ignore
       endMessages.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [])
+  }, []);
 
   return (
     <div className="flex-1 h-full w-full overflow-y-auto scrollbar">

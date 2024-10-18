@@ -1,4 +1,4 @@
-import { ChatsSidebar, ChatsSidebarMobile } from "@/components";
+import { ChatsSidebar, ChatsSidebarMobile } from "@/components/Chats";
 import { Card } from "@/components/ui/card";
 import { Metadata } from "next";
 

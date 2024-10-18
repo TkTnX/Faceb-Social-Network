@@ -28,8 +28,7 @@ import AddPostButton from "./CenterSide/AddPostButton";
 import StoryModal from "./modals/StoryModal";
 import FriendsPageItem from "./CenterSide/FriendsPageItem";
 import Search from "./Header/Search";
-import ChatsSidebar from "./Chats/ChatsSidebar";
-import ChatsSidebarMobile from "./Chats/ChatsSidebarMobile";
+
 import { SidebarChangeTheme } from "./Sidebar/SidebarChangeTheme";
 export {
   Header,
@@ -62,7 +61,5 @@ export {
   StoryModal,
   FriendsPageItem,
   Search,
-  ChatsSidebar,
-  ChatsSidebarMobile,
   SidebarChangeTheme,
 };

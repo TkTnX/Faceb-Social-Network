@@ -2,11 +2,11 @@
 import { prisma } from "@/lib/client";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import ChatsUserItem from "./ChatsUserItem";
+import { ChatsUserItem } from "@/components/Chats";
 import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
 
-const ChatsUsersList = async ({size}: {size: "sm" | "lg"}) => {
+const ChatsUsersList = async ({ size }: { size: "sm" | "lg" }) => {
   const { userId: currentUserId } = auth();
   if (!currentUserId) redirect("/");
   const userFollowings = await prisma.follower.findMany({

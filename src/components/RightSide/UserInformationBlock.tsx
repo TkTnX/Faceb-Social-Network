@@ -18,11 +18,11 @@ import { Card } from "../ui/card";
 const UserInformation = async ({
   userId,
   isBlocked,
-  size
+  size,
 }: {
   userId: string;
-    isBlocked?: boolean;
-  size: "sm" | "lg"
+  isBlocked?: boolean;
+  size: "sm" | "lg";
 }) => {
   const { userId: currentUserId } = auth();
 
@@ -60,7 +60,9 @@ const UserInformation = async ({
     });
 
   return (
-    <div className={cn("mb-9", {"mb-0 mt-3  block sm:hidden": size === "sm"})}>
+    <div
+      className={cn("mb-9", { "mb-0 mt-3  block sm:hidden": size === "sm" })}
+    >
       {/* TOP */}
       <div className="flex items-center justify-between">
         {size === "lg" && (
