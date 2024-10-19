@@ -1,46 +1,10 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { ChatMessage } from "@/components/Chats";
+import { Message } from "@prisma/client";
 
-const ChatMessages = () => {
+const ChatMessages = ({ messages }: { messages: Message[] }) => {
   const endMessages = useRef(null);
-  const messages = [
-    { receiverId: "1", createdAt: new Date().toString() },
-
-    {
-      receiverId: "user_2nF9olfLihIpxgivZOLGQb9M2AN",
-      createdAt: new Date().toString(),
-    },
-    { receiverId: "2", createdAt: new Date().toString() },
-    { receiverId: "1", createdAt: new Date().toString() },
-
-    {
-      receiverId: "user_2nF9olfLihIpxgivZOLGQb9M2AN",
-      createdAt: new Date().toString(),
-    },
-    { receiverId: "2", createdAt: new Date().toString() },
-    { receiverId: "1", createdAt: new Date().toString() },
-
-    {
-      receiverId: "user_2nF9olfLihIpxgivZOLGQb9M2AN",
-      createdAt: new Date().toString(),
-    },
-    { receiverId: "2", createdAt: new Date().toString() },
-    { receiverId: "1", createdAt: new Date().toString() },
-
-    {
-      receiverId: "user_2nF9olfLihIpxgivZOLGQb9M2AN",
-      createdAt: new Date().toString(),
-    },
-    { receiverId: "2", createdAt: new Date().toString() },
-    { receiverId: "1", createdAt: new Date().toString() },
-
-    {
-      receiverId: "user_2nF9olfLihIpxgivZOLGQb9M2AN",
-      createdAt: new Date().toString(),
-    },
-    { receiverId: "2", createdAt: new Date().toString() },
-  ];
 
   useEffect(() => {
     if (endMessages.current) {
@@ -55,7 +19,7 @@ const ChatMessages = () => {
       {messages.length > 0 ? (
         <div className="grid gap-2 p-5">
           {messages.map((message) => (
-            <ChatMessage key={message.createdAt} message={message} />
+            <ChatMessage key={message.createdAt.toString()} message={message} />
           ))}
           <div ref={endMessages} />
         </div>

@@ -9,22 +9,47 @@ import { Input } from "../ui/input";
 const ChatsUsersList = async ({ size }: { size: "sm" | "lg" }) => {
   const { userId: currentUserId } = auth();
   if (!currentUserId) redirect("/");
-  const userFollowings = await prisma.follower.findMany({
+
+  const userChats = await prisma.userChats.findMany({
     where: {
-      followerId: currentUserId,
+      userId: currentUserId,
     },
     include: {
-      following: {
+      chat: {
         select: {
-          id: true,
-          nickname: true,
-          firstname: true,
-          lastname: true,
-          avatar: true,
+          userChats: {
+            select: {
+              user: {
+                select: {
+                  id: true,
+                  nickname: true,
+                  firstname: true,
+                  lastname: true,
+                  avatar: true,
+                  userChats: {
+                    select: {
+                      chatId: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
     },
   });
+
+  if (!userChats || !userChats.length)
+    return <p>You do not have any chats yet</p>;
+  const filteredUserChats = userChats
+    .map((c) =>
+      c.chat?.userChats
+        .filter((u) => u.user.id !== currentUserId)
+        .map((u) => u.user)
+    )
+    .filter((chat) => chat !== undefined && chat.length > 0);
+
   return (
     <div className="flex flex-col gap-3 pt-2">
       {size === "lg" && (
@@ -38,12 +63,13 @@ const ChatsUsersList = async ({ size }: { size: "sm" | "lg" }) => {
           "flex w-full gap-3 overflow-x-auto scrollbar": size === "sm",
         })}
       >
-        {userFollowings.length > 0 ? (
-          userFollowings.map((user) => (
+        {filteredUserChats.length > 0 ? (
+          filteredUserChats.map((chat) => (
             <ChatsUserItem
               isInSidebar={true}
-              key={user.following.id}
-              user={user.following}
+              key={chat && chat[0].id}
+              user={chat ? chat[0] : null}
+              chatId={chat && chat[0].userChats[0].chatId}
             />
           ))
         ) : (

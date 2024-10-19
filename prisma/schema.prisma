@@ -31,6 +31,8 @@ model User {
   likes       Like[]
   posts       Post[]
   stories     Story[]
+
+  userChats UserChats[]
 }
 
 model Post {
@@ -95,4 +97,35 @@ model Story {
   createdAt DateTime @default(now())
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Chat {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  lastMessage String @default("")
+  isSeen      Boolean @default(false)
+
+  userChats UserChats[]
+  messages  Message[]
+}
+
+model UserChats {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  chatId    Int
+  createdAt DateTime @default(now())
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chat Chat? @relation(fields: [chatId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  content   String
+  chatId    Int
+  senderId  String
+
+  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
 }

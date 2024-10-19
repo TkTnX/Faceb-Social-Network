@@ -9,7 +9,6 @@ export async function switchFollow(userId: string) {
   const { userId: currentUser } = auth();
   if (!currentUser) return new Error("You are not authenticated");
   try {
-    
     // Проверка, подписан ли пользователь
     const isAlreadyFollower = await prisma.follower.findFirst({
       where: {
@@ -33,7 +32,6 @@ export async function switchFollow(userId: string) {
         },
       });
     }
-    revalidatePath(`/`)
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong");
@@ -281,7 +279,6 @@ export async function addPost(formData: FormData, img: string) {
         img,
       },
     });
-
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong");

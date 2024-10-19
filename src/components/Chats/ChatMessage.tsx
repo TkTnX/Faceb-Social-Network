@@ -1,21 +1,27 @@
 "use client";
+import { createdAt } from "@/lib/createdAt";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@clerk/nextjs";
+import { Message } from "@prisma/client";
 
-const ChatMessage = ({ message }: any) => {
+const ChatMessage = ({ message }: { message: Message }) => {
   const { userId } = useAuth();
+  const messageCreatedAt = createdAt(message.createdAt);
 
   return (
     <div
-      className={cn("max-w-[60%] text-xs p-5 bg-main/10 rounded-lg", {
-        "ml-auto bg-main/40": message.receiverId === userId,
+      className={cn("max-w-max mr-auto", {
+        "ml-auto  mr-0": message.senderId === userId,
       })}
     >
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit nisi,
-        eligendi neque explicabo odio quod omnis dolorem. Vitae voluptatibus at
-        tenetur porro ea voluptates fuga et provident, illum ratione soluta!
-      </p>
+      <div
+        className={cn(" text-xs p-5 bg-main/10 rounded-lg ", {
+          " bg-main/40 mr-0": message.senderId === userId,
+        })}
+      >
+        <p>{message.content}</p>
+      </div>
+      <span className="text-[9px] text-gray">{messageCreatedAt}</span>
     </div>
   );
 };
