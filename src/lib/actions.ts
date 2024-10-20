@@ -506,3 +506,41 @@ export async function editComment(updatedComment: string, commentId: number) {
     throw new Error("Something went wrong");
   }
 }
+
+export async function addMessage(
+  content: string,
+  chatId: number,
+  senderId: string
+) {
+  try {
+    if (content === "") {
+      throw new Error("Empty message");
+    }
+    const newMessage = await prisma.message.create({
+      data: {
+        content,
+        chatId,
+        senderId,
+      },
+    });
+    return newMessage;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function deleteMessage(messageId: number) {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+  try {
+    await prisma.message.delete({
+      where: {
+        id: messageId,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}

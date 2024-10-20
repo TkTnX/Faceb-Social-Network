@@ -2,9 +2,9 @@ import ChatForm from "@/components/Chats/ChatForm";
 import ChatHeader from "@/components/Chats/ChatHeader";
 import ChatMessages from "@/components/Chats/ChatMessages";
 import { prisma } from "@/lib/client";
+import { supabase } from "@/lib/supabase";
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
-
 const UserChatPage = async ({ params }: { params: { id: string } }) => {
   const { userId: currentUserId } = auth();
 
@@ -43,6 +43,7 @@ const UserChatPage = async ({ params }: { params: { id: string } }) => {
   }
 
 
+
   return (
     <div className="w-full flex flex-col justify-between h-full">
       <ChatHeader
@@ -52,7 +53,7 @@ const UserChatPage = async ({ params }: { params: { id: string } }) => {
         }
       />
       <ChatMessages messages={userChats.chat.messages} />
-      <ChatForm />
+      <ChatForm chatId={Number(params.id)} />
     </div>
   );
 };

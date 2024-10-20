@@ -3,31 +3,28 @@ import { Send } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useState } from "react";
+import { addMessage } from "@/lib/actions";
+import { useAuth } from "@clerk/nextjs";
+import ChatFormButton from "./ChatFormButton";
 
-const ChatForm = () => {
+const ChatForm = ({ chatId }: { chatId: number }) => {
   const [value, setValue] = useState("");
+  const { userId } = useAuth();
+  if (!userId) return null;
+  const handleSend = async () => {
+    const newMessage = await addMessage(value, chatId, userId);
 
-  const handleSend = () => {
-      console.log(value);
-      
-      setValue("")
+    setValue("");
   };
 
   return (
-    <form className="p-3 flex items-center gap-2">
+    <form action={handleSend} className="p-3 flex items-center gap-2">
       <Input
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Message..."
       />
-      <Button
-        onClick={handleSend}
-        type="button"
-        disabled={value === ""}
-        className="bg-main hover:bg-main/80"
-      >
-        <Send size={16} />
-      </Button>
+      <ChatFormButton value={value} />
     </form>
   );
 };
