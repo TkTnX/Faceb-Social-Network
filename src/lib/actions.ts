@@ -17,6 +17,21 @@ export async function switchFollow(userId: string) {
       },
     });
 
+    const chatWithCurrentUserAndUser = await prisma.userChats.findFirst({
+      where: {
+        AND: {
+          userId: currentUser,
+          chat: {
+            userChats: {
+              some: {
+                userId,
+              },
+            },
+          },
+        },
+      },
+    });
+
     // Если да - удаляем
     if (isAlreadyFollower) {
       await prisma.follower.delete({
@@ -24,11 +39,43 @@ export async function switchFollow(userId: string) {
           id: isAlreadyFollower.id,
         },
       });
+
+      if (chatWithCurrentUserAndUser) {
+        await prisma.userChats.deleteMany({
+          where: {
+            AND: {
+              userId: currentUser,
+              chatId: chatWithCurrentUserAndUser.chatId,
+            },
+          },
+        });
+
+        await prisma.chat.delete({
+          where: {
+            id: chatWithCurrentUserAndUser.chatId,
+          },
+        });
+      }
     } else {
       await prisma.follower.create({
         data: {
           followerId: currentUser,
           followingId: userId,
+        },
+      });
+
+      const newChat = await prisma.chat.create({});
+
+      await prisma.userChats.create({
+        data: {
+          userId,
+          chatId: newChat.id,
+        },
+      });
+      await prisma.userChats.create({
+        data: {
+          userId: currentUser,
+          chatId: newChat.id,
         },
       });
     }
