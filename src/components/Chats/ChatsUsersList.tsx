@@ -1,7 +1,6 @@
 import { ChatsUserItem } from "@/components/Chats";
 import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
-import { UserChats } from "@prisma/client";
 
 type ChatsUsersListProps = {
   id: string;
@@ -17,9 +16,12 @@ const ChatsUsersList = ({
   filteredUserChats,
 }: {
   size: "sm" | "lg";
-  filteredUserChats: ChatsUsersListProps[];
+  filteredUserChats?: ChatsUsersListProps[];
 }) => {
   if (!filteredUserChats || filteredUserChats.length === 0) return null;
+
+  // TODO: ПОИСК ЧАТОВ
+
   return (
     <div className="flex flex-col gap-3 pt-2">
       {size === "lg" && (
