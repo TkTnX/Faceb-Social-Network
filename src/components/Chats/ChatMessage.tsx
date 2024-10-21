@@ -49,6 +49,10 @@ const ChatMessage = ({ message }: { message: Message }) => {
               Edit
             </Button>
           </form>
+        ) : message.content.includes("https://res.cloudinary.com/") ? (
+            
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={message.content} alt={message.content} className="max-h-[300px] object-contain" />
         ) : (
           <p>{message.content}</p>
         )}
@@ -58,6 +62,7 @@ const ChatMessage = ({ message }: { message: Message }) => {
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             messageId={message.id}
+            isImage={message.content.includes("https://res.cloudinary.com/")}
           >
             <button className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 duration-150">
               <MoreHorizontal size={16} />

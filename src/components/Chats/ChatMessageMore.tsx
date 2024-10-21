@@ -13,11 +13,13 @@ const ChatMessageMore = ({
   setIsEditing,
   isEditing,
   messageId,
+  isImage,
 }: {
   children: React.ReactNode;
-    setIsEditing: (b: boolean) => void;
+  setIsEditing: (b: boolean) => void;
   isEditing: boolean;
   messageId: number;
+  isImage: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   const deleteMessageFunc = async () => {
@@ -32,7 +34,7 @@ const ChatMessageMore = ({
   const editOpen = () => {
     setIsEditing(!isEditing);
     setOpen(false);
-  }
+  };
 
   return (
     <DropdownMenu onOpenChange={setOpen} open={open}>
@@ -43,12 +45,14 @@ const ChatMessageMore = ({
             Delete <Trash size={12} />
           </button>
         </form>
-        <button
-          onClick={editOpen}
-          className="flex items-center gap-2 p-2 text-right text-yellow-500 hover:bg-yellow-500/20 rounded-lg hover:text-yellow-500 duration-100"
-        >
-          Edit <Pen size={12} />
-        </button>
+        {!isImage && (
+          <button
+            onClick={editOpen}
+            className="flex items-center gap-2 p-2 text-right text-yellow-500 hover:bg-yellow-500/20 rounded-lg hover:text-yellow-500 duration-100"
+          >
+            Edit <Pen size={12} />
+          </button>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

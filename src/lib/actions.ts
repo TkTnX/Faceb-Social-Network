@@ -514,11 +514,21 @@ export async function editComment(updatedComment: string, commentId: number) {
 export async function addMessage(
   content: string,
   chatId: number,
-  senderId: string
+  senderId: string,
+  image?: string
 ) {
   try {
     if (content === "") {
       throw new Error("Empty message");
+    }
+    if (image) {
+      await prisma.message.create({
+        data: {
+          content: image,
+          chatId,
+          senderId,
+        },
+      });
     }
     const newMessage = await prisma.message.create({
       data: {
@@ -527,6 +537,7 @@ export async function addMessage(
         senderId,
       },
     });
+
     return newMessage;
   } catch (error) {
     console.log(error);
@@ -560,7 +571,7 @@ export async function editMessage(content: string, messageId: number) {
       data: {
         content,
         updatedAt: new Date(),
-      }
+      },
     });
   } catch (error) {
     console.log(error);
