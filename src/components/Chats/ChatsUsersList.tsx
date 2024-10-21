@@ -1,55 +1,25 @@
-"use server";
-import { prisma } from "@/lib/client";
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import { ChatsUserItem } from "@/components/Chats";
 import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
+import { UserChats } from "@prisma/client";
 
-const ChatsUsersList = async ({ size }: { size: "sm" | "lg" }) => {
-  const { userId: currentUserId } = auth();
-  if (!currentUserId) redirect("/");
+type ChatsUsersListProps = {
+  id: string;
+  nickname: string;
+  firstname: string;
+  lastname: string;
+  avatar: string | null;
+  userChats: { chatId: number }[];
+};
 
-  const userChats = await prisma.userChats.findMany({
-    where: {
-      userId: currentUserId,
-    },
-    include: {
-      chat: {
-        select: {
-          userChats: {
-            select: {
-              user: {
-                select: {
-                  id: true,
-                  nickname: true,
-                  firstname: true,
-                  lastname: true,
-                  avatar: true,
-                  userChats: {
-                    select: {
-                      chatId: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  });
-
-  if (!userChats || !userChats.length)
-    return <p>You do not have any chats yet</p>;
-  const filteredUserChats = userChats
-    .map((c) =>
-      c.chat?.userChats
-        .filter((u) => u.user.id !== currentUserId)
-        .map((u) => u.user)
-    )
-    .filter((chat) => chat !== undefined && chat.length > 0);
-
+const ChatsUsersList = ({
+  size,
+  filteredUserChats,
+}: {
+  size: "sm" | "lg";
+  filteredUserChats: ChatsUsersListProps[];
+}) => {
+  if (!filteredUserChats || filteredUserChats.length === 0) return null;
   return (
     <div className="flex flex-col gap-3 pt-2">
       {size === "lg" && (
@@ -64,12 +34,12 @@ const ChatsUsersList = async ({ size }: { size: "sm" | "lg" }) => {
         })}
       >
         {filteredUserChats.length > 0 ? (
-          filteredUserChats.map((chat) => (
+          filteredUserChats.map((user) => (
             <ChatsUserItem
               isInSidebar={true}
-              key={chat && chat[0].id}
-              user={chat ? chat[0] : null}
-              chatId={chat && chat[0].userChats[0].chatId}
+              key={user && user.id}
+              user={user ? user : null}
+              chatId={user && user.userChats[user.userChats.length - 1].chatId}
             />
           ))
         ) : (
