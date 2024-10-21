@@ -32,6 +32,8 @@ export async function switchFollow(userId: string) {
       },
     });
 
+    console.log(chatWithCurrentUserAndUser);
+
     // Если да - удаляем
     if (isAlreadyFollower) {
       await prisma.follower.delete({
@@ -64,20 +66,22 @@ export async function switchFollow(userId: string) {
         },
       });
 
-      const newChat = await prisma.chat.create({});
+      if (!chatWithCurrentUserAndUser) {
+        const newChat = await prisma.chat.create({});
 
-      await prisma.userChats.create({
-        data: {
-          userId,
-          chatId: newChat.id,
-        },
-      });
-      await prisma.userChats.create({
-        data: {
-          userId: currentUser,
-          chatId: newChat.id,
-        },
-      });
+        await prisma.userChats.create({
+          data: {
+            userId,
+            chatId: newChat.id,
+          },
+        });
+        await prisma.userChats.create({
+          data: {
+            userId: currentUser,
+            chatId: newChat.id,
+          },
+        });
+      }
     }
   } catch (error) {
     console.log(error);
@@ -539,6 +543,58 @@ export async function deleteMessage(messageId: number) {
         id: messageId,
       },
     });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function editMessage(content: string, messageId: number) {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+  try {
+    await prisma.message.update({
+      where: {
+        id: messageId,
+      },
+      data: {
+        content,
+        updatedAt: new Date(),
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function deleteChat(chatId: number, userId: string) {
+  const { userId: currentUser } = auth();
+  if (!currentUser) return new Error("You are not authenticated");
+  try {
+    const chat = await prisma.chat.findFirst({
+      where: {
+        AND: {
+          id: chatId,
+          userChats: {
+            some: {
+              userId: currentUser,
+              chatId,
+            },
+          },
+        },
+      },
+    });
+
+    if (chat) {
+      await prisma.chat.delete({
+        where: {
+          id: chatId,
+        },
+      });
+    }
+
+    revalidatePath(`/c/${chatId}`);
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong");

@@ -18,7 +18,7 @@ const BirthdaysSoon = ({
       >
         <Gift size={16} color="#1d9bf0" />
         <div>
-          <p className="text-black">upcoming Birthdays</p>
+          <p className="">upcoming Birthdays</p>
           <p>See other {birthdaysSoon.length} have upcoming birthdays</p>
         </div>
       </button>

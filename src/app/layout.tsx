@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <Providers>
-      <html lang="en">
+      <html suppressHydrationWarning={false} lang="en">
         <body className={font.className}>
           <NextThemesProvider
             attribute="class"

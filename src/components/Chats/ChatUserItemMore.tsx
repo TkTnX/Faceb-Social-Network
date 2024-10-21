@@ -1,57 +1,45 @@
 "use client";
-import { Pen, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { deleteMessage, editMessage } from "@/lib/actions";
 import { useState } from "react";
+import { deleteChat } from "@/lib/actions";
+import { redirect } from "next/navigation";
 
-const ChatMessageMore = ({
+const ChatUserItemMore = ({
   children,
-  setIsEditing,
-  isEditing,
-  messageId,
+  userId,
+  chatId,
 }: {
   children: React.ReactNode;
-    setIsEditing: (b: boolean) => void;
-  isEditing: boolean;
-  messageId: number;
+  userId: string;
+  chatId?: number;
 }) => {
   const [open, setOpen] = useState(false);
-  const deleteMessageFunc = async () => {
+  const deleteChatFunc = async () => {
+    if (!chatId) return;
     try {
-      await deleteMessage(messageId);
-      setOpen(false);
+      await deleteChat(chatId, userId);
+      redirect("/");
     } catch (error) {
       console.log(error);
     }
   };
-
-  const editOpen = () => {
-    setIsEditing(!isEditing);
-    setOpen(false);
-  }
-
   return (
     <DropdownMenu onOpenChange={setOpen} open={open}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent className="p-3">
-        <form action={deleteMessageFunc}>
+        <form action={deleteChatFunc}>
           <button className="flex items-center gap-2 p-2 text-right text-red-500 hover:bg-red-500/20 rounded-lg hover:text-red-500 duration-100">
             Delete <Trash size={12} />
           </button>
         </form>
-        <button
-          onClick={editOpen}
-          className="flex items-center gap-2 p-2 text-right text-yellow-500 hover:bg-yellow-500/20 rounded-lg hover:text-yellow-500 duration-100"
-        >
-          Edit <Pen size={12} />
-        </button>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
 
-export default ChatMessageMore;
+export default ChatUserItemMore;

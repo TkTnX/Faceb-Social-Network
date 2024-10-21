@@ -122,10 +122,12 @@ model UserChats {
 
 model Message {
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
   content   String
   chatId    Int
   senderId  String
 
   chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -7,7 +7,7 @@ const BirthdaysItem = ({user}: {user: User}) => {
     <div
       className="flex items-center gap-1 justify-between last:border-0  first:pt-0"
     >
-      <Link className="flex items-center gap-1 group" href="/profile/1">
+      <Link className="flex items-center gap-1 group" href={`/profile/${user.nickname}`}>
         <Image
           src={user.avatar || "/noAvatar.jpg"}
           width={25}

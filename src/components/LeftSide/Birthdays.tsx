@@ -2,6 +2,7 @@ import { UserFollowingsWithBirthday } from "./LeftSide";
 import BirthdaysSoon from "./BirthdaysSoon";
 import BirthdaysItem from "./BirthdaysItem";
 import { getDate } from "@/lib/getDate";
+import { Card } from "../ui/card";
 
 const Birthdays = async ({
   userFollowings,
@@ -32,7 +33,7 @@ const Birthdays = async ({
       <div className="flex items-center justify-between">
         <h4 className="text-[#203758] text-lg font-medium">Birthdays</h4>
       </div>
-      <div className="bg-white rounded-lg border border-[#F1F2F6] p-3 mt-4 grid gap-3">
+      <Card className=" rounded-lg border  p-3 mt-4 grid gap-3">
         {birthdaysToday.length > 0 ? (
           birthdaysToday.map((user) => (
             <BirthdaysItem key={user.following.id} user={user.following} />
@@ -43,7 +44,7 @@ const Birthdays = async ({
 
         {/* MORE BIRTHDAYS */}
         <BirthdaysSoon birthdaysSoon={birthdaysSoon} />
-      </div>
+      </Card>
     </div>
   );
 };
