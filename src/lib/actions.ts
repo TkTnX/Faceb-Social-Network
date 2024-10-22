@@ -67,7 +67,9 @@ export async function switchFollow(userId: string) {
       });
 
       if (!chatWithCurrentUserAndUser) {
-        const newChat = await prisma.chat.create({});
+        const newChat = await prisma.chat.create({
+          data: {},
+        });
 
         await prisma.userChats.create({
           data: {
@@ -544,6 +546,7 @@ export async function addMessage(
       },
       data: {
         lastMessage: newMessage.content,
+        updatedAt: new Date(),
       },
     });
 

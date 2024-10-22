@@ -48,6 +48,11 @@ const ChatsSidebar = async ({ isSmall }: { isSmall: boolean }) => {
         },
       },
     },
+    orderBy: {
+      chat: {
+        updatedAt: "desc",
+      },
+    },
   });
 
   if (!userChats || !userChats.length)

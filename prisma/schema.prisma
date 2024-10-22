@@ -102,6 +102,7 @@ model Story {
 model Chat {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   lastMessage String @default("")
   isSeen      Boolean @default(false)
