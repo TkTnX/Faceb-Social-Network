@@ -1,8 +1,12 @@
+"use client";
 import { ChatsUserItem } from "@/components/Chats";
 import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
+import { useState } from "react";
+import { UserChats } from "@prisma/client";
+import { useAuth } from "@clerk/nextjs";
 
-type ChatsUsersListProps = {
+export type ChatsUsersListProps = {
   id: string;
   nickname: string;
   firstname: string;
@@ -11,16 +15,56 @@ type ChatsUsersListProps = {
   userChats: { chatId: number }[];
 };
 
+type UserChatsWithUser = UserChats & {
+  chat: {
+    lastMessage: string;
+    isSeen: boolean;
+    userChats: {
+      user: {
+        id: string;
+        nickname: string;
+        firstname: string;
+        avatar: string | null;
+        lastname: string;
+      };
+    }[];
+  } | null;
+  user: {
+    id: string;
+    avatar: string | null;
+    nickname: string;
+    firstname: string;
+    lastname: string;
+    userChats: {
+      chatId: number;
+    }[];
+  };
+};
+
 const ChatsUsersList = ({
   size,
-  filteredUserChats,
+  userChats,
 }: {
   size: "sm" | "lg";
-  filteredUserChats?: ChatsUsersListProps[];
+  userChats: UserChatsWithUser[];
 }) => {
-  if (!filteredUserChats || filteredUserChats.length === 0) return null;
+  const [value, setValue] = useState("");
+  const { userId } = useAuth();
 
-  // TODO: ПОИСК ЧАТОВ
+
+  const filteredUsersWithSearch = userChats
+    .map((user) => user)
+    .filter((user) => {
+      return (
+        user.user.nickname.toLowerCase().includes(value.toLowerCase()) ||
+        user.user.firstname.toLowerCase().includes(value.toLowerCase()) ||
+        user.user.lastname.toLowerCase().includes(value.toLowerCase())
+      );
+    });
+
+  if(!filteredUsersWithSearch || filteredUsersWithSearch.length === 0) return null
+
+
 
   return (
     <div className="flex flex-col gap-3 pt-2">
@@ -28,20 +72,29 @@ const ChatsUsersList = ({
         <h3 className="text-center sm:text-left font-bold text-xl">Chats</h3>
       )}
 
-      <Input placeholder="Find chats" />
+      {size !== "sm" && (
+        <Input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder="Find chats"
+        />
+      )}
 
       <div
         className={cn("", {
           "flex w-full gap-3 overflow-x-auto scrollbar": size === "sm",
         })}
       >
-        {filteredUserChats.length > 0 ? (
-          filteredUserChats.map((user) => (
+        {filteredUsersWithSearch.length > 0 ? (
+          filteredUsersWithSearch.map((user) => (
             <ChatsUserItem
               isInSidebar={true}
               key={user && user.id}
-              user={user ? user : null}
-              chatId={user && user.userChats[user.userChats.length - 1].chatId}
+              user={
+                user.chat?.userChats.find(u => u.user.id !== userId)?.user || null
+              }
+              lastMessage={user.chat?.lastMessage || null}
+              chatId={user && user.chatId}
             />
           ))
         ) : (

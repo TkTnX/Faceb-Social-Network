@@ -9,14 +9,16 @@ const ChatsUserItem = ({
   user,
   isInSidebar = true,
   chatId,
+  lastMessage,
 }: {
   user: ChatUser | null;
   isInSidebar?: boolean;
   chatId?: number;
+  lastMessage: string | null;
 }) => {
   if (!user) return null;
   return (
-    <div className="relative">
+    <div className="relative pr-5 sm:pr-0">
       <Link
         href={isInSidebar ? `/c/${chatId}` : `/profile/${user.nickname}`}
         className={cn(
@@ -29,16 +31,20 @@ const ChatsUserItem = ({
           alt="avatar"
           width={40}
           height={40}
-          className="rounded-full h-10 w-10"
+          className="rounded-full h-10 w-10 min-h-10 min-w-10"
         />
-        <div
-          className={cn("hidden md:block ", { "block md:block": !isInSidebar })}
-        >
-          <h6 className="text-sm text-main">
-            {user.firstname ||
-              (user.lastname && `${user.firstname} ${user.lastname}`)}
-          </h6>
-          <p className="text-gray text-xs">@{user.nickname}</p>
+        <div className="flex items-center  justify-between w-full">
+          <div
+            className={cn("hidden md:block ", {
+              "block md:block": !isInSidebar,
+            })}
+          >
+            <h6 className="text-sm text-main">
+              {user.firstname ||
+                (user.lastname && `${user.firstname} ${user.lastname}`)}
+            </h6>
+            <p className="text-xs text-gray bigText">{lastMessage}</p>
+          </div>
         </div>
       </Link>
       {isInSidebar && (

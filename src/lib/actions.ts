@@ -538,6 +538,15 @@ export async function addMessage(
       },
     });
 
+    await prisma.chat.update({
+      where: {
+        id: chatId,
+      },
+      data: {
+        lastMessage: newMessage.content,
+      },
+    });
+
     return newMessage;
   } catch (error) {
     console.log(error);

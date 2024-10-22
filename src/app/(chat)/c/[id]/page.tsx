@@ -2,7 +2,6 @@ import ChatForm from "@/components/Chats/ChatForm";
 import ChatHeader from "@/components/Chats/ChatHeader";
 import ChatMessages from "@/components/Chats/ChatMessages";
 import { prisma } from "@/lib/client";
-import { supabase } from "@/lib/supabase";
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 const UserChatPage = async ({ params }: { params: { id: string } }) => {
