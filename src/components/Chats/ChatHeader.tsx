@@ -1,4 +1,3 @@
-import { UserChats } from "@prisma/client";
 import { MoreHorizontal, Search } from "lucide-react";
 import { ChatsUserItem } from ".";
 

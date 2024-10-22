@@ -14,7 +14,7 @@ const ChatsUserItem = ({
   user: ChatUser | null;
   isInSidebar?: boolean;
   chatId?: number;
-  lastMessage: string | null;
+  lastMessage?: string | null;
 }) => {
   if (!user) return null;
   return (
