@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { UserChats } from "@prisma/client";
 import { useAuth } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
-import ChatsUsersListMapping from "./ChatsUsersListMapping";
 
 export type ChatsUsersListProps = {
   id: string;
@@ -95,22 +94,7 @@ const ChatsUsersList = ({
     };
 
     const handleEdit = (payload: any) => {
-      console.log(
-        setLiveUserChats((prevUserChats) => {
-          return prevUserChats.map((userChat) => {
-            if (userChat.chatId === payload.new.id) {
-              return {
-                ...userChat,
-                chat: {
-                  ...userChat.chat,
-                  lastMessage: payload.new.lastMessage,
-                },
-              };
-            }
-            return userChat;
-          });
-        })
-      );
+    
       // @ts-ignore
       setLiveUserChats((prevUserChats) => {
         return prevUserChats.map((userChat) => {
