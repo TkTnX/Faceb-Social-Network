@@ -2,9 +2,11 @@
 import { ChatsUserItem } from "@/components/Chats";
 import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserChats } from "@prisma/client";
 import { useAuth } from "@clerk/nextjs";
+import { supabase } from "@/lib/supabase";
+import ChatsUsersListMapping from "./ChatsUsersListMapping";
 
 export type ChatsUsersListProps = {
   id: string;
@@ -15,7 +17,7 @@ export type ChatsUsersListProps = {
   userChats: { chatId: number }[];
 };
 
-type UserChatsWithUser = UserChats & {
+export type UserChatsWithUser = UserChats & {
   chat: {
     lastMessage: string;
     isSeen: boolean;
@@ -48,23 +50,127 @@ const ChatsUsersList = ({
   size: "sm" | "lg";
   userChats: UserChatsWithUser[];
 }) => {
-  const [value, setValue] = useState("");
   const { userId } = useAuth();
+  const [value, setValue] = useState("");
+  const [liveUserChats, setLiveUserChats] =
+    useState<UserChatsWithUser[]>(userChats);
 
+  useEffect(() => {
+    const handleInserts = (payload: any) => {
+      // @ts-ignore
 
-  const filteredUsersWithSearch = userChats
-    .map((user) => user)
-    .filter((user) => {
-      return (
-        user.user.nickname.toLowerCase().includes(value.toLowerCase()) ||
-        user.user.firstname.toLowerCase().includes(value.toLowerCase()) ||
-        user.user.lastname.toLowerCase().includes(value.toLowerCase())
+      setLiveUserChats((prevUserChats) => {
+        return prevUserChats.map((userChat) => {
+          if (userChat.chatId === payload.new.id) {
+            return {
+              ...userChat,
+              chat: {
+                ...userChat.chat,
+                lastMessage: payload.new.lastMessage,
+              },
+            };
+          }
+          return userChat;
+        });
+      });
+    };
+
+    const handleDelete = (payload: any) => {
+      // @ts-ignore
+
+      setLiveUserChats((prevUserChats) => {
+        return prevUserChats.map((userChat) => {
+          if (userChat.chatId === payload.new.id) {
+            return {
+              ...userChat,
+              chat: {
+                ...userChat.chat,
+                lastMessage: payload.new.lastMessage,
+              },
+            };
+          }
+          return userChat;
+        });
+      });
+    };
+
+    const handleEdit = (payload: any) => {
+      console.log(
+        setLiveUserChats((prevUserChats) => {
+          return prevUserChats.map((userChat) => {
+            if (userChat.chatId === payload.new.id) {
+              return {
+                ...userChat,
+                chat: {
+                  ...userChat.chat,
+                  lastMessage: payload.new.lastMessage,
+                },
+              };
+            }
+            return userChat;
+          });
+        })
       );
-    });
+      // @ts-ignore
+      setLiveUserChats((prevUserChats) => {
+        return prevUserChats.map((userChat) => {
+          if (userChat.chatId === payload.new.id) {
+            return {
+              ...userChat,
+              chat: {
+                ...userChat.chat,
+                lastMessage: payload.new.lastMessage,
+              },
+            };
+          }
+          return userChat;
+        });
+      });
+    };
 
-  if(!filteredUsersWithSearch || filteredUsersWithSearch.length === 0) return null
+    const channel = supabase
+      .channel("Chat")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "Chat",
+        },
+        handleInserts
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: "Chat",
+        },
+        handleDelete
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "Chat",
+        },
+        handleEdit
+      )
+      .subscribe();
 
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
+  const filteredUsersWithSearch = liveUserChats.filter((user) => {
+    return (
+      user.user.nickname.toLowerCase().includes(value.toLowerCase()) ||
+      user.user.firstname.toLowerCase().includes(value.toLowerCase()) ||
+      user.user.lastname.toLowerCase().includes(value.toLowerCase())
+    );
+  });
 
   return (
     <div className="flex flex-col gap-3 pt-2">
@@ -86,15 +192,16 @@ const ChatsUsersList = ({
         })}
       >
         {filteredUsersWithSearch.length > 0 ? (
-          filteredUsersWithSearch.map((user) => (
+          filteredUsersWithSearch.map((chat) => (
             <ChatsUserItem
               isInSidebar={true}
-              key={user && user.id}
+              key={chat.chatId}
               user={
-                user.chat?.userChats.find(u => u.user.id !== userId)?.user || null
+                chat.chat?.userChats.find((u) => u.user.id !== userId)?.user ||
+                null
               }
-              lastMessage={user.chat?.lastMessage || null}
-              chatId={user && user.chatId}
+              lastMessage={chat.chat?.lastMessage || null}
+              chatId={chat && chat.chatId}
             />
           ))
         ) : (

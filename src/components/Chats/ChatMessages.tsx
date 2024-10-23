@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { ChatMessage } from "@/components/Chats";
 import { Message } from "@prisma/client";
 import { supabase } from "@/lib/supabase";
-import { createdAt } from "@/lib/createdAt";
 
 const ChatMessages = ({ messages }: { messages: Message[] }) => {
   const endMessages = useRef(null);

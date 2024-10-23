@@ -1,9 +1,11 @@
+"use client";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { ChatUser } from "./ChatHeader";
 import { MoreHorizontal } from "lucide-react";
 import ChatUserItemMore from "./ChatUserItemMore";
+import { useEffect } from "react";
 
 const ChatsUserItem = ({
   user,
@@ -17,6 +19,9 @@ const ChatsUserItem = ({
   lastMessage?: string | null;
 }) => {
   if (!user) return null;
+
+  
+
   return (
     <div className="relative pr-5 sm:pr-0">
       <Link
