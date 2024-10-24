@@ -7,6 +7,7 @@ import { useAuth } from "@clerk/nextjs";
 import ChatFormButton from "./ChatFormButton";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 const ChatForm = ({ chatId }: { chatId: number }) => {
   const [value, setValue] = useState("");
@@ -32,16 +33,23 @@ const ChatForm = ({ chatId }: { chatId: number }) => {
     }
   };
 
+  // TODO: АДАПТИВ ДОДЕЛАТЬ ПРИ ДОБАВЛЕНИИ ВИДЕО ИЛИ ИЗОБРАЖЕНИЯ
+
   return (
     <>
-      <form action={handleSend} className="p-3 flex items-end gap-2">
+      <form
+        action={handleSend}
+        className={cn("p-3 flex items-end gap-2 ", {
+          "flex-wrap md:flex-nowrap": image !== "",
+        })}
+      >
         {isSuccessAddedImage &&
           (image.includes("video") ? (
             <video
               src={image}
               controls
               preload="metadata"
-              className="object-cover rounded-lg  sm:w-auto max-w-[300px]"
+              className="object-cover rounded-lg max-w-[150px]  xl:max-w-[300px]"
             ></video>
           ) : (
             <Image

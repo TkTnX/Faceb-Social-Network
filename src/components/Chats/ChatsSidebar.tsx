@@ -74,7 +74,7 @@ const ChatsSidebar = async ({ isSmall }: { isSmall: boolean }) => {
   return (
     <div
       className={cn(
-        "hidden sm:flex flex-col gap-2 border-r border-gray/20 pr-1 sm:pr-3 min-w-[20%] w-1/5",
+        "hidden sm:flex flex-col gap-2 md:border-r border-gray/20 pr-1 sm:pr-3 min-w-[20%] w-1/5",
         { "flex w-full sm:hidden": isSmall }
       )}
     >
