@@ -93,24 +93,24 @@ const ChatsUsersList = ({
       });
     };
 
-    const handleEdit = (payload: any) => {
-    
-      // @ts-ignore
-      setLiveUserChats((prevUserChats) => {
-        return prevUserChats.map((userChat) => {
-          if (userChat.chatId === payload.new.id) {
-            return {
-              ...userChat,
-              chat: {
-                ...userChat.chat,
-                lastMessage: payload.new.lastMessage,
-              },
-            };
-          }
-          return userChat;
-        });
+   const handleEdit = (payload: any) => {
+
+     // @ts-ignore
+    setLiveUserChats((prevUserChats) => {
+      return prevUserChats.map((userChat) => {
+        if (userChat.chatId === payload.new.id) {
+          return {
+            ...userChat,
+            chat: {
+              ...userChat.chat,
+              lastMessage: payload.new.lastMessage,
+            },
+          };
+        }
+        return userChat;
       });
-    };
+    });
+   };
 
     const channel = supabase
       .channel("Chat")
@@ -148,11 +148,16 @@ const ChatsUsersList = ({
     };
   }, []);
 
-  const filteredUsersWithSearch = liveUserChats.filter((user) => {
+  const filteredUsersWithSearch = liveUserChats.filter((chat) => {
+    const otherUser =
+      chat.chat?.userChats?.find((userChat) => userChat.user.id !== userId)
+        ?.user || null;
+
+    if (!otherUser) return false;
     return (
-      user.user.nickname.toLowerCase().includes(value.toLowerCase()) ||
-      user.user.firstname.toLowerCase().includes(value.toLowerCase()) ||
-      user.user.lastname.toLowerCase().includes(value.toLowerCase())
+      otherUser.nickname.toLowerCase().includes(value.toLowerCase()) ||
+      otherUser.firstname.toLowerCase().includes(value.toLowerCase()) ||
+      otherUser.lastname.toLowerCase().includes(value.toLowerCase())
     );
   });
 
@@ -176,18 +181,21 @@ const ChatsUsersList = ({
         })}
       >
         {filteredUsersWithSearch.length > 0 ? (
-          filteredUsersWithSearch.map((chat) => (
-            <ChatsUserItem
-              isInSidebar={true}
-              key={chat.chatId}
-              user={
-                chat.chat?.userChats.find((u) => u.user.id !== userId)?.user ||
-                null
-              }
-              lastMessage={chat.chat?.lastMessage || null}
-              chatId={chat && chat.chatId}
-            />
-          ))
+          filteredUsersWithSearch.map((chat) => {
+            return (
+              <ChatsUserItem
+                isInSidebar={true}
+                key={chat.chatId}
+                user={
+                  chat.chat?.userChats?.find(
+                    (userChat) => userChat.user.id !== userId
+                  )?.user || null
+                }
+                lastMessage={chat.chat?.lastMessage || null}
+                chatId={chat && chat.chatId}
+              />
+            );
+          })
         ) : (
           <span className="text-gray text-xs font-medium">
             You do not have any chats yet

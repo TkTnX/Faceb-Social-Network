@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "./client";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function switchFollow(userId: string) {
   const { userId: currentUser } = auth();
@@ -618,6 +619,57 @@ export async function deleteChat(chatId: number, userId: string) {
     }
 
     revalidatePath(`/c/${chatId}`);
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function createChat(userId: string) {
+  const { userId: currentUser } = auth();
+
+  if (!currentUser) return new Error("You are not authenticated");
+  try {
+    const findChat = await prisma.chat.findFirst({
+      where: {
+        userChats: {
+          some: {
+            userId,
+            chat: {
+              userChats: {
+                some: {
+                  userId: currentUser,
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (findChat) {
+      return findChat;
+    } else {
+      const newChat = await prisma.chat.create({
+        data: {},
+      });
+
+      await prisma.userChats.create({
+        data: {
+          userId,
+          chatId: newChat.id,
+        },
+      });
+      await prisma.userChats.create({
+        data: {
+          userId: currentUser,
+          chatId: newChat.id,
+        },
+      });
+
+      revalidatePath("/c");
+      return newChat;
+    }
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong");

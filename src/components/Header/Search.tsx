@@ -7,18 +7,29 @@ import Image from "next/image";
 const Search = ({
   users,
 }: {
-  users: { id: string; nickname: string; avatar: string | null, firstname: string, lastname: string }[];
+  users: {
+    id: string;
+    nickname: string;
+    avatar: string | null;
+    firstname: string;
+    lastname: string;
+  }[];
 }) => {
-    const [value, setValue] = useState("");
-    
-    const filteredUsers = useMemo(() => {
-      return users.filter(
-        (user) =>
-          user.nickname.toLowerCase().includes(value) ||
-          user.firstname.toLowerCase().includes(value) ||
-          user.lastname.toLowerCase().includes(value)
-      );
-    }, [value, users]);
+  const [value, setValue] = useState("");
+
+  const filteredUsers = useMemo(() => {
+    return users.filter(
+      (user) =>
+        user.nickname.toLowerCase().includes(value) ||
+        user.firstname.toLowerCase().includes(value) ||
+        user.lastname.toLowerCase().includes(value)
+    );
+  }, [value, users]);
+
+  const handleClick = () => {
+    setValue("")
+  };
+
   return (
     <>
       <div className="ml-2 sm:ml-0 w-full flex items-center bg-slate-100 rounded-xl px-1 vsm:px-3 py-1">
@@ -41,6 +52,7 @@ const Search = ({
           {Boolean(filteredUsers.length) ? (
             filteredUsers.map((user) => (
               <Link
+                onClick={handleClick}
                 className="flex items-center gap-3 hover:bg-main/20 duration-150 py-2 px-1 rounded-md"
                 href={`/profile/${user.nickname}`}
                 key={user.id}
@@ -52,8 +64,11 @@ const Search = ({
                   alt="avatar"
                   className="rounded-full h-10"
                 />
-                    <div>
-                        <p className="text-sm text-main">{user.firstname || user.lastname && `${user.firstname} ${user.lastname}`}</p>
+                <div>
+                  <p className="text-sm text-main">
+                    {user.firstname ||
+                      (user.lastname && `${user.firstname} ${user.lastname}`)}
+                  </p>
                   <span className="text-xs text-gray">{user.nickname}</span>
                 </div>
               </Link>

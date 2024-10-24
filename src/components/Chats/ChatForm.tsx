@@ -1,5 +1,5 @@
 "use client";
-import { Image as ImageIcon } from "lucide-react";
+import { Image as ImageIcon, VideoIcon } from "lucide-react";
 import { Input } from "../ui/input";
 import { useState } from "react";
 import { addMessage } from "@/lib/actions";
@@ -35,15 +35,23 @@ const ChatForm = ({ chatId }: { chatId: number }) => {
   return (
     <>
       <form action={handleSend} className="p-3 flex items-end gap-2">
-        {isSuccessAddedImage && (
-          <Image
-            src={image}
-            width={100}
-            height={100}
-            className="object-cover rounded-lg w-[50px] sm:w-auto max-w-max"
-            alt="image"
-          />
-        )}
+        {isSuccessAddedImage &&
+          (image.includes("video") ? (
+            <video
+              src={image}
+              controls
+              preload="metadata"
+              className="object-cover rounded-lg  sm:w-auto max-w-[300px]"
+            ></video>
+          ) : (
+            <Image
+              src={image}
+              width={100}
+              height={100}
+              className="object-cover rounded-lg w-[50px] sm:w-auto max-w-max"
+              alt="image"
+            />
+          ))}
         <Input
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -51,6 +59,34 @@ const ChatForm = ({ chatId }: { chatId: number }) => {
         />
         <CldUploadWidget
           uploadPreset="social"
+          onSuccess={(res: any) => changeImage(res)}
+          options={{
+            maxFiles: 1,
+            resourceType: "image",
+            clientAllowedFormats: ["png", "jpg", "jpeg", "webp"],
+          }}
+        >
+          {({ open, widget }) => {
+            return (
+              <button
+                type="button"
+                onClick={() => {
+                  open();
+                  widget?.open();
+                }}
+              >
+                <ImageIcon color="#788292" className="hover:stroke-main" />
+              </button>
+            );
+          }}
+        </CldUploadWidget>
+        <CldUploadWidget
+          uploadPreset="social"
+          options={{
+            maxFiles: 1,
+            resourceType: "video",
+            clientAllowedFormats: ["mp4", "webm", "ogv", "avi", "mov"],
+          }}
           onSuccess={(res: any) => changeImage(res)}
         >
           {({ open, widget }) => {
@@ -62,8 +98,7 @@ const ChatForm = ({ chatId }: { chatId: number }) => {
                   widget?.open();
                 }}
               >
-                {/* eslint-disable-next-line jsx-a11y/alt-text */}
-                <ImageIcon color="#788292" className="hover:stroke-main" />
+                <VideoIcon color="#788292" className="hover:stroke-main" />
               </button>
             );
           }}

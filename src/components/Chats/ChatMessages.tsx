@@ -78,6 +78,7 @@ const ChatMessages = ({ messages }: { messages: Message[] }) => {
     };
   }, []);
 
+
   return (
     <div className="flex-1 h-full w-full overflow-y-auto scrollbar">
       {liveMessages.length > 0 ? (

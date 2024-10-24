@@ -1,31 +1,29 @@
 "use client";
 import Image from "next/image";
 import { StoriesWithUser } from "../RightSide/StoriesList";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { createdAt } from "@/lib/createdAt";
+import { Message } from "@prisma/client";
 
-const StoryModal = ({
-  story,
+const MessageModal = ({
+  message,
   children,
 }: {
-  story: StoriesWithUser;
+  message: Message;
   children: React.ReactNode;
 }) => {
-  const storyCreatedAt = createdAt(story.createdAt);
+  const storyCreatedAt = createdAt(message.createdAt);
 
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
-        <p className="text-lg font-bold">
-          {story.user.firstname ||
-            (story.user.lastname &&
-              `${story.user.firstname} ${story.user.lastname}`)}{" "}
-          <span className="text-xs text-gray">@{story.user.nickname}</span>
-        </p>
+
+        <DialogTitle></DialogTitle>
+        <DialogDescription></DialogDescription>
         <Image
-          src={story.img}
-          alt="story"
+          src={message.content}
+          alt="message"
           width={500}
           height={410}
           className="rounded-lg object-cover"
@@ -36,4 +34,4 @@ const StoryModal = ({
   );
 };
 
-export default StoryModal;
+export default MessageModal;

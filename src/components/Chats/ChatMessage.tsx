@@ -5,16 +5,19 @@ import { useAuth } from "@clerk/nextjs";
 import { Message } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import ChatMessageMore from "./ChatMessageMore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { editMessage } from "@/lib/actions";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import StoryModal from "../modals/StoryModal";
+import MessageModal from "../modals/MessageModal";
 
 const ChatMessage = ({ message }: { message: Message }) => {
   const { userId } = useAuth();
   const messageCreatedAt = createdAt(message.createdAt);
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(message.content);
+  const [hydration, setHydration] = useState(false);
 
   const editMessageFunc = async () => {
     try {
@@ -25,6 +28,14 @@ const ChatMessage = ({ message }: { message: Message }) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    setHydration(true);
+  }, []);
+
+  if (!hydration) {
+    return null; 
+  }
 
   return (
     <div
@@ -49,10 +60,26 @@ const ChatMessage = ({ message }: { message: Message }) => {
               Edit
             </Button>
           </form>
-        ) : message.content.includes("https://res.cloudinary.com/") ? (
-            
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={message.content} alt={message.content} className="max-h-[300px] object-contain" />
+        ) : message.content.includes(
+            "https://res.cloudinary.com/faceb/image"
+          ) ? (
+          <MessageModal message={message}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={message.content}
+              alt={message.content}
+              className="max-h-[300px] object-contain cursor-pointer"
+            />
+          </MessageModal>
+        ) : message.content.includes(
+            "https://res.cloudinary.com/faceb/video"
+          ) ? (
+          <video
+            src={message.content}
+            controls
+            preload="metadata"
+            className="max-h-[300px] max-w-[300px] object-cover"
+          ></video>
         ) : (
           <p>{message.content}</p>
         )}
@@ -62,7 +89,9 @@ const ChatMessage = ({ message }: { message: Message }) => {
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             messageId={message.id}
-            isImage={message.content.includes("https://res.cloudinary.com/")}
+            isImage={message.content.includes(
+              "https://res.cloudinary.com/faceb/image"
+            )}
           >
             <button className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 duration-150">
               <MoreHorizontal size={16} />

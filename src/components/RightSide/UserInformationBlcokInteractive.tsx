@@ -1,7 +1,6 @@
 "use client";
-import { switchBlock, switchFollow } from "@/lib/actions";
+import { createChat, switchBlock, switchFollow } from "@/lib/actions";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 import { useOptimistic, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -29,10 +28,11 @@ const UserInformationBlcokInteractive: React.FC<Props> = ({
 
       setUserStatus({
         ...userStatus,
-        isFollowed:
-          !userStatus.isFollowed ? true : false,
+        isFollowed: !userStatus.isFollowed ? true : false,
       });
-      toast.success(`${!userStatus.isFollowed ? "Followed" : "Unfollowed"} successfully`);
+      toast.success(
+        `${!userStatus.isFollowed ? "Followed" : "Unfollowed"} successfully`
+      );
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
@@ -68,14 +68,37 @@ const UserInformationBlcokInteractive: React.FC<Props> = ({
             isBlocked: !userStatus.isBlocked,
           }
   );
+
+  const handleMessage = async () => {
+    try {
+      const chat = await createChat(userId);
+
+      if (chat instanceof Error) {
+        throw chat;
+      }
+
+      if (chat) {
+        window.location.href = `/c/${chat.id}`;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className={cn("", { "sm:hidden block": size === "sm" })}>
       {!followStatus.isBlocked && (
-        <form action={follow}>
-          <button className="text-main bg-main/20 w-full mt-2 py-3 rounded-lg hover:bg-main hover:text-white duration-100">
-            {followStatus.isFollowed ? "Following" : "Follow"}
-          </button>
-        </form>
+        <>
+          <form action={follow}>
+            <button className="text-main bg-main/20 w-full mt-2 py-3 rounded-lg hover:bg-main hover:text-white duration-100">
+              {followStatus.isFollowed ? "Following" : "Follow"}
+            </button>
+          </form>
+          <form action={handleMessage}>
+            <button className="text-main bg-main/50 w-full mt-2 py-1 rounded-lg hover:bg-main hover:text-white duration-100">
+              Write a message
+            </button>
+          </form>
+        </>
       )}
 
       <form className="max-w-max ml-auto" action={block}>

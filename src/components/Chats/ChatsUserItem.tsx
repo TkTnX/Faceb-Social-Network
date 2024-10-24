@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ChatUser } from "./ChatHeader";
 import { MoreHorizontal } from "lucide-react";
 import ChatUserItemMore from "./ChatUserItemMore";
-import { useEffect } from "react";
 
 const ChatsUserItem = ({
   user,

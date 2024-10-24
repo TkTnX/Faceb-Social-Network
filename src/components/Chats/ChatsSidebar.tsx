@@ -4,6 +4,7 @@ import ChatsUsersList from "./ChatsUsersList";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const ChatsSidebar = async ({ isSmall }: { isSmall: boolean }) => {
   const { userId: currentUserId } = auth();
@@ -55,8 +56,20 @@ const ChatsSidebar = async ({ isSmall }: { isSmall: boolean }) => {
     },
   });
 
-  if (!userChats || !userChats.length)
-    return <p>You do not have any chats yet</p>;
+  if (!userChats || (!userChats.length && !isSmall))
+    return (
+      <div>
+        <p className="text-gray text-xs font-medium text-center">
+          You do not have any chats yet
+        </p>
+        <Link
+          className="text-main text-[8px] font-medium text-center block bg-main/10 p-2 rounded-lg mt-5"
+          href="/friends"
+        >
+          You can find some friends here
+        </Link>
+      </div>
+    );
 
   return (
     <div
