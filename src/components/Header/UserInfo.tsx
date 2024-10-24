@@ -9,6 +9,7 @@ import {
 import { Bell, LogIn, MessageCircleMore, Users } from "lucide-react";
 import Link from "next/link";
 import { MobileMenu, Search } from "@/components";
+import NotificationsDropdown from "./NotificationsDropdown";
 
 const UserInfo = ({
   users,
@@ -51,18 +52,20 @@ const UserInfo = ({
                 className="hover:stroke-main transition duration-200"
               />
             </Link>
-            <button>
+            <Link href="/friends">
               <Users
                 color="#788292 "
                 className="hover:stroke-main transition duration-200"
               />
-            </button>
-            <button>
-              <Bell
-                color="#788292 "
-                className="hover:stroke-main transition duration-200"
-              />
-            </button>
+            </Link>
+            <NotificationsDropdown>
+              <button>
+                <Bell
+                  color="#788292 "
+                  className="hover:stroke-main transition duration-200"
+                />
+              </button>
+            </NotificationsDropdown>
           </div>
 
           <div className="border border-main rounded-full p-1 h-[38px] bg-white shadow-lg">
